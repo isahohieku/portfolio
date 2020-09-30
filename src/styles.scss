@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+
+html {
+    font-size: 62.5%;
+}
+
+p, span, button {
+    font-size: 1.6rem;
+}
+
+.text-playfair {
+    font-family: 'Playfair Display', sans-serif;
+}
+
+.text-large {
+    font-size: 1.8rem;
+}

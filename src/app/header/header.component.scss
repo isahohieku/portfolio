@@ -1,0 +1,77 @@
+header {
+    max-width: 120rem;
+}
+
+.hamburger-menu,
+.hamburger-menu::before,
+.hamburger-menu::after {
+    position: absolute;
+    left: 0px;
+    width: 30px;
+    height: 2px;
+    background: #000;
+    border-radius: 4px;
+    -webkit-transition: all 0.1s;
+    transition: all 0.1s;
+}
+
+.hambuger-btn:hover {
+    .hamburger-menu::before,
+    .hamburger-menu::after {
+        left: 5px;
+    }
+
+    .hamburger-menu::before {
+        top: 8px;
+    }
+
+    .hamburger-menu::after {
+        bottom: 8px;
+    }
+
+    .hamburger-close::after, .hamburger-close::before { left: 0; }
+
+    .hamburger-close::before {
+        top: 7px;
+    }
+
+    .hamburger-close::after {
+        bottom: 7px;
+    }
+}
+
+// To open the Menu
+.hamburger-menu::before,
+.hamburger-menu::after {
+    content: "";
+}
+
+.hambuger-btn {
+    padding: 0;
+    height: 24px;
+    width: 30px;
+    position: relative;
+}
+
+.hamburger-menu::before {
+    top: 7px;
+}
+
+.hamburger-menu::after {
+    bottom: 7px;
+}
+
+// To Close the Menu
+.hamburger-close {
+    background: transparent;
+}
+
+.hamburger-close::before {
+    -webkit-transform: translateY(-7px) rotate(45deg);
+    transform: translateY(-7px) rotate(45deg);
+}
+
+.hamburger-close::after {
+    -webkit-transform: translateY(7px) rotate(-45deg);
+    transform: translateY(7px) rotate(-45deg);
+}

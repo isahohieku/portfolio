@@ -1,0 +1,50 @@
+footer {
+    background-color: #191919;
+    height: 100vh;
+}
+
+.inner-container {
+    max-width: 120rem;
+}
+
+.resume {
+    background-color: #525252;
+    width: 17rem;
+}
+
+.lines-wrapper {
+    span {
+        border-bottom: 1px solid rgb(198, 197, 196);
+        margin-top: 0.2rem;
+        width: 100%;
+
+        &:last-child {
+            width: 50% !important;
+        }
+    }
+
+}
+
+.download {
+    border: 1px solid rgb(198, 197, 196);
+    color: rgb(198, 197, 196);
+    border-radius: 3px;
+    width: 17rem;
+}
+
+h3, .email {
+    font-size: 4rem;
+    color: #666666;
+}
+
+.email {
+    color: whitesmoke;
+    padding: 0;
+    vertical-align: top;
+    border: 0;
+    line-height: 1.2;
+}
+
+.left {
+    width: 60%;
+}

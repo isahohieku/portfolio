@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { MainJumbotronComponent } from './main-jumbotron/main-jumbotron.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    MainJumbotronComponent
+    MainJumbotronComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

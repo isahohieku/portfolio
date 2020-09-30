@@ -4,8 +4,16 @@ html {
     font-size: 62.5%;
 }
 
-p, span, button {
+.btn:focus {
+    box-shadow: none;
+}
+
+p, span {
     font-size: 1.6rem;
+}
+
+button {
+    font-size: 1.6rem !important;
 }
 
 .text-playfair {
@@ -14,4 +22,8 @@ p, span, button {
 
 .text-large {
     font-size: 1.8rem;
+}
+
+.text-small {
+    font-size: 1.2rem !important;
 }

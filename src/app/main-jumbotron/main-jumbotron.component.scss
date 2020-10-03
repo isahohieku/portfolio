@@ -1,0 +1,25 @@
+.wrapper {
+    max-width: 120rem;
+    height: 100vh;
+}
+
+h1 {
+    font-size: 12rem;
+}
+
+h4 {
+    color: #666666;
+}
+
+.underlay {
+    background-color: rgb(192, 92, 255);
+    width: 80%;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
+}
+
+.overlay {
+    z-index: 1;
+}

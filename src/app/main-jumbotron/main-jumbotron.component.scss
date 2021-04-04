@@ -5,6 +5,7 @@
 
 h1 {
     font-size: 12rem;
+    font-weight: 500;
 }
 
 h4 {
@@ -12,12 +13,21 @@ h4 {
 }
 
 .underlay {
-    background-color: rgb(192, 92, 255);
+    background-color: #fbd700;
     width: 80%;
+    height: 70%;
     right: 0;
     top: 50%;
     transform: translateY(-50%);
+}
 
+.underlay2 {
+    background-color: #2f2f2f;
+    width: 70%;
+    height: 80%;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .overlay {

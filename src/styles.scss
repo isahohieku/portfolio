@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 html {
     font-size: 62.5%;
 }
@@ -20,10 +21,26 @@ button {
     font-family: 'Playfair Display', sans-serif;
 }
 
+.text-lato {
+    font-family: 'lato', sans-serif;
+}
+
+.text-pacifico {
+    font-family: 'Pacifico', cursive;
+}
+
 .text-large {
     font-size: 1.8rem;
 }
 
 .text-small {
     font-size: 1.2rem !important;
+}
+
+.text-itallic {
+    font-style: italic !important;
+}
+
+.mousePointer {
+    cursor: pointer;
 }

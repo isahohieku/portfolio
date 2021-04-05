@@ -1,0 +1,38 @@
+.inner {
+    max-width: 120rem;
+    display: flex;
+    margin: auto;
+    height: 80vh;
+}
+
+.inner2 {
+    width: 800px;
+    margin: auto;
+}
+
+
+.wrapper {
+    height: 100vh;
+    background-color: #1c1c1c;
+    margin-top: 10rem;
+    margin-bottom: 15rem;
+}
+
+h3 {
+    font-size: 3rem;
+    color: #979797;
+    max-width: 800px;
+    line-height: 1.5;
+}
+
+.btn {
+    border: 1px solid #979797;
+    color: #979797;
+    border-radius: 0px;
+    width: 17rem;
+
+    &:hover {
+        background-color: #979797;
+        color: black;
+    }
+}

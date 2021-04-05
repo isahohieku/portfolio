@@ -1,6 +1,7 @@
 footer {
-    background-color: #191919;
+    background-color: #f7f7f7;
     height: 100vh;
+    margin-top: 15rem;
 }
 
 .inner-container {
@@ -8,13 +9,18 @@ footer {
 }
 
 .resume {
-    background-color: #525252;
-    width: 17rem;
+    background-color: #fbd700;
+    width: 160px;
+
+}
+
+.drop-shadow {
+    filter: drop-shadow(0px 10px 4px rgba(28, 28, 28, 0.2));
 }
 
 .lines-wrapper {
     span {
-        border-bottom: 1px solid rgb(198, 197, 196);
+        border-bottom: 1px solid #1c1c1c;
         margin-top: 0.2rem;
         width: 100%;
 
@@ -22,23 +28,22 @@ footer {
             width: 50% !important;
         }
     }
-
 }
 
 .download {
-    border: 1px solid rgb(198, 197, 196);
-    color: rgb(198, 197, 196);
+    border: 1px solid #6d6d6d;
+    color: #6d6d6d;
     border-radius: 3px;
     width: 17rem;
 }
 
 h3, .email {
-    font-size: 4rem;
+    font-size: 3rem;
     color: #666666;
 }
 
 .email {
-    color: whitesmoke;
+    color: #6d6d6d;
     padding: 0;
     vertical-align: top;
     border: 0;
@@ -47,4 +52,12 @@ h3, .email {
 
 .left {
     width: 60%;
+}
+
+nav {
+    a {
+        font-size: 4rem;
+        margin-right: 20px;
+        color: #6d6d6d;
+    }
 }

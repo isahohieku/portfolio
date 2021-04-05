@@ -1,4 +1,21 @@
 
 .projects {
     max-width: 120rem;
+    flex-wrap: wrap;
+}
+
+.project-item {
+    flex: 0 0 33.333333%;
+}
+
+.works {
+    border: 1px solid #1c1c1c;
+    color: #1c1c1c;
+    border-radius: 0px;
+    width: 17rem;
+
+    &:hover {
+        background-color: #1c1c1c;
+        color: #ffffff;
+    }
 }

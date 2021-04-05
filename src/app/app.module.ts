@@ -7,6 +7,7 @@ import { HeaderComponent } from './header/header.component';
 import { MainJumbotronComponent } from './main-jumbotron/main-jumbotron.component';
 import { FooterComponent } from './footer/footer.component';
 import { ProjectCardComponent } from './project-card/project-card.component';
+import { AboutSectionComponent } from './about-section/about-section.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ProjectCardComponent } from './project-card/project-card.component';
     HeaderComponent,
     MainJumbotronComponent,
     FooterComponent,
-    ProjectCardComponent
+    ProjectCardComponent,
+    AboutSectionComponent
   ],
   imports: [
     BrowserModule,

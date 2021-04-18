@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   hamburgerState = false;
+  openSideMenu = false;
+
   constructor() { }
 
   ngOnInit() {
@@ -15,6 +17,10 @@ export class HeaderComponent implements OnInit {
 
   toggleHamburger() {
     this.hamburgerState = !this.hamburgerState;
+  }
+
+  setOpenSideMenu() {
+    this.openSideMenu = !this.openSideMenu;
   }
 
 }

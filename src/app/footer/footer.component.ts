@@ -13,6 +13,10 @@ export class FooterComponent implements OnInit {
   faBehance = faBehance;
   faTwitter = faTwitter;
 
+  completeDate = new Date();
+
+  year = this.completeDate.getFullYear();
+
   constructor() { }
 
   ngOnInit() {

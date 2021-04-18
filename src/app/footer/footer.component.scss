@@ -9,9 +9,8 @@ footer {
 }
 
 .resume {
-    background-color: #fbd700;
+    background-color: #e4e4e4;
     width: 160px;
-
 }
 
 .drop-shadow {
@@ -33,11 +32,17 @@ footer {
 .download {
     border: 1px solid #6d6d6d;
     color: #6d6d6d;
-    border-radius: 3px;
-    width: 17rem;
+    border-radius: 0px;
+    width: 160px;
+
+    &:hover {
+        background-color: #6d6d6d;
+        color: #f7f7f7;
+    }
 }
 
-h3, .email {
+h3,
+.email {
     font-size: 3rem;
     color: #666666;
 }

@@ -1,7 +1,21 @@
 <header class="d-flex align-items-center mt-5 mx-auto">
-    <span class="favicon text-playfair font-weight-bold text-large text-uppercase">io</span>
+    <a class="favicon text-playfair text-uppercase" href="/">io</a>
 
-    <button class="btn ml-auto hambuger-btn" (click)="toggleHamburger()">
+    <button class="btn ml-auto hambuger-btn" [ngClass]="{'position-fixed hamburger-shift-right': hamburgerState}" (click)="toggleHamburger()">
         <span class="hamburger-menu" [ngClass]="{'hamburger-close': hamburgerState}"></span>
     </button>
 </header>
+
+<div class="sidemenu-wrapper" [ngClass]="{'open': hamburgerState}">
+    <div class="sidemenu position-absolute" [ngClass]="{'open': hamburgerState}">
+        <ul>
+            <li>
+                <a href="/about">About Me</a>
+            </li>
+            <li>
+                <a href="/works">My Works</a>
+            </li>
+        </ul>
+    
+    </div>
+</div>

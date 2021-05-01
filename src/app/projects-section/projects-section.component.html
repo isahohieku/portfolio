@@ -1,0 +1,13 @@
+<div class="header mx-auto mb-5">
+    <h1 class="text-playfair mb-5">Sneak Peek</h1>
+</div>
+
+<div class="projects d-flex justify-content-between mx-auto mt-5">
+    <div class="project-item" *ngFor="let project of projects">
+        <app-project-card [project]="project"></app-project-card>
+    </div>
+</div>
+
+<div class="projects d-flex justify-content-end mx-auto mt-5">
+    <a href="/works" target="_blank" class="btn mousePointer works text-normal text-lato py-3">My Works</a>
+</div>

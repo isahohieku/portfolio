@@ -9,6 +9,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ProjectCardComponent } from './project-card/project-card.component';
 import { AboutSectionComponent } from './about-section/about-section.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ProjectsSectionComponent } from './projects-section/projects-section.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MainJumbotronComponent,
     FooterComponent,
     ProjectCardComponent,
-    AboutSectionComponent
+    AboutSectionComponent,
+    ProjectsSectionComponent
   ],
   imports: [
     BrowserModule,

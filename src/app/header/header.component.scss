@@ -71,6 +71,10 @@ header {
     background: transparent;
 }
 
+.hamburger-shift-right {
+    right: 50px;
+}
+
 .hamburger-close::before {
     -webkit-transform: translateY(-7px) rotate(45deg);
     transform: translateY(-7px) rotate(45deg);

@@ -13,6 +13,7 @@ import { ProjectsSectionComponent } from './components/landing/projects-section/
 import { LandingComponent } from './pages/landing/landing.component';
 import { AboutComponent } from './pages/about/about.component';
 import { WorksComponent } from './pages/works/works.component';
+import { UnderConstructionComponent } from './pages/under-construction/under-construction.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { WorksComponent } from './pages/works/works.component';
     ProjectsSectionComponent,
     LandingComponent,
     AboutComponent,
-    WorksComponent
+    WorksComponent,
+    UnderConstructionComponent
   ],
   imports: [
     BrowserModule,

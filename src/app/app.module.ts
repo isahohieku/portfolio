@@ -3,13 +3,17 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { MainJumbotronComponent } from './main-jumbotron/main-jumbotron.component';
-import { FooterComponent } from './footer/footer.component';
-import { ProjectCardComponent } from './project-card/project-card.component';
-import { AboutSectionComponent } from './about-section/about-section.component';
+import { HeaderComponent } from './layout/header/header.component';
+import { MainJumbotronComponent } from './components/landing/main-jumbotron/main-jumbotron.component';
+import { FooterComponent } from './layout/footer/footer.component';
+import { ProjectCardComponent } from './shared/project-card/project-card.component';
+import { AboutSectionComponent } from './components/landing/about-section/about-section.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ProjectsSectionComponent } from './projects-section/projects-section.component';
+import { ProjectsSectionComponent } from './components/landing/projects-section/projects-section.component';
+import { LandingComponent } from './pages/landing/landing.component';
+import { AboutComponent } from './pages/about/about.component';
+import { WorksComponent } from './pages/works/works.component';
+import { UnderConstructionComponent } from './pages/under-construction/under-construction.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +23,11 @@ import { ProjectsSectionComponent } from './projects-section/projects-section.co
     FooterComponent,
     ProjectCardComponent,
     AboutSectionComponent,
-    ProjectsSectionComponent
+    ProjectsSectionComponent,
+    LandingComponent,
+    AboutComponent,
+    WorksComponent,
+    UnderConstructionComponent
   ],
   imports: [
     BrowserModule,

@@ -22,3 +22,29 @@ h1 {
         color: #ffffff;
     }
 }
+
+@media (max-width: 576px) {
+    .projects, .header {
+        max-width: 100%;
+        padding: 0 20px;
+        flex-wrap: wrap;
+    }
+
+    h1 {
+        font-size: 2.4rem;
+    }
+
+    .inner,
+    .inner2 {
+        width: 90%;
+    }
+
+    .project-item {
+        flex: 0 0 100%;
+    }
+
+    .works {
+        width: 12rem;
+        font-size: 1.2rem !important;
+    }
+}

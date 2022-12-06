@@ -12,7 +12,7 @@ const routes: Routes = [
   { component: UnderConstructionComponent, path: 'about'},
   // { component: WorksComponent, path: 'works'},
   { component: UnderConstructionComponent, path: 'works'},
-  { path: '*', redirectTo: ''}
+  { path: '**', redirectTo: ''}
 ];
 
 @NgModule({

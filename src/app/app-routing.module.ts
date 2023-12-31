@@ -8,8 +8,8 @@ import { WorksComponent } from './pages/works/works.component';
 
 const routes: Routes = [
   { component: LandingComponent, path: '' },
-  // { component: AboutComponent, path: 'about'},
-  { component: UnderConstructionComponent, path: 'about'},
+  { component: AboutComponent, path: 'about'},
+  // { component: UnderConstructionComponent, path: 'about'},
   // { component: WorksComponent, path: 'works'},
   { component: UnderConstructionComponent, path: 'works'},
   { path: '**', redirectTo: ''}

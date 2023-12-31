@@ -17,6 +17,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { WorksComponent } from './pages/works/works.component';
 import { UnderConstructionComponent } from './pages/under-construction/under-construction.component';
 import { InViewDirective } from './shared/directives/in-view/in-view.directive';
+import { AboutJumbotronComponent } from './components/about/about-jumbotron/about-jumbotron.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { InViewDirective } from './shared/directives/in-view/in-view.directive';
     AboutComponent,
     WorksComponent,
     UnderConstructionComponent,
-    InViewDirective
+    InViewDirective,
+    AboutJumbotronComponent
   ],
   imports: [
     BrowserModule,

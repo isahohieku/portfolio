@@ -14,6 +14,7 @@ import { LandingComponent } from './pages/landing/landing.component';
 import { AboutComponent } from './pages/about/about.component';
 import { WorksComponent } from './pages/works/works.component';
 import { UnderConstructionComponent } from './pages/under-construction/under-construction.component';
+import { AboutJumbotronComponent } from './components/about/about-jumbotron/about-jumbotron.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { UnderConstructionComponent } from './pages/under-construction/under-con
     LandingComponent,
     AboutComponent,
     WorksComponent,
-    UnderConstructionComponent
+    UnderConstructionComponent,
+    AboutJumbotronComponent
   ],
   imports: [
     BrowserModule,

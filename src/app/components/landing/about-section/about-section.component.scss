@@ -12,9 +12,10 @@
 
 .wrapper {
     height: 100vh;
-    background-color: #1c1c1c;
+    background-color: #1b1b1b;
     margin-top: 10rem;
     margin-bottom: 15rem;
+    background-image: radial-gradient(circle farthest-corner at 100% -30%,#0e0e0e,rgba(14,14,14,0) 56%);
 }
 
 h3 {

@@ -113,11 +113,23 @@
               "devServerTarget": "portfolio:serve:production"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "01079162-1479-4136-827f-c28146beac4c"
+    "analytics": "01079162-1479-4136-827f-c28146beac4c",
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   }
 }

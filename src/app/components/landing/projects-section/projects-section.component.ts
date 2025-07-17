@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { ProjectCardComponent } from '../../../shared/project-card/project-card.component';
+import { RouterLink } from '@angular/router';
 
 interface Project {
   logo: string;
@@ -9,9 +12,11 @@ interface Project {
 }
 
 @Component({
-  selector: 'app-projects-section',
-  templateUrl: './projects-section.component.html',
-  styleUrls: ['./projects-section.component.scss']
+    selector: 'app-projects-section',
+    templateUrl: './projects-section.component.html',
+    styleUrls: ['./projects-section.component.scss'],
+    standalone: true,
+    imports: [NgFor, ProjectCardComponent, RouterLink]
 })
 export class ProjectsSectionComponent {
 

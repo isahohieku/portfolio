@@ -8,8 +8,8 @@ describe('AboutJumbotronComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AboutJumbotronComponent]
-    });
+    imports: [AboutJumbotronComponent]
+});
     fixture = TestBed.createComponent(AboutJumbotronComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

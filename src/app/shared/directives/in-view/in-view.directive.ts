@@ -3,7 +3,8 @@ import { Subscription, fromEvent } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Directive({
-  selector: '[appInView]'
+    selector: '[appInView]',
+    standalone: true
 })
 export class InViewDirective implements OnDestroy, AfterViewInit {
 

@@ -1,22 +1,14 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
-
-import { environment } from './environments/environment';
-import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app/app-routing.module';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { provideHttpClient } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
-
-if (environment.production) {
-  enableProdMode();
-}
+import { routes } from './app/app.routes';
 
 bootstrapApplication(AppComponent, {
-    providers: [
-        importProvidersFrom(BrowserModule, AppRoutingModule, FontAwesomeModule),
-        provideAnimations()
-    ]
-})
-  .catch(err => console.error(err));
+  providers: [
+    provideRouter(routes),
+    provideAnimations(),
+    provideHttpClient()
+  ]
+});

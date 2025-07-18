@@ -1,5 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgStyle } from '@angular/common';
+
+export interface Project {
+  id: string;
+  title: string;
+  description: string;
+  logo: string;
+  bgColor: string;
+  link: string;
+  technologies: string[];
+}
 
 @Component({
     selector: 'app-project-card',
@@ -8,13 +18,8 @@ import { NgStyle } from '@angular/common';
     standalone: true,
     imports: [NgStyle]
 })
-export class ProjectCardComponent implements OnInit {
+export class ProjectCardComponent {
 
-  @Input() project: any;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+  @Input() project!: Project;
 
 }

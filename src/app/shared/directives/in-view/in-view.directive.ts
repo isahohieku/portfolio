@@ -1,84 +1,72 @@
-import { AfterViewInit, Directive, ElementRef, EventEmitter, OnDestroy, Output } from '@angular/core';
-import { Subscription, fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Directive, ElementRef, EventEmitter, Output, afterNextRender, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { fromEvent, merge } from 'rxjs';
+import { throttleTime, startWith } from 'rxjs/operators';
 
 @Directive({
-    selector: '[appInView]',
-    standalone: true
+  selector: '[appInView]',
+  standalone: true
 })
-export class InViewDirective implements OnDestroy, AfterViewInit {
+export class InViewDirective {
+  @Output() appear = new EventEmitter<void>();
 
-  @Output()
-  appear: EventEmitter<void>;
+  private readonly element = inject(ElementRef);
+  private readonly destroyRef = inject(DestroyRef);
+  private hasEmitted = false;
 
-  elementPos: number;
-  elementHeight: number;
-
-  scrollPos: number;
-  windowHeight: number;
-
-  subscriptionScroll: Subscription;
-  subscriptionResize: Subscription;
-
-  constructor(private element: ElementRef) {
-    this.appear = new EventEmitter<void>();
-    this.elementPos = this.getOffsetTop(this.element.nativeElement);
+  constructor() {
+    afterNextRender(() => {
+      this.setupIntersectionObserver();
+    });
   }
 
-  saveDimensions() {
-    this.elementPos = this.getOffsetTop(this.element.nativeElement);
-    this.elementHeight = this.element.nativeElement.offsetHeight;
-    this.windowHeight = window.innerHeight;
-  }
-  saveScrollPos() {
-    this.scrollPos = window.scrollY;
-  }
-  getOffsetTop(element: any) {
-    let offsetTop = element.offsetTop || 0;
-    if (element.offsetParent) {
-      offsetTop += this.getOffsetTop(element.offsetParent);
-    }
-    return offsetTop;
-  }
-  checkVisibility() {
-    if (this.isVisible()) {
-      // double check dimensions (due to async loaded contents, e.g. images)
-      this.saveDimensions();
-      if (this.isVisible()) {
-        this.appear.emit();
+  private setupIntersectionObserver(): void {
+    // Use modern Intersection Observer API for better performance
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && !this.hasEmitted) {
+          this.appear.emit();
+          this.hasEmitted = true;
+          observer.disconnect(); // Stop observing after first emission
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1 // Trigger when 10% of element is visible
       }
-    }
-  }
-  isVisible() {
-    return this.scrollPos >= this.elementPos || (this.scrollPos + this.windowHeight) >= (this.elementPos + this.elementHeight);
+    );
+
+    observer.observe(this.element.nativeElement);
+
+    // Cleanup observer on destroy
+    this.destroyRef.onDestroy(() => observer.disconnect());
   }
 
-  subscribe() {
-    this.subscriptionScroll = fromEvent(document, 'scroll').pipe(map(event => event === null))
+  // Fallback method using scroll events (if Intersection Observer not supported)
+  private setupScrollListener(): void {
+    const scroll$ = fromEvent(window, 'scroll');
+    const resize$ = fromEvent(window, 'resize');
+
+    merge(scroll$, resize$)
+      .pipe(
+        startWith(null),
+        throttleTime(16), // ~60fps
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe(() => {
-        this.saveScrollPos();
-        this.checkVisibility();
-      });
-    this.subscriptionResize = fromEvent(document, 'resize').pipe(map(event => event === null))
-      .subscribe(() => {
-        this.saveDimensions();
-        this.checkVisibility();
+        if (!this.hasEmitted && this.isElementVisible()) {
+          this.appear.emit();
+          this.hasEmitted = true;
+        }
       });
   }
-  unsubscribe() {
-    if (this.subscriptionScroll) {
-      this.subscriptionScroll.unsubscribe();
-    }
-    if (this.subscriptionResize) {
-      this.subscriptionResize.unsubscribe();
-    }
-  }
 
-  ngAfterViewInit() {
-    this.subscribe();
+  private isElementVisible(): boolean {
+    const rect = this.element.nativeElement.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    
+    return rect.top < windowHeight && rect.bottom > 0;
   }
-  ngOnDestroy() {
-    this.unsubscribe();
-  }
-
 }

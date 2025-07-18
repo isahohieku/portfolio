@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { HeaderComponent } from '../../layout/header/header.component';
+import { Component } from '@angular/core';
 import { AboutJumbotronComponent } from '../../components/about/about-jumbotron/about-jumbotron.component';
 
 @Component({
@@ -7,13 +6,8 @@ import { AboutJumbotronComponent } from '../../components/about/about-jumbotron/
     templateUrl: './about.component.html',
     styleUrls: ['./about.component.scss'],
     standalone: true,
-    imports: [HeaderComponent, AboutJumbotronComponent]
+    imports: [AboutJumbotronComponent]
 })
-export class AboutComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+export class AboutComponent {
 
 }

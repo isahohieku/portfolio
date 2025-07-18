@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -8,15 +8,10 @@ import { NgClass } from '@angular/common';
     standalone: true,
     imports: [NgClass]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
   hamburgerState = false;
   openSideMenu = false;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   toggleHamburger() {
     this.hamburgerState = !this.hamburgerState;
@@ -25,5 +20,4 @@ export class HeaderComponent implements OnInit {
   setOpenSideMenu() {
     this.openSideMenu = !this.openSideMenu;
   }
-
 }

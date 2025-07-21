@@ -1,90 +1,31 @@
-.bg {
-    top: 0;
-    left: 0;
-    width: 100%;
-    transition: width 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.title {
-    left: 3rem;
-    top: 0rem;
-    opacity: 0;
-    font-size: 2rem;
-    color: white;
-    transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), top 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.caption {
-    left: 0rem;
-    top: 150%;
-    color: white;
-    transition: top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    z-index: 1;
-}
-
-img {
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transition-delay: 0.2s;
-}
-
-.logo {
-    z-index: 1;
-}
-
-.visit {
-    border: 1px solid white;
-    color: white;
-    border-radius: 0px;
-    width: 10rem;
-
+// Complex hover animations that require custom CSS
+.project-wrapper {
+    @apply max-w-75rem mx-auto;
     &:hover {
-        background-color: white;
-        color: black;
-    }
-}
-
-.wrapper {
-    height: 40rem;
-    background-color: #191919;
-    overflow: hidden;
-    transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-    &:hover {
-        box-shadow: 0 0 20px rgba(29, 29, 29, 0.3);
-        // border-radius: 5px;
-        transform: scale(1.1);
-        z-index: 100;
-
-        img {
-            transform: scale(1.1);
-        }
-
-        .title {
+        .project-title {
             opacity: 1;
             top: 3rem;
         }
 
-        .caption {
+        .project-caption {
             top: 70%;
+        }
+
+        img {
+            transform: scale(1.1);
         }
     }
 }
 
 @media (max-width: 576px) {
-    .wrapper {
-        height: 30rem;
-
-        img {
-            height: 40px;
-        }
-
-        .title {
-            top: 2rem;
-            font-size: 1.4rem;
+    .project-wrapper {
+        .project-title {
+            top: 1.25rem;
+            font-size: 0.75rem;
             opacity: 1;
         }
 
-        .caption {
+        .project-caption {
             top: 65%;
             width: 100%;
         }

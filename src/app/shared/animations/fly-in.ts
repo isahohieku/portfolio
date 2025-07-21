@@ -1,10 +1,13 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 export const flyIn = trigger('flyIn', [
-    state('out', style({ transform: 'translateY(100px)', opacity: 0 })),
+    state('out', style({ transform: 'translateY(150px)', opacity: 0 })),
     state('in', style({ transform: 'translateY(0)', opacity: 1 })),
     transition('out => in', [
-      animate(500)
+      animate('800ms ease-out')
+    ]),
+    transition('void => out', [
+      style({ transform: 'translateY(150px)', opacity: 0 })
     ])
   ]);
 

@@ -1,21 +1,26 @@
-<header class="d-flex align-items-center mt-5 mx-auto">
-    <a class="favicon text-playfair text-uppercase" href="/">io</a>
+<header class="flex items-center mt-12 mx-auto px-12 sm:px-5">
+    <a class="font-playfair uppercase text-[2.5rem] drop-shadow-[0_5px_3px_rgba(0,0,0,0.35)]" href="/">io</a>
 
-    <button class="btn ml-auto hambuger-btn" [ngClass]="{'position-fixed hamburger-shift-right': hamburgerState}" (click)="toggleHamburger()">
+    <button class="ml-auto p-0 h-6 w-8 relative z-50 hambuger-btn"
+            [ngClass]="{'fixed right-12 sm:right-5': hamburgerState}"
+            (click)="toggleHamburger()">
         <span class="hamburger-menu" [ngClass]="{'hamburger-close': hamburgerState}"></span>
     </button>
 </header>
 
-<div class="sidemenu-wrapper" [ngClass]="{'open': hamburgerState}">
-    <div class="sidemenu position-absolute" [ngClass]="{'open': hamburgerState}">
-        <ul>
-            <li>
-                <a href="/about">About Me</a>
+<!-- Side menu overlay -->
+<div class="sidemenu-wrapper fixed inset-0 bg-black bg-opacity-10 transition-opacity duration-300 ease-in"
+     [ngClass]="{'opacity-100 z-25': hamburgerState, 'opacity-0 -z-50 overflow-hidden': !hamburgerState}">
+    <!-- Side menu -->
+    <div class="sidemenu absolute top-0 w-75 h-screen bg-white shadow-menu transition-all duration-200 ease-in"
+         [ngClass]="{'right-0': hamburgerState, '-right-96': !hamburgerState}">
+        <ul class="mt-150 list-none">
+            <li class="text-right pr-12 mt-8">
+                <a href="/about" class="text-gray-600 text-6xl font-lato">About Me</a>
             </li>
-            <li>
-                <a href="/works">My Works</a>
+            <li class="text-right pr-12 mt-8">
+                <a href="/works" class="text-gray-600 text-6xl font-lato">My Works</a>
             </li>
         </ul>
-    
     </div>
 </div>

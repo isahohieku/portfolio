@@ -1,18 +1,29 @@
-<div class="wrapper position-relative">
+<div class="project-wrapper relative w-25rem md:h-25rem bg-project-bg overflow-hidden transition-all duration-100 ease-out hover:shadow-custom hover:scale-110 hover:z-50 sm:h-30rem">
     <!-- Background -->
-    <div class="bg h-100 position-absolute" [ngStyle]="{'backgroundColor': project?.bgColor}"></div>
-    <!-- Project title -->
-    <h3 class="title text-lato font-weight-light text-capitalize position-absolute">{{project?.title}}</h3>
-    <!-- Logo -->
-    <div class="d-flex justify-content-center align-items-center h-100 logo position-relative">
-        <div>
-            <img [src]="project?.logo" loading="lazy" alt="logo" height="55" />
-        </div>
-    </div>
-    <!-- Caption -->
-    <div class="caption position-absolute px-5">
-        <h4 class="font-weight-light text-small">{{project?.description}}</h4>
+    <div class="project-bg h-full absolute top-0 left-0 w-full transition-all duration-150 ease-out"
+         [ngStyle]="{'backgroundColor': project?.bgColor}"></div>
 
-        <a [href]="project?.link" target="_blank" class="btn visit mousePointer text-small py-3 mt-3 mt-md-5">Visit</a>
+    <!-- Project title -->
+    <h3 class="project-title font-lato font-light capitalize absolute left-12 md:top-0 md:opacity-0 md:text-2xl text-white transition-all duration-300 ease-out hover:opacity-100 hover:top-12 sm:top-5 sm:text-xs sm:opacity-100">
+        {{project?.title}}
+    </h3>
+
+    <!-- Logo -->
+    <div class="flex justify-center items-center h-full relative">
+        <img [src]="project?.logo"
+             loading="lazy"
+             alt="logo"
+             class="h-14 transition-transform duration-500 ease-out delay-200 hover:scale-110 sm:h-10" />
+    </div>
+
+    <!-- Caption -->
+    <div class="project-caption absolute left-0 md:top-[150%] px-5 text-white transition-all duration-500 ease-out z-10 hover:top-3/4 sm:top-2/3 sm:w-full">
+        <h4 class="font-lato font-light text-sm">{{project?.description}}</h4>
+
+        <a [href]="project?.link"
+           target="_blank"
+           class="inline-flex items-center justify-center px-4 py-3 border border-white text-white text-sm w-40 mt-3 md:mt-5 cursor-pointer hover:bg-white hover:text-black transition-colors duration-300">
+            Visit
+        </a>
     </div>
 </div>

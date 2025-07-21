@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MainJumbotronComponent } from '../../components/landing/main-jumbotron/main-jumbotron.component';
+import { Jumbotron } from '../../shared/jumbotron/jumbotron';
 import { AboutSectionComponent } from '../../components/landing/about-section/about-section.component';
 import { ProjectsSectionComponent } from '../../components/landing/projects-section/projects-section.component';
 
@@ -7,6 +7,6 @@ import { ProjectsSectionComponent } from '../../components/landing/projects-sect
     selector: 'app-landing',
     templateUrl: './landing.component.html',
     standalone: true,
-    imports: [MainJumbotronComponent, AboutSectionComponent, ProjectsSectionComponent]
+    imports: [Jumbotron, AboutSectionComponent, ProjectsSectionComponent]
 })
 export class LandingComponent {}

@@ -1,0 +1,51 @@
+<div class="py-8 border-b border-gray-border last:border-b-0 sm:py-5">
+  <div class="flex flex-col md:flex-row">
+    <!-- Left Column - Duration (1/6) -->
+    <div class="w-full md:w-1/6 flex items-center justify-center md:justify-start mb-4 md:mb-0">
+      <span class="text-primary-dark font-semibold text-center">{{experience.duration}}</span>
+    </div>
+
+    <!-- Right Column - Content (5/6) -->
+    <div class="w-full md:w-5/6 bg-gray-50 md:p-16 sm:p-4">
+      <!-- Role -->
+      <h3 class="text-lg font-lato font-semibold sm:text-base">{{experience.role}}</h3>
+
+      <!-- Company Name -->
+      <a [href]="experience.companyLink" target="_blank"
+        class="font-lato text-primary-dark mb-4"
+        [ngClass]="'text-' + (experience?.companyColor || '')">
+        {{experience.company}} 
+        <fa-icon [icon]="faArrowUpRight" class="text-gray-light ml-2"></fa-icon>
+      </a>
+
+      <!-- Overview -->
+      <p class="mb-6 text-gray-light leading-relaxed">{{experience.overview}}</p>
+
+      <!-- Key Accomplishments -->
+      <div class="mb-6">
+        <!-- <h5 class="font-lato text-xl font-medium mb-4 text-primary-dark sm:text-sm">Key Accomplishments</h5> -->
+        <ul class="list-none pl-0">
+          @for (accomplishment of experience.accomplishments; track accomplishment) {
+          <li class="mb-2 pl-6 relative text-gray-light leading-relaxed">
+            <fa-icon [icon]="faCircleCheck" class="text-green-600 absolute left-0 top-1"></fa-icon>
+            {{accomplishment}}
+          </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Technologies -->
+      <div class="flex flex-wrap gap-3">
+        @for (tech of experience.technologies; track tech) {
+        <span
+          class="inline-flex items-center md:px-5 md:py-2 bg-white border rounded-full text-primary-dark cursor-pointer hover:bg-amber-300 hover:border-amber-bg-amber-300 transform transition-all duration-300 sm:text-xs sm:px-2 sm:py-1">
+          @if (tech.icon) {
+          <img [src]="tech.icon" alt="{{tech.name}}" class="h-4 mr-2" />
+          }
+          {{tech.name}}
+        </span>
+        }
+      </div>
+    </div>
+  </div>
+</div>

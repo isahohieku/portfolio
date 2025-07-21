@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ProjectCardComponent } from '../../../shared/project-card/project-card.component';
 import { RouterLink } from '@angular/router';
 
@@ -12,17 +12,15 @@ interface Project {
 }
 
 @Component({
-    selector: 'app-projects-section',
-    templateUrl: './projects-section.component.html',
-    styleUrls: ['./projects-section.component.scss'],
-    standalone: true,
-    imports: [NgFor, ProjectCardComponent, RouterLink]
+  selector: 'app-projects-section',
+  templateUrl: './projects-section.component.html',
+  standalone: true,
+  imports: [CommonModule, ProjectCardComponent, RouterLink]
 })
 export class ProjectsSectionComponent {
 
   projects: Project[] = [
     {
-      // tslint:disable-next-line:max-line-length
       logo: 'https://play-lh.googleusercontent.com/HYtLnaZxaGUfnxU-RcxSTPoMe7Jdgk-zpZ55MxY7X_1WJ_0kVbpGG08H207wxAeqYENc=w600-h300-pc0xffffff-pd',
       bgColor: '#35b8ff',
       title: 'Talk360',
@@ -44,7 +42,6 @@ export class ProjectsSectionComponent {
       description: 'Hobeei is a Greentech solution created to enable people recycle their unwanted and preowned items.'
     },
     {
-      // tslint:disable-next-line:max-line-length
       logo: 'https://media-exp1.licdn.com/dms/image/C4E0BAQH_rV2fbWslrw/company-logo_200_200/0/1626169628807?e=1678320000&v=beta&t=AXBEbidIgzjAiOqGXAVduNwmnOKDlxJ1B7vgP3Dc-wU',
       bgColor: '#49b7ac',
       title: 'Desrio',

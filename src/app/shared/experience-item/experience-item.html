@@ -15,11 +15,11 @@
         class="font-lato text-primary-dark mb-4"
         [ngClass]="'text-' + (experience?.companyColor || '')">
         {{experience.company}} 
-        <fa-icon [icon]="faArrowUpRight" class="text-gray-light ml-2"></fa-icon>
+        <i class="pi pi-arrow-up-right text-gray-light" style="font-size: 0.75rem;"></i>
       </a>
 
       <!-- Overview -->
-      <p class="mb-6 text-gray-light leading-relaxed">{{experience.overview}}</p>
+      <p class="mb-6 mt-5 text-gray-light leading-relaxed">{{experience.overview}}</p>
 
       <!-- Key Accomplishments -->
       <div class="mb-6">
@@ -27,7 +27,7 @@
         <ul class="list-none pl-0">
           @for (accomplishment of experience.accomplishments; track accomplishment) {
           <li class="mb-2 pl-6 relative text-gray-light leading-relaxed">
-            <fa-icon [icon]="faCircleCheck" class="text-green-600 absolute left-0 top-1"></fa-icon>
+            <i class="pi pi-check-circle text-green-600 absolute left-0 top-1"></i>
             {{accomplishment}}
           </li>
           }

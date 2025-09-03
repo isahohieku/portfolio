@@ -1,6 +1,5 @@
 // Complex hover animations that require custom CSS
 .project-wrapper {
-    @apply max-w-75rem mx-auto;
     &:hover {
         .project-title {
             opacity: 1;

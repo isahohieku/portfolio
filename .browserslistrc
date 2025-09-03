@@ -5,8 +5,12 @@
 # You can see what browsers were selected by your queries by running:
 #   npx browserslist
 
-> 1%
-last 2 versions
+# Angular supported browsers - more conservative approach
+last 1 Chrome version
+last 1 Firefox version
+last 2 Edge major versions
+last 2 Safari major versions
+last 2 iOS major versions
 Firefox ESR
 not dead
 not IE 9-11 # For IE 9-11 support, remove 'not'.
@@ -14,3 +18,6 @@ not op_mini all
 not kaios <= 3.1
 not and_qq <= 14.9
 not and_uc <= 15.5
+not android <= 4.4.3
+not samsung <= 4
+not opera <= 80

@@ -1,0 +1,94 @@
+<p-card class="max-w-2xl mx-auto shadow-lg">
+  <ng-template pTemplate="header">
+    <div class="bg-gradient-to-r from-primary-yellow to-yellow-400 p-6">
+      <h2 class="font-playfair text-2xl font-semibold text-primary-dark mb-2">Get In Touch</h2>
+      <p class="text-primary-dark opacity-80">I'd love to hear from you. Send me a message!</p>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Name Field -->
+      <div class="field">
+        <label for="name" class="block font-lato font-semibold text-primary-dark mb-2">
+          Name <span class="text-red-500">*</span>
+        </label>
+        <input
+          pInputText
+          id="name"
+          formControlName="name"
+          placeholder="Your full name"
+          class="w-full"
+          [class.ng-invalid]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched" />
+        <small class="text-red-500" *ngIf="getFieldError('name')">
+          {{getFieldError('name')}}
+        </small>
+      </div>
+
+      <!-- Email Field -->
+      <div class="field">
+        <label for="email" class="block font-lato font-semibold text-primary-dark mb-2">
+          Email <span class="text-red-500">*</span>
+        </label>
+        <input
+          pInputText
+          id="email"
+          formControlName="email"
+          placeholder="your.email@example.com"
+          class="w-full"
+          [class.ng-invalid]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched" />
+        <small class="text-red-500" *ngIf="getFieldError('email')">
+          {{getFieldError('email')}}
+        </small>
+      </div>
+
+      <!-- Subject Field -->
+      <div class="field">
+        <label for="subject" class="block font-lato font-semibold text-primary-dark mb-2">
+          Subject <span class="text-red-500">*</span>
+        </label>
+        <input
+          pInputText
+          id="subject"
+          formControlName="subject"
+          placeholder="What's this about?"
+          class="w-full"
+          [class.ng-invalid]="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched" />
+        <small class="text-red-500" *ngIf="getFieldError('subject')">
+          {{getFieldError('subject')}}
+        </small>
+      </div>
+
+      <!-- Message Field -->
+      <div class="field">
+        <label for="message" class="block font-lato font-semibold text-primary-dark mb-2">
+          Message <span class="text-red-500">*</span>
+        </label>
+        <textarea
+          pInputTextarea
+          id="message"
+          formControlName="message"
+          placeholder="Tell me more about your project or inquiry..."
+          rows="6"
+          class="w-full resize-none"
+          [class.ng-invalid]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched">
+        </textarea>
+        <small class="text-red-500" *ngIf="getFieldError('message')">
+          {{getFieldError('message')}}
+        </small>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end pt-4">
+        <p-button
+          type="submit"
+          label="Send Message"
+          icon="pi pi-send"
+          [loading]="isSubmitting"
+          [disabled]="contactForm.invalid"
+          class="min-w-[150px]">
+        </p-button>
+      </div>
+    </form>
+  </ng-template>
+</p-card>

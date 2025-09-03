@@ -1,0 +1,73 @@
+// Projects page custom styles following the portfolio's design patterns
+
+.project-item {
+  @apply transition-all duration-300 ease-out;
+  
+  &:hover {
+    transform: translateY(-4px);
+    
+    .project-info h3 {
+      @apply text-primary-yellow;
+    }
+  }
+}
+
+// Custom dialog styling to match portfolio theme
+:host ::ng-deep {
+  .p-dialog {
+    @apply shadow-custom;
+    border-radius: 12px;
+    
+    .p-dialog-header {
+      @apply bg-gray-50 border-b border-gray-200;
+      border-radius: 12px 12px 0 0;
+      padding: 1.5rem;
+      
+      .p-dialog-title {
+        @apply font-playfair text-primary-dark;
+      }
+    }
+    
+    .p-dialog-content {
+      padding: 2rem;
+    }
+    
+    .p-dialog-footer {
+      @apply bg-gray-50 border-t border-gray-200;
+      border-radius: 0 0 12px 12px;
+      padding: 1.5rem;
+    }
+  }
+  
+  // Galleria customization
+  .p-galleria {
+    .p-galleria-item-wrapper {
+      @apply bg-white rounded-lg;
+    }
+    
+    .p-galleria-thumbnail-wrapper {
+      @apply bg-gray-50;
+    }
+    
+    .p-galleria-thumbnail-item {
+      @apply transition-all duration-300;
+      
+      &:hover {
+        @apply scale-105;
+      }
+      
+      &.p-galleria-thumbnail-item-current {
+        @apply ring-2 ring-primary-yellow;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .project-item {
+    &:hover {
+      transform: none;
+    }
+  }
+}

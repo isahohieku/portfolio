@@ -11,6 +11,14 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent)
   },
   {
+    path: 'works',
+    loadComponent: () => import('./pages/projects/projects.component').then(m => m.ProjectsComponent)
+  },
+  {
+    path: 'projects',
+    redirectTo: 'works'
+  },
+  {
     path: 'under-construction',
     loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent)
   },

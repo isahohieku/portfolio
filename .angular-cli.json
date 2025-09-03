@@ -1,0 +1,13 @@
+{
+  "defaults": {
+    "serve": {
+      "hmr": true,
+      "liveReload": true,
+      "watch": true,
+      "poll": 1000
+    },
+    "build": {
+      "preserveSymlinks": true
+    }
+  }
+}

@@ -68,11 +68,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "portfolio:build"
+            "buildTarget": "portfolio:build",
+            "hmr": true,
+            "liveReload": true,
+            "watch": true,
+            "poll": 1000,
+            "host": "localhost",
+            "port": 4200,
+            "open": false
           },
           "configurations": {
             "production": {
-              "buildTarget": "portfolio:build:production"
+              "buildTarget": "portfolio:build:production",
+              "hmr": false
+            },
+            "hmr": {
+              "buildTarget": "portfolio:build",
+              "hmr": true,
+              "liveReload": true
             }
           }
         },

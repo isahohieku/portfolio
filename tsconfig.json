@@ -19,10 +19,16 @@
       "dom"
     ],
     "useDefineForClassFields": false,
-    "strict": true
+    "strict": true,
+    "skipLibCheck": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
   },
   "angularCompilerOptions": {
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
+    "fullTemplateTypeCheck": false,
+    "strictInjectionParameters": true,
+    "enableIvy": true,
+    "preserveWhitespaces": false,
+    "strictTemplates": false
   }
 }

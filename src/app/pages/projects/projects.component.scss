@@ -1,52 +1,117 @@
-// Projects page custom styles following the portfolio's design patterns
+// Works page styles matching the landing page's design language
 
-.project-item {
-  @apply transition-all duration-300 ease-out;
-  
+// Card entrance animation
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.project-card-wrapper {
+  animation: cardFadeIn 0.6s ease-out both;
+
   &:hover {
     transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     
-    .project-info h3 {
-      @apply text-primary-yellow;
+    .project-title {
+      opacity: 1;
+      top: 2rem;
+    }
+
+    .project-caption {
+      transform: translateY(0);
+    }
+
+    .project-number {
+      opacity: 0.15;
+      transform: scale(1.1);
+    }
+
+    img {
+      transform: scale(1.1);
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
     }
   }
 }
 
-// Custom dialog styling to match portfolio theme
+// Mobile: always show title, keep caption hover
+@media (max-width: 768px) {
+  .project-card-wrapper {
+    .project-title {
+      top: 1.25rem;
+      font-size: 0.75rem;
+      opacity: 1;
+    }
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// Dark-themed dialog styling
 :host ::ng-deep {
-  .p-dialog {
-    @apply shadow-custom;
-    border-radius: 12px;
-    
-    .p-dialog-header {
-      @apply bg-gray-50 border-b border-gray-200;
-      border-radius: 12px 12px 0 0;
-      padding: 1.5rem;
+  .project-dialog-dark {
+    &.p-dialog {
+      background: #1b1b1b;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 0;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
       
-      .p-dialog-title {
-        @apply font-playfair text-primary-dark;
+      .p-dialog-header {
+        background: #1b1b1b;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 0;
+        padding: 1.5rem;
+        
+        .p-dialog-header-icon {
+          color: rgba(255, 255, 255, 0.4);
+          
+          &:hover {
+            color: #fbd700;
+            background: rgba(255, 255, 255, 0.05);
+          }
+        }
+      }
+      
+      .p-dialog-content {
+        background: #1b1b1b;
+        padding: 1.5rem;
+      }
+      
+      .p-dialog-footer {
+        background: #151515;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 0;
+        padding: 1.5rem;
       }
     }
-    
-    .p-dialog-content {
-      padding: 2rem;
-    }
-    
-    .p-dialog-footer {
-      @apply bg-gray-50 border-t border-gray-200;
-      border-radius: 0 0 12px 12px;
-      padding: 1.5rem;
+  }
+  
+  // Gallery thumbnails in dark dialog
+  .gallery-thumb {
+    &:hover {
+      img {
+        opacity: 1;
+      }
     }
   }
   
   // Galleria customization
   .p-galleria {
     .p-galleria-item-wrapper {
-      @apply bg-white rounded-lg;
+      background: #111;
+      border-radius: 0;
     }
     
     .p-galleria-thumbnail-wrapper {
-      @apply bg-gray-50;
+      background: #1b1b1b;
     }
     
     .p-galleria-thumbnail-item {
@@ -57,17 +122,9 @@
       }
       
       &.p-galleria-thumbnail-item-current {
-        @apply ring-2 ring-primary-yellow;
+        outline: 2px solid #fbd700;
+        outline-offset: 2px;
       }
-    }
-  }
-}
-
-// Responsive adjustments
-@media (max-width: 768px) {
-  .project-item {
-    &:hover {
-      transform: none;
     }
   }
 }

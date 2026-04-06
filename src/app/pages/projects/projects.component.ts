@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -21,6 +21,8 @@ export interface ProjectData {
   portfolio_url?: string;
   images: ProjectImage[];
   links: string[];
+  bgColor: string;
+  logo?: string;
 }
 
 @Component({
@@ -31,8 +33,10 @@ export interface ProjectData {
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
+  @ViewChild('galleria') galleria: any;
   selectedProject: ProjectData | null = null;
   displayDialog = false;
+  activeIndex = 0;
   
   projects: ProjectData[] = [
     {
@@ -41,6 +45,8 @@ export class ProjectsComponent implements OnInit {
       position: 1,
       description: "A Greentech donation platform that enables people to recycle their unwanted and preowned items. Built with modern web technologies to promote sustainability and community sharing.",
       portfolio_url: "https://www.hobeei.com/",
+      bgColor: "#191919",
+      logo: "https://www.hobeei.com/assets/images/logo_new.svg",
       images: [
         {
           id: 7038,
@@ -75,6 +81,8 @@ export class ProjectsComponent implements OnInit {
       position: 2,
       description: "Educational technology platform providing comprehensive solutions for schools and payment processing. Features include student management, fee collection, and administrative tools.",
       portfolio_url: "https://applypay.ng/",
+      bgColor: "#538fb7",
+      logo: "/assets/img/applypay.svg",
       images: [
         {
           id: 7042,
@@ -121,6 +129,8 @@ export class ProjectsComponent implements OnInit {
       position: 3,
       description: "Comprehensive payment platform enabling international calling and mobile top-up services. Features secure payment processing, user management, and real-time transaction monitoring.",
       portfolio_url: "https://talk360.com/",
+      bgColor: "#35b8ff",
+      logo: "https://play-lh.googleusercontent.com/HYtLnaZxaGUfnxU-RcxSTPoMe7Jdgk-zpZ55MxY7X_1WJ_0kVbpGG08H207wxAeqYENc=w600-h300-pc0xffffff-pd",
       images: [
         {
           id: 7047,
@@ -161,6 +171,8 @@ export class ProjectsComponent implements OnInit {
       position: 4,
       description: "Mobile calling application providing affordable international calls with crystal clear voice quality. Features include contact management, call history, and credit top-up functionality.",
       portfolio_url: "https://talk360.com/",
+      bgColor: "#2a9fd6",
+      logo: "https://play-lh.googleusercontent.com/HYtLnaZxaGUfnxU-RcxSTPoMe7Jdgk-zpZ55MxY7X_1WJ_0kVbpGG08H207wxAeqYENc=w600-h300-pc0xffffff-pd",
       images: [
         {
           id: 7053,

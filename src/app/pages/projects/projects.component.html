@@ -1,67 +1,91 @@
-<!-- Page Header -->
-<div class="md:max-w-75rem mx-auto pt-20 pb-12 px-5">
-  <div class="text-center mb-16">
-    <h1 class="text-5xl md:text-9xl font-medium font-playfair text-primary-dark mb-4">
-      My Projects
-    </h1>
-    <h4 class="font-lato text-gray-custom text-lg">
-      A showcase of my development work and creative solutions
-    </h4>
+<!-- Page Hero -->
+<section class="works-hero bg-dark-bg relative overflow-hidden"
+         style="background-image: radial-gradient(circle farthest-corner at 100% -30%, #0e0e0e, rgba(14,14,14,0) 56%)">
+  <div class="md:max-w-75rem mx-auto px-5 py-32 md:py-40 relative z-10">
+    <div class="flex flex-col gap-4 md:gap-6">
+      <!-- Yellow accent bar -->
+      <div class="w-16 h-1 bg-primary-yellow mb-2"></div>
+      <h1 class="font-normal text-[2.75rem] leading-[1.1] md:text-[clamp(4.5rem,8vw,7.5rem)] lg:text-9xl tracking-tight text-white">
+        My Works.
+      </h1>
+      <h4 class="font-lato text-gray-custom uppercase tracking-[0.3em] text-sm md:text-lg lg:text-xl font-light opacity-80">
+        Selected Projects
+      </h4>
+    </div>
+  </div>
+
+  <!-- Decorative geometric accent -->
+  <div class="absolute bottom-0 right-0 w-1/3 h-24 bg-primary-yellow opacity-10"></div>
+</section>
+
+<!-- Dark interstitial -->
+<div class="bg-dark-bg py-12 md:py-16 border-t border-gray-800">
+  <div class="md:max-w-75rem mx-auto px-5">
+    <p class="font-lato text-center text-gray-custom font-light md:text-lg max-w-2xl mx-auto leading-relaxed">
+      A curated collection of projects I've contributed to — from fintech to edtech, greentech to communication platforms.
+    </p>
   </div>
 </div>
 
 <!-- Projects Grid -->
-<div class="md:max-w-75rem mx-auto px-5 pb-20">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-    @for (project of projects; track project.id) {
-    <div class="project-item group cursor-pointer" (click)="openProjectDialog(project)">
-      <!-- Project Image -->
-      <div class="relative overflow-hidden rounded-lg shadow-custom mb-6 aspect-video bg-gray-100">
-        <img 
-          [src]="getProjectThumbnail(project)" 
-          [alt]="project.title"
-          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          loading="lazy" />
-        
-        <!-- Overlay -->
-        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
-          <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <i class="pi pi-eye text-white text-3xl"></i>
-          </div>
-        </div>
-        
-        <!-- Project Number -->
-        <div class="absolute top-4 left-4 bg-primary-yellow text-primary-dark px-3 py-1 rounded-full font-lato font-semibold text-sm">
-          {{project.position}}
-        </div>
-      </div>
+<div class="md:max-w-75rem mx-auto px-5 py-20 md:py-28">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+    @for (project of projects; track project.id; let i = $index) {
+    <div class="project-card-wrapper relative w-full h-80 md:h-96 overflow-hidden cursor-pointer group"
+         [style.animation-delay]="(i * 100) + 'ms'"
+         (click)="openProjectDialog(project)">
       
-      <!-- Project Info -->
-      <div class="project-info">
-        <h3 class="text-2xl font-playfair font-semibold text-primary-dark mb-3 group-hover:text-primary-yellow transition-colors duration-300">
-          {{project.title}}
-        </h3>
-        
-        <p class="text-gray-custom leading-relaxed mb-4 font-lato">
+      <!-- Color block background -->
+      <div class="absolute inset-0 transition-all duration-500 ease-out"
+           [ngStyle]="{'backgroundColor': project.bgColor}">
+        <div class="absolute inset-0 bg-gradient-to-tr from-black/15 to-transparent opacity-50"></div>
+      </div>
+
+      <!-- Project number -->
+      <span class="project-number absolute top-6 left-8 font-lato font-light text-white/30 text-7xl md:text-8xl transition-all duration-500 ease-out group-hover:text-white/15 group-hover:scale-110 z-10 select-none">
+        0{{project.position}}
+      </span>
+
+      <!-- Title overlay (appears on hover from top) -->
+      <h3 class="project-title font-lato font-light uppercase absolute left-8 top-14 opacity-0 md:text-xl text-white transition-all duration-500 ease-out group-hover:opacity-100 group-hover:top-8 tracking-[0.2em] z-20">
+        {{project.title}}
+      </h3>
+
+      <!-- Logo centered -->
+      <div class="flex justify-center items-center h-full relative z-10 px-12">
+        @if (project.logo) {
+        <img [src]="project.logo"
+             loading="lazy"
+             [alt]="project.title + ' logo'"
+             class="h-14 md:h-16 transition-all duration-700 ease-out group-hover:scale-110 group-hover:drop-shadow-lg" />
+        } @else {
+        <img [src]="getProjectThumbnail(project)"
+             loading="lazy"
+             [alt]="project.title"
+             class="h-14 md:h-16 transition-all duration-700 ease-out group-hover:scale-110 group-hover:drop-shadow-lg object-contain" />
+        }
+      </div>
+
+      <!-- Caption (slides up from bottom on hover) -->
+      <div class="project-caption absolute left-0 bottom-0 w-full p-8 text-white translate-y-full transition-all duration-500 ease-out z-20 group-hover:translate-y-0 bg-gradient-to-t from-black/80 to-transparent">
+        <h4 class="font-lato font-light text-sm leading-relaxed mb-4 line-clamp-2">
           {{project.description}}
-        </p>
-        
-        <!-- Action Buttons -->
+        </h4>
+
         <div class="flex gap-3">
-          <button 
-            class="inline-flex items-center px-4 py-2 bg-primary-yellow text-primary-dark font-lato font-medium rounded hover:bg-yellow-500 transition-colors duration-300"
+          <button
+            class="inline-flex items-center justify-center px-6 py-2 border border-white text-white text-xs uppercase tracking-widest cursor-pointer hover:bg-white hover:text-black transition-all duration-300"
             (click)="openProjectDialog(project); $event.stopPropagation()">
-            <i class="pi pi-eye mr-2"></i>
             View Details
           </button>
-          
+
           @if (project.portfolio_url) {
-          <button 
-            class="inline-flex items-center px-4 py-2 border border-primary-dark text-primary-dark font-lato font-medium rounded hover:bg-primary-dark hover:text-white transition-colors duration-300"
-            (click)="visitProject(project.portfolio_url); $event.stopPropagation()">
-            <i class="pi pi-external-link mr-2"></i>
+          <a [href]="project.portfolio_url"
+             target="_blank"
+             class="inline-flex items-center justify-center px-6 py-2 border border-white/50 text-white/70 text-xs uppercase tracking-widest cursor-pointer hover:bg-white hover:text-black hover:border-white transition-all duration-300"
+             (click)="$event.stopPropagation()">
             Visit Site
-          </button>
+          </a>
           }
         </div>
       </div>
@@ -77,16 +101,18 @@
   [closable]="true"
   [draggable]="false"
   [resizable]="false"
-  styleClass="w-11/12 md:w-4/5 lg:w-3/4 max-w-6xl"
+  styleClass="w-11/12 md:w-4/5 lg:w-3/4 max-w-6xl project-dialog-dark"
   *ngIf="selectedProject">
   
   <ng-template pTemplate="header">
-    <div class="flex items-center justify-between w-full">
+    <div class="flex items-center gap-4 w-full">
+      <!-- Yellow accent bar -->
+      <div class="w-1 h-8 bg-primary-yellow flex-shrink-0"></div>
       <div class="flex items-center gap-3">
-        <div class="bg-primary-yellow text-primary-dark px-3 py-1 rounded-full font-lato font-semibold text-sm">
-          {{selectedProject.position}}
-        </div>
-        <h2 class="font-playfair text-2xl font-semibold text-primary-dark">
+        <span class="font-lato font-light text-white/30 text-3xl select-none">
+          0{{selectedProject.position}}
+        </span>
+        <h2 class="font-playfair text-2xl font-semibold text-white">
           {{selectedProject.title}}
         </h2>
       </div>
@@ -94,20 +120,39 @@
   </ng-template>
   
   <ng-template pTemplate="content">
-    <div class="space-y-6">
+    <!-- Project color band -->
+    <div class="h-1.5 -mx-6 -mt-6 mb-6" [ngStyle]="{'backgroundColor': selectedProject.bgColor}"></div>
+
+    <div class="space-y-8">
       <!-- Project Description -->
       @if (selectedProject.description) {
       <div>
-        <h3 class="font-lato text-lg font-semibold text-primary-dark mb-3">About This Project</h3>
-        <p class="text-gray-custom leading-relaxed font-lato">{{selectedProject.description}}</p>
+        <h3 class="font-lato text-xs font-light uppercase tracking-[0.2em] text-primary-yellow mb-3">About This Project</h3>
+        <p class="text-gray-custom leading-relaxed font-lato text-base">{{selectedProject.description}}</p>
       </div>
       }
       
       <!-- Image Gallery -->
       @if (selectedProject.images.length > 0) {
       <div>
-        <h3 class="font-lato text-lg font-semibold text-primary-dark mb-4">Project Gallery</h3>
+        <h3 class="font-lato text-xs font-light uppercase tracking-[0.2em] text-primary-yellow mb-4">Project Gallery</h3>
+        
+        <!-- Gallery thumbnail grid -->
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+          @for (image of selectedProject.images; track image.id; let imgIdx = $index) {
+          <div class="gallery-thumb relative aspect-video overflow-hidden cursor-pointer group/thumb bg-black/20"
+               (click)="activeIndex = imgIdx; galleria?.show()">
+            <img [src]="image.imageUrl" 
+                 [alt]="image.imageName"
+                 class="w-full h-full object-cover transition-all duration-500 group-hover/thumb:scale-105 opacity-80 group-hover/thumb:opacity-100" />
+            <div class="absolute inset-0 border border-white/10 group-hover/thumb:border-primary-yellow/50 transition-colors duration-300"></div>
+          </div>
+          }
+        </div>
+
+        <!-- Hidden galleria for fullscreen -->
         <p-galleria 
+          #galleria
           [value]="getGalleryImages(selectedProject)" 
           [responsiveOptions]="[
             { breakpoint: '1024px', numVisible: 5 },
@@ -120,15 +165,17 @@
           [showItemNavigators]="true"
           [showThumbnails]="true"
           [showItemNavigatorsOnHover]="true"
-          [showIndicators]="true">
+          [showIndicators]="true"
+          [(activeIndex)]="activeIndex"
+          [visible]="false">
           
           <ng-template pTemplate="item" let-item>
-            <img [src]="item.previewImageSrc" [alt]="item.alt" class="w-full h-auto max-h-96 object-contain" />
+            <img [src]="item.previewImageSrc" [alt]="item.alt" class="w-full h-auto max-h-[80vh] object-contain" />
           </ng-template>
           
           <ng-template pTemplate="thumbnail" let-item>
             <div class="grid grid-nogutter justify-content-center">
-              <img [src]="item.thumbnailImageSrc" [alt]="item.alt" class="w-16 h-16 object-cover rounded" />
+              <img [src]="item.thumbnailImageSrc" [alt]="item.alt" class="w-16 h-16 object-cover" />
             </div>
           </ng-template>
         </p-galleria>
@@ -140,17 +187,16 @@
   <ng-template pTemplate="footer">
     <div class="flex gap-3 justify-end">
       <button 
-        class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 font-lato font-medium rounded hover:bg-gray-50 transition-colors duration-300"
+        class="inline-flex items-center px-6 py-2 border border-white/30 text-white/70 font-lato text-xs uppercase tracking-widest hover:bg-white hover:text-dark-bg transition-all duration-300"
         (click)="closeDialog()">
-        <i class="pi pi-times mr-2"></i>
         Close
       </button>
       
       @if (selectedProject.portfolio_url) {
       <button 
-        class="inline-flex items-center px-4 py-2 bg-primary-yellow text-primary-dark font-lato font-medium rounded hover:bg-yellow-500 transition-colors duration-300"
+        class="inline-flex items-center px-6 py-2 border border-primary-yellow text-primary-yellow font-lato text-xs uppercase tracking-widest hover:bg-primary-yellow hover:text-dark-bg transition-all duration-300"
         (click)="visitProject(selectedProject.portfolio_url)">
-        <i class="pi pi-external-link mr-2"></i>
+        <i class="pi pi-external-link mr-2 text-xs"></i>
         Visit Project
       </button>
       }

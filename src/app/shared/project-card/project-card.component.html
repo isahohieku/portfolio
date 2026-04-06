@@ -1,29 +1,31 @@
-<div class="project-wrapper relative w-full md:w-25rem md:h-25rem bg-project-bg overflow-hidden transition-all duration-100 ease-out hover:shadow-custom hover:scale-110 hover:z-50 h-30rem">
-    <!-- Background -->
-    <div class="project-bg h-full absolute top-0 left-0 w-full transition-all duration-150 ease-out"
-         [ngStyle]="{'backgroundColor': project?.bgColor}"></div>
+<div class="project-wrapper relative w-full md:w-25rem md:h-25rem bg-project-bg overflow-hidden transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:shadow-2xl hover:scale-[1.03] hover:-translate-y-2 hover:z-50 h-30rem group">
+    <!-- Background with subtle inner glow/shadow for contrast -->
+    <div class="project-bg h-full absolute top-0 left-0 w-full transition-all duration-500 ease-out"
+         [ngStyle]="{'backgroundColor': project?.bgColor}">
+         <div class="absolute inset-0 bg-gradient-to-tr from-black/10 to-transparent opacity-50"></div>
+    </div>
 
     <!-- Project title -->
-    <h3 class="project-title font-lato font-light capitalize absolute left-12 md:top-0 md:opacity-0 md:text-2xl text-white transition-all duration-300 ease-out hover:opacity-100 hover:top-12 sm:top-5 sm:text-xs sm:opacity-100">
+    <h3 class="project-title font-lato font-light uppercase absolute left-8 top-12 opacity-0 md:text-xl text-white transition-all duration-500 ease-out group-hover:opacity-100 group-hover:top-8 sm:top-5 sm:text-xs sm:opacity-100 tracking-[0.2em]">
         {{project?.title}}
     </h3>
 
     <!-- Logo -->
-    <div class="flex justify-center items-center h-full relative">
+    <div class="flex justify-center items-center h-full relative z-10 px-12">
         <img [src]="project?.logo"
              loading="lazy"
              alt="logo"
-             class="h-14 transition-transform duration-500 ease-out delay-200 hover:scale-110 sm:h-10" />
+             class="h-16 transition-all duration-700 ease-out group-hover:scale-110 group-hover:drop-shadow-lg sm:h-10" />
     </div>
 
     <!-- Caption -->
-    <div class="project-caption absolute left-0 md:top-[150%] px-5 text-white transition-all duration-500 ease-out z-10 hover:top-3/4 sm:top-2/3 sm:w-full">
-        <h4 class="font-lato font-light text-sm">{{project?.description}}</h4>
+    <div class="project-caption absolute left-0 bottom-0 w-full p-8 text-white translate-y-full transition-all duration-500 ease-out z-20 group-hover:translate-y-0 bg-gradient-to-t from-black/80 to-transparent">
+        <h4 class="font-lato font-light text-sm leading-relaxed">{{project?.description}}</h4>
 
         <a [href]="project?.link"
            target="_blank"
-           class="inline-flex items-center justify-center px-4 py-3 border border-white text-white text-sm w-40 mt-3 md:mt-5 cursor-pointer hover:bg-white hover:text-black transition-colors duration-300">
-            Visit
+           class="inline-flex items-center justify-center px-6 py-2 border border-white text-white text-xs uppercase tracking-widest mt-4 cursor-pointer hover:bg-white hover:text-black transition-all duration-300">
+            View Project
         </a>
     </div>
 </div>

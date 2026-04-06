@@ -34,7 +34,7 @@ export class InViewDirective {
       {
         root: null,
         rootMargin: '50px', // Trigger 50px before element comes into view
-        threshold: 0.1 // Trigger when 10% of element is visible
+        threshold: 1 // Trigger when 10% of element is visible
       }
     );
 

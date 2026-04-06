@@ -1,10 +1,11 @@
-<section class="md:max-w-75rem h-[60svh] md:h-[100svh] md:mx-auto flex items-center relative sm:max-w-[80%] sm:mx-3">
+<section class="max-w-full md:max-w-75rem h-[70svh] md:h-[100svh] mx-auto flex items-center relative px-6 md:px-0 overflow-hidden md:overflow-visible">
     <!-- Dark underlay -->
-    <div class="absolute bg-primary-dark w-[70%] h-4/5 right-0 top-1/2 transform -translate-y-1/2"></div>
+    <div class="absolute bg-primary-dark w-[80%] md:w-[70%] h-4/5 right-0 top-1/2 transform -translate-y-1/2 opacity-95"></div>
     <!-- Yellow underlay -->
-    <div class="absolute bg-primary-yellow w-3/4 h-[70%] md:right-[5%] top-1/2 transform -translate-y-1/2 right-5"></div>
+    <div class="absolute bg-primary-yellow w-[85%] md:w-3/4 h-[70%] md:right-[5%] top-1/2 transform -translate-y-1/2 right-4"></div>
+    
     <!-- Content overlay -->
-    <div class="relative z-10 sm:ml-8 md:ml-0">
+    <div class="relative w-full z-10 transition-all duration-700 ease-out">
         <ng-content></ng-content>
     </div>
 </section>

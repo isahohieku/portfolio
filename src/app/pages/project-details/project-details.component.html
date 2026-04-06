@@ -1,0 +1,172 @@
+<div *ngIf="project" class="min-h-screen bg-dark-bg text-white relative flex flex-col overflow-x-hidden">
+  
+  <!-- Navigation Top Bar -->
+  <div class="fixed top-0 left-0 w-full z-50 py-6 px-5 transition-all md:px-12 pointer-events-none">
+    <div class="max-w-75rem mx-auto flex justify-between items-center w-full pointer-events-auto">
+      <button (click)="goBack()" 
+              class="group flex items-center gap-3 text-white/50 hover:text-white transition-all duration-300 backdrop-blur-md bg-black/20 px-4 py-2 rounded-full border border-white/5">
+        <i class="pi pi-arrow-left text-sm group-hover:-translate-x-1 transition-transform"></i>
+        <span class="font-lato text-xs tracking-[0.2em] uppercase">Back</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Dynamic Hero Banner -->
+  <section class="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden border-b border-white/5">
+    <!-- Background Glow -->
+    <div class="absolute inset-0 bg-dark-bg"
+         [ngStyle]="{'background-image': 'radial-gradient(circle farthest-corner at 50% 50%, ' + project.bgColor + '40, transparent 60%)'}">
+    </div>
+    
+    <!-- Hero Content -->
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-5 max-w-4xl">
+      <span class="font-lato font-light text-white/30 text-8xl md:text-9xl mb-4 select-none opacity-50 block md:hidden">
+        0{{project.position}}
+      </span>
+      @if (project.logo) {
+        <img [src]="project.logo" [alt]="project.title" class="h-16 md:h-28 object-contain drop-shadow-2xl mb-8" />
+      } @else {
+        <h1 class="font-playfair font-bold text-5xl md:text-7xl mb-8">{{project.title}}</h1>
+      }
+      <h1 *ngIf="project.logo" class="font-playfair font-normal text-3xl md:text-5xl tracking-wide">{{project.title}}</h1>
+      
+      <!-- Number Decor absolute on desktop -->
+      <span class="hidden md:block absolute -left-32 top-1/2 -translate-y-1/2 font-lato font-bold text-[12rem] text-white/5 select-none pointer-events-none">
+        0{{project.position}}
+      </span>
+    </div>
+  </section>
+
+  <!-- Overview Section -->
+  <section class="max-w-75rem mx-auto px-5 py-24 md:py-32 w-full flex-grow">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-24">
+      
+      <!-- Left Column (Metadata) -->
+      <div class="lg:col-span-4 space-y-12">
+        <div class="flex items-start gap-4">
+          <div class="w-1 h-8 bg-primary-yellow mt-1"></div>
+          <div>
+            <h3 class="font-lato text-xs font-light uppercase tracking-[0.2em] text-white/50 mb-4">Project Overview</h3>
+            <p class="font-playfair text-xl md:text-2xl leading-snug">
+              {{project.title}}
+            </p>
+          </div>
+        </div>
+
+        @if (project.portfolio_url) {
+        <div class="pt-4 border-t border-white/10">
+          <h3 class="font-lato text-xs font-light uppercase tracking-[0.2em] text-white/50 mb-4">Website</h3>
+          <a [href]="project.portfolio_url" 
+             target="_blank"
+             class="inline-flex items-center text-primary-yellow hover:text-white transition-colors duration-300 font-lato text-sm tracking-widest uppercase group group-btn border border-primary-yellow/30 px-6 py-3 hover:border-white/50 hover:bg-white/5">
+             Visit Project Live
+             <i class="pi pi-arrow-right ml-3 text-xs group-hover:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+        }
+      </div>
+
+      <!-- Right Column (Description) -->
+      <div class="lg:col-span-8">
+        @if (project.description) {
+          <h3 class="font-lato text-xs font-light uppercase tracking-[0.2em] text-primary-yellow mb-6">About the Work</h3>
+          <p class="text-gray-custom leading-loose font-lato text-lg md:text-[1.3rem] md:leading-[2.2] font-light max-w-3xl">
+            {{project.description}}
+          </p>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Native Gallery -->
+  <section *ngIf="project.images && project.images.length > 0" class="w-full bg-black/30 py-24 border-t border-white/5">
+    <div class="max-w-75rem mx-auto px-5">
+      <div class="flex items-center gap-4 mb-16">
+        <div class="w-12 h-px bg-primary-yellow"></div>
+        <h3 class="font-lato text-xs font-light uppercase tracking-[0.2em] text-white/50">Gallery Focus</h3>
+      </div>
+      
+      <!-- Masonry-ish / Large Grid Setup -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        @for (image of project.images; track image.id; let imgIdx = $index) {
+          <div class="group relative overflow-hidden bg-[#111] cursor-pointer aspect-[4/3] rounded-sm"
+               [ngClass]="imgIdx === 0 ? 'md:col-span-2 lg:col-span-2 aspect-[16/10] md:aspect-auto' : ''"
+               (click)="activeIndex = imgIdx; galleria?.show()">
+            
+            <img [src]="image.imageUrl" 
+                 [alt]="image.imageName"
+                 loading="lazy"
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03] opacity-80 group-hover:opacity-100" />
+            
+            <!-- Hover overlay -->
+            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+              <span class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center bg-black/50 backdrop-blur-sm shadow-xl">
+                <i class="pi pi-expand text-white text-lg"></i>
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- P-Galleria for Fullscreen -->
+  <p-galleria 
+    #galleria
+    [value]="getGalleryImages(project)" 
+    [responsiveOptions]="[
+      { breakpoint: '1024px', numVisible: 5 },
+      { breakpoint: '768px', numVisible: 3 },
+      { breakpoint: '560px', numVisible: 1 }
+    ]"
+    [numVisible]="5"
+    [circular]="true"
+    [fullScreen]="true"
+    [showItemNavigators]="true"
+    [showThumbnails]="true"
+    [showItemNavigatorsOnHover]="true"
+    [showIndicators]="true"
+    [(activeIndex)]="activeIndex"
+    [visible]="false">
+    
+    <ng-template pTemplate="item" let-item>
+      <img [src]="item.previewImageSrc" [alt]="item.alt" class="w-full h-auto max-h-[85vh] object-contain drop-shadow-2xl" />
+    </ng-template>
+    
+    <ng-template pTemplate="thumbnail" let-item>
+      <div class="grid grid-nogutter justify-content-center p-1">
+        <img [src]="item.thumbnailImageSrc" [alt]="item.alt" class="w-20 h-14 md:w-24 md:h-16 object-cover rounded opacity-50 hover:opacity-100 cursor-pointer transition-opacity duration-300" />
+      </div>
+    </ng-template>
+  </p-galleria>
+
+  <!-- Next / Prev Footer -->
+  <footer class="mt-auto border-t border-white/10 w-full flex flex-col sm:flex-row relative z-10 bottom-0 bg-[#0a0a0a]">
+    <!-- Previous Project -->
+    <a *ngIf="prevProject" 
+       [routerLink]="['/works', prevProject.id]"
+       class="flex-1 p-8 md:p-12 border-b sm:border-b-0 sm:border-r border-white/5 hover:bg-white/5 transition-colors group relative overflow-hidden flex flex-col items-start justify-center text-left">
+      <span class="font-lato text-xs tracking-[0.2em] text-white/40 uppercase mb-3 block group-hover:text-primary-yellow transition-colors">
+        Previous Work
+      </span>
+      <h3 class="font-playfair text-2xl md:text-3xl text-white group-hover:translate-x-2 transition-transform duration-500">
+        {{prevProject.title}}
+      </h3>
+    </a>
+    
+    <!-- Spacer if no prev -->
+    <div *ngIf="!prevProject" class="flex-1 hidden sm:block border-r border-white/5"></div>
+
+    <!-- Next Project -->
+    <a *ngIf="nextProject" 
+       [routerLink]="['/works', nextProject.id]"
+       class="flex-1 p-8 md:p-12 hover:bg-white/5 transition-colors group relative overflow-hidden flex flex-col items-end justify-center text-right">
+      <span class="font-lato text-xs tracking-[0.2em] text-white/40 uppercase mb-3 block group-hover:text-primary-yellow transition-colors">
+        Next Work
+      </span>
+      <h3 class="font-playfair text-2xl md:text-3xl text-white group-hover:-translate-x-2 transition-transform duration-500">
+        {{nextProject.title}}
+      </h3>
+    </a>
+  </footer>
+</div>

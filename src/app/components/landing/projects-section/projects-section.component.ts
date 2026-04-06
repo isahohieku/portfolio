@@ -4,10 +4,11 @@ import { ProjectCardComponent } from '../../../shared/project-card/project-card.
 import { RouterLink } from '@angular/router';
 
 interface Project {
+  id?: string;
   logo: string;
   title: string;
   bgColor: string;
-  link: string;
+  link?: string; // Made optional as some link to works/:id instead
   description: string;
 }
 
@@ -21,6 +22,7 @@ export class ProjectsSectionComponent {
 
   projects: Project[] = [
     {
+      id: '9616',
       logo: 'https://play-lh.googleusercontent.com/HYtLnaZxaGUfnxU-RcxSTPoMe7Jdgk-zpZ55MxY7X_1WJ_0kVbpGG08H207wxAeqYENc=w600-h300-pc0xffffff-pd',
       bgColor: '#35b8ff',
       title: 'Talk360',
@@ -28,6 +30,7 @@ export class ProjectsSectionComponent {
       description: 'Talk360 has both a calling app and a payment platform.'
     },
     {
+      id: '9614',
       logo: '/assets/img/applypay.svg',
       bgColor: '#538fb7',
       title: 'Applypay',
@@ -35,6 +38,7 @@ export class ProjectsSectionComponent {
       description: 'Aply Technologies provides tech solutions to the education section among which is the Applypay.'
     },
     {
+      id: '9613',
       logo: 'https://www.hobeei.com/assets/images/logo_new.svg',
       bgColor: '#191919',
       title: 'Hobeei',

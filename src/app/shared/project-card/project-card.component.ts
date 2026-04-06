@@ -1,14 +1,15 @@
 import { Component, Input } from '@angular/core';
-import { NgStyle } from '@angular/common';
+import { NgStyle, NgIf } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 export interface Project {
-  id: string;
+  id?: string;
   title: string;
   description: string;
   logo: string;
   bgColor: string;
-  link: string;
-  technologies: string[];
+  link?: string;
+  technologies?: string[];
 }
 
 @Component({
@@ -16,7 +17,7 @@ export interface Project {
     templateUrl: './project-card.component.html',
     styleUrls: ['./project-card.component.scss'],
     standalone: true,
-    imports: [NgStyle]
+    imports: [NgStyle, NgIf, RouterModule]
 })
 export class ProjectCardComponent {
 

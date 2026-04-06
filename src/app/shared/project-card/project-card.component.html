@@ -22,10 +22,18 @@
     <div class="project-caption absolute left-0 bottom-0 w-full p-8 text-white translate-y-full transition-all duration-500 ease-out z-20 group-hover:translate-y-0 bg-gradient-to-t from-black/80 to-transparent">
         <h4 class="font-lato font-light text-sm leading-relaxed">{{project?.description}}</h4>
 
-        <a [href]="project?.link"
-           target="_blank"
-           class="inline-flex items-center justify-center px-6 py-2 border border-white text-white text-xs uppercase tracking-widest mt-4 cursor-pointer hover:bg-white hover:text-black transition-all duration-300">
-            View Project
-        </a>
+        <ng-container *ngIf="project?.id; else externalLink">
+          <a [routerLink]="['/works', project.id]"
+             class="inline-flex items-center justify-center px-6 py-2 border border-primary-yellow text-primary-yellow text-xs uppercase tracking-widest mt-4 cursor-pointer hover:bg-primary-yellow hover:text-black transition-all duration-300">
+              View Details
+          </a>
+        </ng-container>
+        <ng-template #externalLink>
+          <a [href]="project?.link"
+             target="_blank"
+             class="inline-flex items-center justify-center px-6 py-2 border border-white text-white text-xs uppercase tracking-widest mt-4 cursor-pointer hover:bg-white hover:text-black transition-all duration-300">
+              Visit Site
+          </a>
+        </ng-template>
     </div>
 </div>

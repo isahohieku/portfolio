@@ -8,9 +8,9 @@
       <h1 class="font-normal text-[2.75rem] leading-[1.1] md:text-[clamp(4.5rem,8vw,7.5rem)] lg:text-9xl tracking-tight text-white">
         My Works.
       </h1>
-      <h4 class="font-lato text-gray-custom uppercase tracking-[0.3em] text-sm md:text-lg lg:text-xl font-light opacity-80">
+      <p class="font-lato text-gray-custom uppercase tracking-[0.3em] text-sm md:text-lg lg:text-xl font-light opacity-80">
         Selected Projects
-      </h4>
+      </p>
     </div>
   </div>
 
@@ -31,9 +31,14 @@
 <div class="md:max-w-75rem mx-auto px-5 py-20 md:py-28">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
     @for (project of projects; track project.id; let i = $index) {
-    <div class="project-card-wrapper relative w-full h-80 md:h-96 overflow-hidden cursor-pointer group"
-         [style.animation-delay]="(i * 100) + 'ms'"
-         (click)="viewProjectDetails(project)">
+    <!--
+      An anchor, not a clickable div. The old div had no href (so no keyboard link
+      semantics, no middle-click, no open-in-new-tab, no crawlable URL) and carried a
+      nested button firing the same action - two controls for one outcome.
+    -->
+    <a class="project-card-wrapper block relative w-full h-80 md:h-96 overflow-hidden group"
+       [routerLink]="['/works', project.slug]"
+       [style.animation-delay]="(i * 100) + 'ms'">
       
       <!-- Color block background -->
       <div class="absolute inset-0 transition-all duration-500 ease-out"
@@ -47,40 +52,34 @@
       </span>
 
       <!-- Title overlay (appears on hover from top) -->
-      <h3 class="project-title font-lato font-light uppercase absolute left-8 top-14 opacity-0 md:text-xl text-white transition-all duration-500 ease-out group-hover:opacity-100 group-hover:top-8 tracking-[0.2em] z-20">
+      <h2 class="project-title font-lato font-light uppercase absolute left-8 top-14 opacity-0 md:text-xl text-white transition-all duration-500 ease-out group-hover:opacity-100 group-hover:top-8 tracking-[0.2em] z-20">
         {{project.title}}
-      </h3>
+      </h2>
 
-      <!-- Logo centered -->
+      <!-- Logo, project screenshot, or the project name as a wordmark - never a broken image -->
       <div class="flex justify-center items-center h-full relative z-10 px-12">
-        @if (project.logo) {
-        <img [src]="project.logo"
-             loading="lazy"
-             [alt]="project.title + ' logo'"
-             class="h-14 md:h-16 transition-all duration-700 ease-out group-hover:scale-110 group-hover:drop-shadow-lg" />
-        } @else {
-        <img [src]="getProjectThumbnail(project)"
-             loading="lazy"
-             [alt]="project.title"
-             class="h-14 md:h-16 transition-all duration-700 ease-out group-hover:scale-110 group-hover:drop-shadow-lg object-contain" />
-        }
+        <app-project-logo
+          [src]="project.logo"
+          [title]="project.title"
+          [showWordmark]="false"
+          imgClass="h-14 md:h-16 object-contain transition-all duration-700 ease-out group-hover:scale-110 group-hover:drop-shadow-lg"
+          wordmarkClass="font-playfair text-2xl md:text-4xl text-white/90 text-center transition-all duration-700 ease-out group-hover:scale-105" />
       </div>
 
       <!-- Caption (slides up from bottom on hover) -->
       <div class="project-caption absolute left-0 bottom-0 w-full p-8 text-white translate-y-full transition-all duration-500 ease-out z-20 group-hover:translate-y-0 bg-gradient-to-t from-black/80 to-transparent">
-        <h4 class="font-lato font-light text-sm leading-relaxed mb-4 line-clamp-2">
+        <p class="font-lato font-light text-sm leading-relaxed mb-4 line-clamp-2">
           {{project.description}}
-        </h4>
+        </p>
 
         <div class="flex gap-3">
-          <button
-            class="inline-flex items-center justify-center px-6 py-2 border border-white text-white text-xs uppercase tracking-widest cursor-pointer hover:bg-white hover:text-black transition-all duration-300"
-            (click)="viewProjectDetails(project); $event.stopPropagation()">
+          <span
+            class="inline-flex items-center justify-center px-6 py-2 border border-white text-white text-xs uppercase tracking-widest group-hover:bg-white group-hover:text-black transition-all duration-300">
             View Details
-          </button>
+          </span>
         </div>
       </div>
-    </div>
+    </a>
     }
   </div>
 </div>

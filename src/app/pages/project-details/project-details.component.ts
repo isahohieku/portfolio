@@ -1,57 +1,89 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Component, OnInit, HostListener, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { ProjectService, ProjectData } from '../../services/project.service';
+import { Title } from '@angular/platform-browser';
 import { GalleriaModule } from 'primeng/galleria';
+import { ProjectService, ProjectData } from '../../services/project.service';
+import { ProjectLogoComponent } from '../../shared/project-logo/project-logo.component';
 
 @Component({
   selector: 'app-project-details',
   standalone: true,
-  imports: [CommonModule, RouterModule, GalleriaModule],
+  imports: [CommonModule, RouterModule, GalleriaModule, ProjectLogoComponent],
   templateUrl: './project-details.component.html',
   styleUrls: ['./project-details.component.scss']
 })
 export class ProjectDetailsComponent implements OnInit {
-  @ViewChild('galleria') galleria: any;
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private projectService = inject(ProjectService);
+  private titleService = inject(Title);
+
   project: ProjectData | undefined;
   prevProject: ProjectData | undefined;
   nextProject: ProjectData | undefined;
-  
+
+  /** True once a lookup has run and found nothing, so the template can say so
+   *  instead of rendering an empty page or bouncing the visitor with no explanation. */
+  notFound = false;
+
   activeIndex = 0;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location,
-    private projectService: ProjectService
-  ) {}
+  /**
+   * Drives the fullscreen gallery. p-galleria has no show() method - it is controlled
+   * purely by its `visible` input - so the previous `galleria?.show()` call could never
+   * open it, and `[visible]="false"` pinned it shut. The gallery is the only place the
+   * work is actually visible, so it never opened for anyone.
+   */
+  galleryOpen = false;
+
+  openGallery(index: number): void {
+    this.activeIndex = index;
+    this.galleryOpen = true;
+  }
+
+  /** p-galleria ships a close button but does not bind Escape, so a fullscreen
+   *  overlay was not keyboard-dismissible. */
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.galleryOpen) {
+      this.galleryOpen = false;
+    }
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const idParam = params.get('id');
-      if (idParam) {
-        const id = +idParam;
-        this.project = this.projectService.getProjectById(id);
-        
-        if (this.project) {
-          // find prev/next based on position
-          const total = this.projectService.getProjects().length;
-          const pos = this.project.position;
-          
-          this.prevProject = this.projectService.getProjectByPosition(pos > 1 ? pos - 1 : total);
-          this.nextProject = this.projectService.getProjectByPosition(pos < total ? pos + 1 : 1);
-          
-          // Scroll to top when loading new project
-          window.scrollTo({ top: 0, behavior: 'instant' });
-        } else {
-          // not found, maybe redirect to works
-          this.router.navigate(['/works']);
-        }
+      // Accepts a slug or a numeric id, so /works/hobeei-freecycle-application
+      // and /works/9613 both resolve.
+      this.project = this.projectService.getProject(params.get('id'));
+
+      if (!this.project) {
+        this.notFound = true;
+        this.prevProject = this.nextProject = undefined;
+        this.titleService.setTitle('Project not found | Isah Ohieku');
+        return;
       }
+
+      this.notFound = false;
+      this.titleService.setTitle(`${this.project.title} | Isah Ohieku`);
+
+      const total = this.projectService.getProjects().length;
+      const pos = this.project.position;
+      this.prevProject = this.projectService.getProjectByPosition(pos > 1 ? pos - 1 : total);
+      this.nextProject = this.projectService.getProjectByPosition(pos < total ? pos + 1 : 1);
+
+      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     });
   }
 
+  /** Returns to wherever the visitor actually came from, falling back to /works
+   *  on a cold entry. The previous implementation always forced /works, discarding
+   *  real history. */
   goBack(): void {
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
     this.router.navigate(['/works']);
   }
 

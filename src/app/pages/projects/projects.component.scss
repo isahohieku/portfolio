@@ -44,7 +44,9 @@
 @media (max-width: 768px) {
   .project-card-wrapper {
     .project-title {
-      top: 1.25rem;
+      // Anchored to the bottom: at top it collided with the 7xl project number.
+      top: auto;
+      bottom: 1.5rem;
       font-size: 0.75rem;
       opacity: 1;
     }

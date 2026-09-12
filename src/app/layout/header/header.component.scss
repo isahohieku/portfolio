@@ -165,14 +165,18 @@
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 0;
+            // Animates transform, not width: width is a layout property, so the old
+            // rule forced layout on every frame of the hover.
+            width: 100%;
             height: 2px;
             background: currentColor;
-            transition: width 0.3s ease;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
         }
 
         &:hover::after {
-            width: 100%;
+            transform: scaleX(1);
         }
 
         // Focus styles for accessibility

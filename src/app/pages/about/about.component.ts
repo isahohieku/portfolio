@@ -36,75 +36,72 @@ export class AboutComponent {
       technologies: [
         {
           name: "JavaScript",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/7buynaTYKioQpzQ5de1f66DN6Nsb92LMQ5axjLe3.png"
+          icon: "assets/skills/javascript.png"
         },
         {
           name: "React.js",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/m7Skelg93WZnzNWvexzWnyhdAXGPjv3N9RnkMeGh.svg"
+          icon: "assets/skills/react-js.svg"
         },
         {
           name: "Vue.js",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/02XiydobgUDnO50gkcIqVgr0k2XxkhT3evoAnRUj.png"
+          icon: "assets/skills/vue-js.png"
         },
         {
           name: "Docker",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/jfzHl61nnnMKkhjTWnqKDVGWiMl85GDReuAqVenf.svg"
+          icon: "assets/skills/docker.svg"
         },
         {
           name: "PostgreSQL",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/j9CDUe6e2gIPpjdgxt4HDD3ujBLFPPdb4HeHEabS.png"
+          icon: "assets/skills/postgresql.png"
         },
         {
           name: "Ruby on Rails",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/OKKKoreUG7ezNKnPX9ROhXZdMZGzrbIkHIdrOF5R.png"
         },
         {
           name: "TypeScript",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/bsmjCuthBfMBeJGmV7TssnbUM1COLK6PfCyT6e32.svg"
+          icon: "assets/skills/typescript.svg"
         },
         {
           name: "AWS S3",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/K6PRmXizbcrKlP3D3vaUoqJRIfQLwkKBQ7QJsLyU.svg"
+          icon: "assets/skills/aws-s3.svg"
         },
         {
           name: "Android",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/P2FFQ4gx7HYdUdmQDwQF0E8vXEt1wdENiVn9LtUY.png"
+          icon: "assets/skills/android.png"
         },
         {
           name: "Next.js",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/dWex3GcUrAdVDxCF1u8tcLaIiRfA1asXoRZk7Lv1.svg"
+          icon: "assets/skills/next-js.svg"
         },
         {
           name: "Kotlin",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/oiwMsMxbIaNWhxHIhZatJLxQWMK2cCn1ploH0me8.png"
         },
         {
           name: "SCSS",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/cRID2kGzTFDWBkhWsTu12epDSSRAp2W0LAue87QR.png"
+          icon: "assets/skills/scss.png"
         },
         {
           name: "Tailwind",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/c4aFldLGLT4KiPy5BzDP0atvdbP4soWpNA5JCTqE.png"
+          icon: "assets/skills/tailwind.png"
         },
         {
           name: "Firebase",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/VfL2VvozsR0oA6s30warlWuk4xHGauTWuJP5dx56.png"
+          icon: "assets/skills/firebase.png"
         },
         {
           name: "Git",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/AuVlluAchoR4KvfdIaMXd2EXo2hjMKVeDVqfOp27.png"
+          icon: "assets/skills/git.png"
         },
         {
           name: "Vuetify",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/Ob13b6M15yfMLb5WrB6iKJ4bRKwcoFJCx42nhRjj.png"
         },
         {
           name: "Sentry",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/Rb3JcQajh4uRojrVqklRp1ElZGuGelPbH1ldhqpB.png"
+          icon: "assets/skills/sentry.png"
         },
         {
           name: "Cypress",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/UHl8hX7QiuQcxRxyR3zqpazM00X6BftY6DLYW3eL.png"
+          icon: "assets/skills/cypress.png"
         },
         {
           name: "Automation testing",
@@ -112,11 +109,11 @@ export class AboutComponent {
         },
         {
           name: "Jest",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/e3Lk2Nln5Vd6zwFyJvwv3k53rHYiZtshmQqU0NTA.png"
+          icon: "assets/skills/jest.png"
         },
         {
           name: "Jetpack Compose",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/FhaDVxAD6CmVSACrcP7R2XX648GC0J8QaR7EW89j.png"
+          icon: "assets/skills/jetpack-compose.png"
         }
       ]
     },
@@ -136,47 +133,47 @@ export class AboutComponent {
       technologies: [
         {
           name: "JavaScript",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/7buynaTYKioQpzQ5de1f66DN6Nsb92LMQ5axjLe3.png"
+          icon: "assets/skills/javascript.png"
         },
         {
           name: "React.js",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/m7Skelg93WZnzNWvexzWnyhdAXGPjv3N9RnkMeGh.svg"
+          icon: "assets/skills/react-js.svg"
         },
         {
           name: "Docker",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/jfzHl61nnnMKkhjTWnqKDVGWiMl85GDReuAqVenf.svg"
+          icon: "assets/skills/docker.svg"
         },
         {
           name: "TypeScript",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/bsmjCuthBfMBeJGmV7TssnbUM1COLK6PfCyT6e32.svg"
+          icon: "assets/skills/typescript.svg"
         },
         {
           name: "ES5/ES6",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/IvYql3sCI3eHMg7HdrXpZbNnbnxlTBL2i6NRvao6.png"
+          icon: "assets/skills/es5-es6.png"
         },
         {
           name: "AWS S3",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/K6PRmXizbcrKlP3D3vaUoqJRIfQLwkKBQ7QJsLyU.svg"
+          icon: "assets/skills/aws-s3.svg"
         },
         {
           name: "Redux.js",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/aufp6mNoVBvLa9JppjZnyCMNMyVLHuDPWZQotZho.svg"
+          icon: "assets/skills/redux-js.svg"
         },
         {
           name: "Next.js",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/dWex3GcUrAdVDxCF1u8tcLaIiRfA1asXoRZk7Lv1.svg"
+          icon: "assets/skills/next-js.svg"
         },
         {
           name: "SCSS",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/cRID2kGzTFDWBkhWsTu12epDSSRAp2W0LAue87QR.png"
+          icon: "assets/skills/scss.png"
         },
         {
           name: "Tailwind",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/c4aFldLGLT4KiPy5BzDP0atvdbP4soWpNA5JCTqE.png"
+          icon: "assets/skills/tailwind.png"
         },
         {
           name: "Angular",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/wMiixknuyZVVWPmFS909JsEsnLZYRNMawr3e1Rzq.png"
+          icon: "assets/skills/angular.png"
         },
         {
           name: "Unit Testing",
@@ -184,11 +181,11 @@ export class AboutComponent {
         },
         {
           name: "CircleCI",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/4N60om116wlVP0cKJP4k7aRv21WLVyCNu33sSfVQ.png"
+          icon: "assets/skills/circleci.png"
         },
         {
           name: "Puppeteer",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/41pvLZoinNxCbnYuT2zRn6xDniEj3MMpMybobi4t.jpg"
+          icon: "assets/skills/puppeteer.jpg"
         }
       ]
     },
@@ -209,35 +206,35 @@ export class AboutComponent {
       technologies: [
         {
           name: "JavaScript",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/7buynaTYKioQpzQ5de1f66DN6Nsb92LMQ5axjLe3.png"
+          icon: "assets/skills/javascript.png"
         },
         {
           name: "TypeScript",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/bsmjCuthBfMBeJGmV7TssnbUM1COLK6PfCyT6e32.svg"
+          icon: "assets/skills/typescript.svg"
         },
         {
           name: "NgRx",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/tB79DUKRQRJOaH1EVonftgsQDCwn20kDOcG7k2dt.png"
+          icon: "assets/skills/ngrx.png"
         },
         {
           name: "Socket.io",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/UTcWdhpv1mGXSf8NVouhFvMlB7dmOMnKqzKqn02t.png"
+          icon: "assets/skills/socket-io.png"
         },
         {
           name: "SCSS",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/cRID2kGzTFDWBkhWsTu12epDSSRAp2W0LAue87QR.png"
+          icon: "assets/skills/scss.png"
         },
         {
           name: "Angular",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/wMiixknuyZVVWPmFS909JsEsnLZYRNMawr3e1Rzq.png"
+          icon: "assets/skills/angular.png"
         },
         {
           name: "Heroku",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/ZyYyfvNB6LbnnEDLFUiQnra6QSNeY13NknCuQxbx.png"
+          icon: "assets/skills/heroku.png"
         },
         {
           name: "AWS ECS",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/kKruFm5EakvEZ4Z8yNeD3XB80hqcMN7JA4amZ0Pj.png"
+          icon: "assets/skills/aws-ecs.png"
         }
       ]
     },
@@ -256,27 +253,27 @@ export class AboutComponent {
       technologies: [
         {
           name: "JavaScript",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/7buynaTYKioQpzQ5de1f66DN6Nsb92LMQ5axjLe3.png"
+          icon: "assets/skills/javascript.png"
         },
         {
           name: "Docker",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/jfzHl61nnnMKkhjTWnqKDVGWiMl85GDReuAqVenf.svg"
+          icon: "assets/skills/docker.svg"
         },
         {
           name: "TypeScript",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/bsmjCuthBfMBeJGmV7TssnbUM1COLK6PfCyT6e32.svg"
+          icon: "assets/skills/typescript.svg"
         },
         {
           name: "NgRx",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/tB79DUKRQRJOaH1EVonftgsQDCwn20kDOcG7k2dt.png"
+          icon: "assets/skills/ngrx.png"
         },
         {
           name: "SCSS",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/cRID2kGzTFDWBkhWsTu12epDSSRAp2W0LAue87QR.png"
+          icon: "assets/skills/scss.png"
         },
         {
           name: "Angular Material",
-          icon: "https://res.cloudinary.com/proxify-io/image/upload/v1/app/images/skills/XLbz1Tgs3B1IVHVeYOeFuP0ca5veSS6XSrFsTpb7.svg"
+          icon: "assets/skills/angular-material.svg"
         }
       ]
     }

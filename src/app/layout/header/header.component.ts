@@ -30,17 +30,17 @@ export class HeaderComponent {
   }
 
   // Close menu when clicking outside or pressing escape
-  @HostListener('document:keydown.escape', ['$event'])
-  onEscapeKey(event: KeyboardEvent) {
+  @HostListener('document:keydown.escape')
+  onEscapeKey() {
     if (this.hamburgerState) {
       this.toggleHamburger();
     }
   }
 
   // Close menu on window resize to prevent layout issues
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    if (event.target.innerWidth > 768 && this.hamburgerState) {
+  @HostListener('window:resize')
+  onResize() {
+    if (window.innerWidth > 768 && this.hamburgerState) {
       this.toggleHamburger();
     }
   }

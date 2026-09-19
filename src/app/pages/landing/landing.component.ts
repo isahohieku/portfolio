@@ -46,7 +46,7 @@ export class LandingComponent {
 
   /**
    * Quoted from the accomplishments recorded against each role in
-   * ExperienceService. These are the strongest assets on the site and used to
+   * ExperienceService, and from the npm registry. These are the strongest assets on the site and used to
    * sit only on /about — the page a recruiter is least likely to open.
    *
    * No figure here is new, estimated or rounded, and the receipt figure says
@@ -57,6 +57,9 @@ export class LandingComponent {
     { value: '120s → <100ms', label: 'onboarding main-thread block', company: 'Talk360' },
     { value: '1,100+', label: 'new sign-ups after launch', company: 'Talk360' },
     { value: '65 → 5', label: 'manual receipt requests a month (projected)', company: 'Talk360' },
-    { value: '+70%', label: 'frontend performance', company: 'ApplyPay' },
+    // The one figure here a stranger can check without taking his word for
+    // it. It replaced ApplyPay's +70%, which came from the same unaudited
+    // batch as the Talk360 numbers removed in 222f6a0.
+    { value: '5,479', label: 'npm downloads in a year', company: 'ngx-horizontal-scroll-menu' },
   ];
 }

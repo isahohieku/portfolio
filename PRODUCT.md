@@ -35,13 +35,14 @@ This is now implemented rather than aspirational: the landing page opens with a 
 - Deployed to Netlify as a single-page app (`netlify.toml` rewrites all paths to `/` with status 200), so any route must resolve client-side.
 - There is no backend. Contact happens through a `mailto:` address and a downloadable résumé PDF.
 - Project and experience data are static and hand-maintained in source, not fetched from a CMS or API.
-- `node_modules` in the working checkout is root-owned, so `npm install` fails. Anything requiring a new dependency has to be solved another way — this is why the typeface is vendored as files and PrimeNG is themed through CSS variables rather than a preset package.
+- `node_modules` and `package-lock.json` were root-owned until 2026-09-19 (someone ran `sudo npm install` in July 2025), so `npm install` failed for a long stretch. Ownership is now fixed and dependencies install normally. Two workarounds from that period remain in place because they are still the better answer: the typeface is vendored as woff2 files rather than pulled from a package, and PrimeNG is themed through its CSS variables rather than a preset package.
 
 ## Capabilities and Constraints
 
-- Angular 20 standalone-component SPA; Tailwind CSS 3.4; PrimeNG 19 (Galleria, ScrollTop, Toast, ProgressSpinner); PrimeIcons. TypeScript 5.6.
+- Angular 20 standalone-component SPA; Tailwind CSS 3.4; PrimeNG 19 (Galleria, ScrollTop, Toast, ProgressSpinner); PrimeIcons; three 0.186 (lazy-loaded only). TypeScript 5.6.
 - Routes: `/` (landing), `/about` (experience), `/works` (project listing), `/works/:id` (project detail, accepts a slug or numeric id), `/projects` (redirects to `/works`), and a wildcard 404.
-- **Two data sources, both `providedIn: 'root'`:** `ProjectService` (7 projects) and `ExperienceService` (4 roles plus skill categories and a computed years-of-experience). Experience data used to be a literal inside `AboutComponent`, which put the strongest evidence out of the landing page's reach.
+- **Two data sources, both `providedIn: 'root'`:** `ProjectService` (10 projects) and `ExperienceService` (4 roles plus skill categories and a computed years-of-experience). Experience data used to be a literal inside `AboutComponent`, which put the strongest evidence out of the landing page's reach.
+- Projects carry a `kind` of `client` or `open-source`. `/works` groups them under separate headings rather than interleaving them: shipped-for-a-client and published-for-anyone are different claims, and a mixed grid invites the reader to assume the weaker one applies throughout.
 - Contact email: `isahohieku@gmail.com`. Résumé served at `assets/resume.pdf`.
 - All assets are self-hosted under `src/assets/`. Nothing may be hotlinked to a third-party host: two logos and three skill icons were previously lost this way when the remote URLs died. The typeface is vendored for the same reason.
 
@@ -54,7 +55,7 @@ Added 2026-09-19. Derived from spaceship.com's published `--sds-*` token system,
 - **Typeface:** Hanken Grotesk, variable 300–800, self-hosted as two woff2 files. One family at many weights; no uppercase letter-spacing anywhere.
 - **Shape:** Spaceship's radius scale (0.25rem → 4rem, buttons at full pill) and their inset-hairline elevation recipes.
 - **Primitives** in `src/app/shared/ui/`: `app-button`, `app-card`, `app-section`, `app-tag`. CTAs must use `app-button` rather than hand-written utility strings.
-- **PrimeNG** is themed by defining its `--p-*` variables against the tokens in `src/styles/primeng.css`, since the preset packages cannot be installed here.
+- **PrimeNG** is themed by defining its `--p-*` variables against the tokens in `src/styles/primeng.css`. Only four PrimeNG components are used, so a preset package would cost more than it saves.
 
 ## Brand Commitments
 
@@ -79,15 +80,27 @@ Confirmed by the user against release posts and his work record, 2026-09-19:
 - **Other roles with companies and dates:** Apply Technologies, Senior Frontend Developer, Nov 2020–Jul 2022 · Hobeei, Senior Frontend Developer, Feb 2019–Feb 2021 · SwipeNG, Frontend Developer, Jan 2018–Jan 2019. Roughly 8 years in total, computed from a 2018-01-01 start rather than hardcoded.
 - **Domains actually worked in:** payments and fintech (Talk360 payments, ApplyPay, SwipeNG), international calling (Talk360), edtech (Apply Schools, Sapphital), greentech (Hobeei).
 - **21 client work screenshots**, self-hosted at `src/assets/projects/<slug>/`.
-- **Logos** self-hosted at `src/assets/projects/logos/` — three, for seven projects.
+- **Logos** self-hosted at `src/assets/projects/logos/` — three, for ten projects. The seven without one render as a plain colour field.
 - **Résumé PDF**, `src/assets/resume.pdf`.
 - **Profiles:** LinkedIn, GitHub, Dribbble, Behance, X.
+
+#### Open-source evidence — independently checkable
+
+Added 2026-09-19. This is the only evidence on the site a stranger can verify without taking Isah's word for it; everything else is self-reported. Figures were read from the npm registry, GitHub and Codecov APIs on that date and are stamped where they appear.
+
+- **ngx-horizontal-scroll-menu** — Angular library, MIT, published to npm since March 2020. 5,479 downloads in the twelve months to September 2026, 339 in the last month; 14 releases, latest 2.2.0; 8 stars, 2 forks. Note the npm package name differs from the repository name (`ngx-horizontal-menu-scroll`).
+- **contacts-manager** — NestJS/PostgreSQL/Redis API, MIT. 281 commits, CI passing on `main`, and 94.56% test coverage over 2,299 lines in 139 files per Codecov. Its `Deploy` workflow is failing, so nothing may claim it is deployed.
+- **advance-chatbot** — FastAPI, LangChain, ChromaDB and Next.js, 127 commits. No external validation and no live demo, so its case study deliberately carries no `outcomes` block.
+
+Deliberately excluded, and why: `schedule-a-call` is a single commit; `business-directory` and its backend have 47 and 14 open issues and a dead Heroku demo; `metacare` points at a dead EC2 host; `weather-app` is self-described as simple; the 2018–19 repositories are student work.
 
 ### Not verified — do not publish
 
 The Talk360 figures the site previously carried (payment errors −45%, mobile onboarding conversion +37%, load 2.5s → <1s, 50% faster processing, 80+ API issues, −35% project time, +20% CSAT) were **removed** on 2026-09-19 because they were absent from the record the user could verify. They must not be reinstated without a source.
 
-**The remaining three roles carry figures of the same vintage and provenance, and have not been through the same audit:** ApplyPay frontend performance +70% (currently on the landing page evidence band), Hobeei performance +30%, production defects −25%, code efficiency +30%, bug count −40%, engagement +50%, and the SwipeNG entry. Treat all of these as unaudited. The ApplyPay figure is the live exposure.
+**The remaining three roles carry figures of the same vintage and provenance, and have not been through the same audit:** ApplyPay frontend performance +70%, Hobeei performance +30%, production defects −25%, code efficiency +30%, bug count −40%, engagement +50%, and the SwipeNG entry. Treat all of these as unaudited.
+
+The ApplyPay figure was removed from the landing page evidence band on 2026-09-19 and replaced with the npm download count, which is both better sourced and externally checkable. **All of these figures still render on `/about`**, via `ExperienceService`, so the exposure is reduced rather than eliminated. Auditing the three remaining roles the way Talk360 was audited is the outstanding task.
 
 ### Verification standard
 
@@ -100,9 +113,10 @@ The 21 client screenshots may be shown **only inside individual project case-stu
 ### Absences — do not fabricate
 
 - **No testimonials, client quotes, references, or press.** None exist.
-- **One case study exists.** `talk360-payment-platform` has a written writeup (`caseStudy` on `ProjectData`: context, contribution, sections, optional outcomes, stack), authored from what the screenshots demonstrably show plus the verified record. **It has no `outcomes` block, because no verified outcome for that project exists** — the field is optional precisely so that absence renders as nothing rather than as an empty heading inviting invention. The other six projects still have one descriptive sentence each; Sapphital's is the two-word stub "An Edtech".
+- **Four case studies exist**, all using `caseStudy` on `ProjectData` (context, contribution, sections, optional outcomes, stack): `talk360-payment-platform`, plus the three open-source projects. Two of them demonstrate the optional `outcomes` field in both directions — the open-source studies carry verified, sourced figures, while `talk360-payment-platform` and `advance-chatbot` carry none, because none exists. The field is optional precisely so that absence renders as nothing rather than as an empty heading inviting invention. The remaining six projects still have one descriptive sentence each; Sapphital's is the two-word stub "An Edtech".
 - **Hobeei's company site is offline** (the domain resolves to a decommissioned Heroku dyno), and no logo asset survives. Whether Hobeei stays in the work is undecided.
 - **Desrio, SwipeNG and Sapphital have no case-study material** — no screenshots, no detail beyond one line. Their cards say "View project"; only projects with a writeup or a gallery say "Read the case study".
+- **No screenshots exist for any open-source project.** Their cards render as a plain colour field, since `ProjectLogoComponent` is told not to substitute a text wordmark where the card already states the title.
 - No pricing, availability, rates, or service definitions.
 
 ## Product Principles

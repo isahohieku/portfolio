@@ -27,6 +27,15 @@ export interface CaseStudy {
   stack?: string[];
 }
 
+/** Client engagements and open-source work are different claims, and the
+ *  listing groups them rather than interleaving them. */
+export type ProjectKind = 'client' | 'open-source';
+
+export interface ProjectLink {
+  label: string;
+  href: string;
+}
+
 export interface ProjectData {
   id: number;
   /** Stable, human-readable identifier. Accepted by the /works/:id route alongside the numeric id. */
@@ -35,10 +44,13 @@ export interface ProjectData {
   position: number;
   description?: string;
   portfolio_url?: string;
+  kind: ProjectKind;
   bgColor: string;
   /** null when no logo asset is available; consumers fall back to a text wordmark. */
   logo: string | null;
   images: ProjectImage[];
+  /** Extra destinations — a repository, a package page, a live demo. */
+  links?: ProjectLink[];
   /** Present only where a real writeup exists. */
   caseStudy?: CaseStudy;
 }
@@ -61,6 +73,7 @@ export class ProjectService {
       slug: "hobeei-freecycle-application",
       title: "Hobeei Freecycle application",
       position: 1,
+      kind: "client",
       description: "A Greentech donation platform that enables people to recycle their unwanted and preowned items. Built with modern web technologies to promote sustainability and community sharing.",
       portfolio_url: "https://www.hobeei.com/",
       bgColor: "#2f7d5d",
@@ -77,6 +90,7 @@ export class ProjectService {
       slug: "apply-schools-and-applypay",
       title: "Apply Schools and Applypay",
       position: 2,
+      kind: "client",
       description: "Educational technology platform providing comprehensive solutions for schools and payment processing. Features include student management, fee collection, and administrative tools.",
       portfolio_url: "https://applypay.ng/",
       bgColor: "#538fb7",
@@ -95,6 +109,7 @@ export class ProjectService {
       slug: "talk360-payment-platform",
       title: "Talk360 Payment Platform",
       position: 3,
+      kind: "client",
       description: "Comprehensive payment platform enabling international calling and mobile top-up services. Features secure payment processing, user management, and real-time transaction monitoring.",
       portfolio_url: "https://talk360.com/",
       bgColor: "#35b8ff",
@@ -129,6 +144,7 @@ export class ProjectService {
       slug: "talk360-calling-app",
       title: "Talk360 Calling app",
       position: 4,
+      kind: "client",
       description: "Mobile calling application providing affordable international calls with crystal clear voice quality. Features include contact management, call history, and credit top-up functionality.",
       portfolio_url: "https://talk360.com/",
       bgColor: "#2a9fd6",
@@ -147,6 +163,7 @@ export class ProjectService {
       slug: "desrio",
       title: "Desrio",
       position: 5,
+      kind: "client",
       description: "Desrio helps teams collaborate, ideate and reduce distractions during work hours.",
       portfolio_url: "https://www.desrio.com/",
       bgColor: "#49b7ac",
@@ -158,6 +175,7 @@ export class ProjectService {
       slug: "swipeng",
       title: "SwipeNG",
       position: 6,
+      kind: "client",
       description: "Swipe is a fintech solution aimed at providing financial flexibility and convenience for customers.",
       portfolio_url: "https://swipe.ng/",
       bgColor: "#8948fc",
@@ -169,11 +187,120 @@ export class ProjectService {
       slug: "sapphital",
       title: "Sapphital",
       position: 7,
+      kind: "client",
       description: "An Edtech",
       portfolio_url: "https://sapphital.com/",
       bgColor: "#13abab",
       logo: "assets/projects/logos/sapphital.png",
       images: []
+    },
+    {
+      id: 9701,
+      slug: "ngx-horizontal-scroll-menu",
+      title: "ngx-horizontal-scroll-menu",
+      position: 8,
+      kind: "open-source",
+      description: "An Angular library for horizontal scrolling menus, published to npm and maintained across six major Angular versions since 2020.",
+      portfolio_url: "https://github.com/isahohieku/ngx-horizontal-menu-scroll",
+      bgColor: "#c2410c",
+      logo: null,
+      images: [],
+      links: [
+        { label: "View on GitHub", href: "https://github.com/isahohieku/ngx-horizontal-menu-scroll" },
+        { label: "npm package", href: "https://www.npmjs.com/package/ngx-horizontal-scroll-menu" },
+        { label: "Live demo", href: "https://stackblitz.com/edit/ngx-horizontal-scroll-menu-example" }
+      ],
+      caseStudy: {
+        context:
+          "Angular ships no horizontal scrolling menu, so every app that needs one \u2014 a category filter, a tab strip, an overflowing nav \u2014 rebuilds the same control, usually badly. This is that control, packaged once and given away.",
+        contribution:
+          "Author and sole maintainer since March 2020.",
+        sections: [
+          {
+            heading: "Built to be dropped in",
+            body: "It takes any array of objects as items, detects links or defers to a click handler, and exposes scroll distance and speed, optional arrow controls, custom arrow icons, and class hooks for background and text so it inherits the host application\u2019s styling instead of imposing its own. Touch and keyboard navigation are supported."
+          },
+          {
+            heading: "The work is the maintenance",
+            body: "Publishing a library is a weekend; keeping it installable is the actual commitment. Fourteen releases carried it from Angular 9 to Angular 19, including the move to standalone components \u2014 and it still exports an NgModule alongside the standalone component, because a library that forces a consumer to migrate on your schedule is a library they remove."
+          }
+        ],
+        outcomes: [
+          "5,479 npm downloads in the twelve months to September 2026, and 339 in the last month",
+          "14 published releases, currently 2.2.0, MIT licensed",
+          "8 stars and 2 forks"
+        ],
+        stack: ["Angular", "TypeScript", "npm"]
+      }
+    },
+    {
+      id: 9702,
+      slug: "contacts-manager-api",
+      title: "Contact Manager API",
+      position: 9,
+      kind: "open-source",
+      description: "A production-shaped REST API in NestJS and PostgreSQL, with role-based access, Redis caching, S3 uploads and 94% test coverage.",
+      portfolio_url: "https://github.com/isahohieku/contacts-manager",
+      bgColor: "#475569",
+      logo: null,
+      images: [],
+      links: [
+        { label: "View on GitHub", href: "https://github.com/isahohieku/contacts-manager" }
+      ],
+      caseStudy: {
+        context:
+          "A contacts backend is a deceptively ordinary brief \u2014 CRUD over people \u2014 which is exactly why it is a good place to do the unglamorous parts properly: authorisation, caching, file handling, pagination, and the test coverage that lets any of it be changed later.",
+        contribution:
+          "Written end to end, and the most heavily developed repository I own at 281 commits.",
+        sections: [
+          {
+            heading: "What it handles",
+            body: "Contacts with multiple emails, phone numbers and addresses, tagging, full-text search, sorting, filtering and paginated reads, CSV export, and avatar uploads to either S3 or local storage with type and size validation. Access is JWT-based with admin and user roles, email verification and a password reset flow."
+          },
+          {
+            heading: "Built for the second year, not the first week",
+            body: "Redis caching, connection pooling, gzip compression and rate limiting at 100 requests a minute; Helmet for security headers and validation on every input. It runs under Docker Compose with migrations and seeds, and documents itself through Swagger, so the distance between cloning it and calling it is one command."
+          }
+        ],
+        outcomes: [
+          "94.56% test coverage across 2,299 lines in 139 files, reported by Codecov",
+          "281 commits, with continuous integration passing on main",
+          "MIT licensed"
+        ],
+        stack: ["NestJS", "TypeScript", "PostgreSQL", "Redis", "AWS S3", "Docker"]
+      }
+    },
+    {
+      id: 9703,
+      slug: "advance-chatbot",
+      title: "Advanced Chatbot with Memory",
+      position: 10,
+      kind: "open-source",
+      description: "A full-stack AI platform with persistent conversational memory \u2014 FastAPI, LangChain and a ChromaDB vector store behind a Next.js client.",
+      portfolio_url: "https://github.com/isahohieku/advance-chatbot",
+      bgColor: "#3730a3",
+      logo: null,
+      images: [],
+      links: [
+        { label: "View on GitHub", href: "https://github.com/isahohieku/advance-chatbot" }
+      ],
+      caseStudy: {
+        context:
+          "Chat over HTTP is stateless, and a model that forgets you between sessions feels less like an assistant than a search box. This is an attempt at the opposite: a stateful AI experience built on stateless protocols.",
+        contribution:
+          "Both halves \u2014 the Python service and the TypeScript client \u2014 across 127 commits.",
+        sections: [
+          {
+            heading: "Two kinds of memory",
+            body: "Structured history lives in PostgreSQL through SQLAlchemy, with Alembic migrations. Long-term recall lives in ChromaDB as vectors, so context survives across sessions rather than only within one. LangChain orchestrates retrieval and context injection over whichever provider is configured \u2014 OpenAI, Anthropic, or Ollama running locally \u2014 and responses stream to the client over server-sent events."
+          },
+          {
+            heading: "Treated as something that would be attacked",
+            body: "Session auth over HTTP-only cookies with optional JWT, Argon2id password hashing, TOTP two-factor, rate limiting on sensitive endpoints, lockout after five failed attempts, audit logging for security-relevant actions, and HSTS, CSP and X-Frame-Options set at the edge of the app."
+          }
+        ],
+        stack: ["Python", "FastAPI", "LangChain", "ChromaDB", "PostgreSQL", "Next.js", "React", "Docker"]
+      }
     }
   ];
 
@@ -188,6 +315,12 @@ export class ProjectService {
   /** The first `count` projects, for the landing page teaser. Drawn from the same list as /works. */
   getFeatured(count = 3): ProjectData[] {
     return this.projects.slice(0, count);
+  }
+
+  /** Client engagements and open-source work make different claims, so the
+   *  listing groups them rather than interleaving them. */
+  getByKind(kind: ProjectKind): ProjectData[] {
+    return this.projects.filter((project) => project.kind === kind);
   }
 
   /** Resolves either a numeric id or a slug, so both /works/9613 and /works/hobeei-freecycle-application work. */

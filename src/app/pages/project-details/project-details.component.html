@@ -32,7 +32,20 @@
         <!-- Single h1 per page: the title is the heading whether or not a logo renders. -->
         <h1 class="io-heading-lg text-heading">{{ project.title }}</h1>
 
-        @if (project.portfolio_url) {
+        <!-- Open-source projects carry several destinations (repository,
+             package page, demo); client work carries at most one. -->
+        @if (project.links?.length) {
+          <div class="flex flex-wrap justify-center gap-3">
+            @for (link of project.links; track link.href; let first = $first) {
+              <app-button
+                [href]="link.href"
+                [external]="true"
+                [variant]="first ? 'primary' : 'secondary'">
+                {{ link.label }}
+              </app-button>
+            }
+          </div>
+        } @else if (project.portfolio_url) {
           <app-button
             [href]="project.portfolio_url"
             [external]="true"

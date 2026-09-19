@@ -4,7 +4,8 @@
     <h1 class="io-display text-heading">Work</h1>
     <p class="io-body-lg max-w-prose text-muted">
       Projects I&rsquo;ve built or contributed to &mdash; fintech, edtech,
-      greentech and communications.
+      greentech and communications &mdash; plus the libraries and services
+      I maintain in the open.
     </p>
   </div>
 </header>
@@ -14,11 +15,36 @@
   longer drift apart. Screenshots stay off this grid and live only inside the
   individual case studies.
 -->
-<app-section labelledBy="projects-heading">
-  <h2 id="projects-heading" class="sr-only">All projects</h2>
+<app-section labelledBy="client-heading">
+  <div class="flex flex-col gap-3">
+    <h2 id="client-heading" class="io-heading-lg text-heading">Client work</h2>
+    <p class="io-body-md max-w-prose text-muted">
+      Shipped for employers and their customers.
+    </p>
+  </div>
 
-  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    @for (project of projects; track project.id; let i = $index) {
+  <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    @for (project of clientWork; track project.id; let i = $index) {
+      <div class="project-card-wrapper h-full" [style.animation-delay]="i * 80 + 'ms'">
+        <app-project-card [project]="project" />
+      </div>
+    }
+  </div>
+</app-section>
+
+<app-section
+  spacing="tight"
+  labelledBy="open-source-heading"
+  surface="border-t border-subtle bg-surface-minimal">
+  <div class="flex flex-col gap-3">
+    <h2 id="open-source-heading" class="io-heading-lg text-heading">Open source</h2>
+    <p class="io-body-md max-w-prose text-muted">
+      Published for anyone to use, and maintained in public.
+    </p>
+  </div>
+
+  <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    @for (project of openSource; track project.id; let i = $index) {
       <div class="project-card-wrapper h-full" [style.animation-delay]="i * 80 + 'ms'">
         <app-project-card [project]="project" />
       </div>

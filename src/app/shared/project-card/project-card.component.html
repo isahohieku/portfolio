@@ -15,9 +15,12 @@
     class="relative flex h-44 items-center justify-center overflow-hidden px-10 sm:h-52"
     [ngStyle]="{ backgroundColor: project.bgColor }">
     <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent"></div>
+    <!-- The card states the title in its body, so a missing logo leaves the
+         plate as a plain colour field rather than saying the name twice. -->
     <app-project-logo
       [src]="project.logo"
       [title]="project.title"
+      [showWordmark]="false"
       imgClass="relative z-10 h-12 w-auto object-contain transition-transform duration-slow ease-io-out group-hover:scale-105 sm:h-14"
       wordmarkClass="relative z-10 text-center text-xl font-bold tracking-tight text-white sm:text-2xl" />
   </div>

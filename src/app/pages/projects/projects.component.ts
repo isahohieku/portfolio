@@ -15,5 +15,11 @@ import { SectionComponent } from '../../shared/ui/section/section.component';
 export class ProjectsComponent {
   private readonly projectService = inject(ProjectService);
 
-  readonly projects = this.projectService.getProjects();
+  /**
+   * Split rather than interleaved: shipped-for-a-client and published-for-
+   * anyone are different claims, and a grid that mixes them invites the
+   * reader to assume the weaker one applies to everything.
+   */
+  readonly clientWork = this.projectService.getByKind('client');
+  readonly openSource = this.projectService.getByKind('open-source');
 }

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { ButtonComponent } from '../../shared/ui/button/button.component';
 
 /**
  * A real 404.
@@ -13,7 +13,7 @@ import { Title } from '@angular/platform-browser';
   selector: 'app-not-found',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [ButtonComponent],
   templateUrl: './not-found.component.html'
 })
 export class NotFoundComponent {

@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { TagComponent } from '../ui/tag/tag.component';
 
 export interface Technology {
   name: string;
@@ -20,7 +20,9 @@ export interface ExperienceData {
 
 @Component({
   selector: 'app-experience-item',
-  imports: [CommonModule],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TagComponent],
   templateUrl: './experience-item.html'
 })
 export class ExperienceItem {

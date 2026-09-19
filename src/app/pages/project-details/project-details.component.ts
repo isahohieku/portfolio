@@ -1,21 +1,29 @@
-import { Component, OnInit, HostListener, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Component, OnInit, HostListener, ChangeDetectionStrategy, inject } from '@angular/core';
+import { NgStyle } from '@angular/common';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { GalleriaModule } from 'primeng/galleria';
 import { ProjectService, ProjectData } from '../../services/project.service';
 import { ProjectLogoComponent } from '../../shared/project-logo/project-logo.component';
+import { SectionComponent } from '../../shared/ui/section/section.component';
+import { ButtonComponent } from '../../shared/ui/button/button.component';
 
 @Component({
   selector: 'app-project-details',
   standalone: true,
-  imports: [CommonModule, RouterModule, GalleriaModule, ProjectLogoComponent],
-  templateUrl: './project-details.component.html',
-  styleUrls: ['./project-details.component.scss']
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    NgStyle,
+    RouterModule,
+    GalleriaModule,
+    ProjectLogoComponent,
+    SectionComponent,
+    ButtonComponent
+  ],
+  templateUrl: './project-details.component.html'
 })
 export class ProjectDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
-  private router = inject(Router);
   private projectService = inject(ProjectService);
   private titleService = inject(Title);
 
@@ -76,16 +84,6 @@ export class ProjectDetailsComponent implements OnInit {
     });
   }
 
-  /** Returns to wherever the visitor actually came from, falling back to /works
-   *  on a cold entry. The previous implementation always forced /works, discarding
-   *  real history. */
-  goBack(): void {
-    if (window.history.length > 1) {
-      window.history.back();
-      return;
-    }
-    this.router.navigate(['/works']);
-  }
 
   getGalleryImages(project: ProjectData) {
     if (!project || !project.images) return [];

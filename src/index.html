@@ -1,13 +1,38 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="utf-8">
-  <title>Isah Ohieku | Portfolio</title>
+  <title>Isah Ohieku | Software Engineer</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Creative and imaginative Software Developer with 5+ years of experience in architecting dynamic, cutting-edge, and useful apps. Dedicated to developing scalable, useable, and performant high-quality applications using contemporary web technologies. Verifiable track records of keeping ahead of the competition through ongoing study and skill improvement. Experience engaging with cross-functional teams, as well as interpersonal communication skills.">
+  <meta name="description" content="Isah Ohieku is a software engineer with seven years building payments, calling and edtech platforms — Talk360, ApplyPay, Hobeei and SwipeNG.">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preload" href="assets/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Isah Ohieku | Software Engineer">
+  <meta property="og:description" content="Seven years building payments, calling and edtech platforms — Talk360, ApplyPay, Hobeei and SwipeNG.">
+  <meta property="og:image" content="assets/img/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Isah Ohieku | Software Engineer">
+  <meta name="twitter:description" content="Seven years building payments, calling and edtech platforms — Talk360, ApplyPay, Hobeei and SwipeNG.">
+  <meta name="twitter:image" content="assets/img/og.png">
+
+  <!-- Resolve the theme before first paint so the page never flashes the
+       wrong mode. ThemeService adopts whatever this leaves on the element. -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('io-theme');
+        if (stored === 'light' || stored === 'dark') {
+          document.documentElement.setAttribute('data-theme', stored);
+        } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) { /* keep the dark default */ }
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>

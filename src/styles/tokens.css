@@ -1,0 +1,247 @@
+/* ---------------------------------------------------------------------------
+ * Design tokens
+ *
+ * Structure mirrors the Spaceship design system (--sds-*): mode-independent
+ * primitives on :root, colour roles declared once per mode. Colour tokens are
+ * named for their ROLE and SURFACE, never for their value — nothing in the app
+ * should reference a literal hex.
+ *
+ *   --io-color-{background|text|border|icon}-{role}-{step}
+ *   --io-color-text-{role}-on-{surface}
+ *
+ * Steps run minimal -> subtle -> moderate -> bold -> strong -> contrast.
+ * ------------------------------------------------------------------------- */
+
+:root {
+  /* --- Radius ------------------------------------------------------------ */
+  --io-radius-3x-small: 0.25rem;
+  --io-radius-2x-small: 0.5rem;
+  --io-radius-x-small: 0.75rem;
+  --io-radius-small: 1rem;
+  --io-radius-medium: 1.5rem;
+  --io-radius-large: 2rem;
+  --io-radius-x-large: 2.5rem;
+  --io-radius-2x-large: 4rem;
+  --io-radius-full: 9999px;
+
+  /* --- Space (4px base) -------------------------------------------------- */
+  --io-space-050: 0.125rem;
+  --io-space-100: 0.25rem;
+  --io-space-150: 0.375rem;
+  --io-space-200: 0.5rem;
+  --io-space-300: 0.75rem;
+  --io-space-400: 1rem;
+  --io-space-500: 1.25rem;
+  --io-space-600: 1.5rem;
+  --io-space-800: 2rem;
+  --io-space-1000: 2.5rem;
+  --io-space-1200: 3rem;
+  --io-space-1600: 4rem;
+  --io-space-2000: 5rem;
+  --io-space-2400: 6rem;
+  --io-space-3200: 8rem;
+  --io-space-4000: 10rem;
+
+  /* --- Borders ----------------------------------------------------------- */
+  --io-border-width: 0.0625rem;
+  --io-border-width-focused: 0.125rem;
+
+  /* --- Motion ------------------------------------------------------------ */
+  --io-duration-fast: 150ms;
+  --io-duration-base: 250ms;
+  --io-duration-slow: 500ms;
+  --io-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --io-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------------------------------------------------------------------------
+ * Light mode
+ * ------------------------------------------------------------------------- */
+
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+
+  /* Surfaces */
+  --io-color-background-neutral-base: #ffffff;
+  --io-color-background-neutral-minimal: #f9f9f9;
+  --io-color-background-neutral-subtle: #f4f4f5;
+  --io-color-background-neutral-moderate: #e2e2e2;
+  --io-color-background-neutral-bold: #919091;
+  --io-color-background-neutral-contrast: #18191b;
+  /* For the sticky header, which frosts the page behind it. Alpha has to live
+     in the token: Tailwind cannot composite opacity onto a var() colour. */
+  --io-color-background-neutral-translucent: rgba(255, 255, 255, 0.82);
+
+  /* Text */
+  --io-color-text-neutral-strong: #18191b;
+  --io-color-text-neutral: #252628;
+  --io-color-text-neutral-variant: #575758;
+  --io-color-text-neutral-subtle: #6f6e6f;
+  --io-color-text-neutral-on-contrast: #ffffff;
+
+  /* Borders */
+  --io-color-border-neutral-subtle: rgba(24, 25, 27, 0.08);
+  --io-color-border-neutral-moderate: rgba(24, 25, 27, 0.16);
+  --io-color-border-neutral-bold: rgba(24, 25, 27, 0.32);
+
+  /* Brand — yellow cannot carry text weight on light surfaces at full
+     saturation (#fbd700 on white is 1.7:1), so brand TEXT darkens to amber
+     while brand FILLS stay the saturated yellow with dark text on top. */
+  --io-color-background-brand-bold: #fbd700;
+  --io-color-background-brand-bold-hovered: #ffe23d;
+  --io-color-background-brand-bold-pressed: #e6c500;
+  --io-color-background-brand-moderate: #fff4c2;
+  --io-color-background-brand-subtle: #fff8de;
+  --io-color-background-brand-minimal: #fffbe8;
+  --io-color-text-brand: #7a5e00;
+  --io-color-text-brand-on-bold: #18191b;
+  --io-color-icon-brand: #7a5e00;
+  --io-color-border-brand-subtle: rgba(200, 160, 0, 0.35);
+  --io-color-border-brand-moderate: rgba(180, 143, 0, 0.55);
+  --io-color-border-brand-bold: #7a5e00;
+
+  /* Inverted (a dark island inside a light page) */
+  --io-color-background-inverted-base: #18191b;
+  --io-color-background-inverted-minimal: rgba(24, 25, 27, 0.06);
+  --io-color-background-inverted-moderate: rgba(24, 25, 27, 0.16);
+  --io-color-text-inverted: #f9f9f9;
+
+  /* Status */
+  --io-color-background-danger-bold: #d91300;
+  --io-color-background-danger-minimal: #fff8f6;
+  --io-color-text-danger: #9c0e00;
+  --io-color-background-success-bold: #087e6f;
+  --io-color-background-success-minimal: #e5fff8;
+  --io-color-text-success: #00695c;
+  --io-color-background-info-bold: #176ed3;
+  --io-color-background-info-minimal: #f9f9ff;
+  --io-color-text-info: #0f5aa8;
+
+  /* Focus */
+  --io-color-border-focused: #7a5e00;
+  --io-color-border-outer-focused: rgba(251, 215, 0, 0.45);
+
+  /* Elevation — inset hairline highlight plus a soft double drop */
+  --io-shadow-bevel: 0px 1px 0px 0px rgba(23, 24, 26, 0.06) inset;
+  --io-shadow-raised:
+    0px 1px 0px 0px rgba(23, 24, 26, 0.06) inset,
+    0px 1.5px 3px 0px rgba(23, 24, 26, 0.09),
+    0px 3px 6px 0px rgba(23, 24, 26, 0.07);
+  --io-shadow-raised-variant:
+    0px 1px 0px 0px rgba(23, 24, 26, 0.06) inset,
+    0px 3px 6px -1px rgba(23, 24, 26, 0.09),
+    0px 6px 12px -1px rgba(23, 24, 26, 0.07);
+  --io-shadow-overlay:
+    0px 1px 0px 0px rgba(23, 24, 26, 0.06) inset,
+    0px 6px 12px -1px rgba(23, 24, 26, 0.09),
+    0px 12px 24px -1px rgba(23, 24, 26, 0.07);
+
+  /* Atmosphere — the hero wash */
+  --io-gradient-hero:
+    radial-gradient(
+      ellipse 80% 60% at 50% -10%,
+      rgba(251, 215, 0, 0.18),
+      transparent 70%
+    );
+}
+
+/* ---------------------------------------------------------------------------
+ * Dark mode (the default)
+ * ------------------------------------------------------------------------- */
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --io-color-background-neutral-base: #18191b;
+  --io-color-background-neutral-minimal: #1f2022;
+  --io-color-background-neutral-subtle: #252628;
+  --io-color-background-neutral-moderate: #2b2b2d;
+  --io-color-background-neutral-bold: #6f6e6f;
+  --io-color-background-neutral-contrast: #f9f9f9;
+  --io-color-background-neutral-translucent: rgba(24, 25, 27, 0.82);
+
+  --io-color-text-neutral-strong: #ffffff;
+  --io-color-text-neutral: #f9f9f9;
+  --io-color-text-neutral-variant: #cbcbcc;
+  --io-color-text-neutral-subtle: #b3b3b4;
+  --io-color-text-neutral-on-contrast: #18191b;
+
+  --io-color-border-neutral-subtle: rgba(249, 249, 249, 0.1);
+  --io-color-border-neutral-moderate: rgba(249, 249, 249, 0.18);
+  --io-color-border-neutral-bold: rgba(249, 249, 249, 0.36);
+
+  --io-color-background-brand-bold: #fbd700;
+  --io-color-background-brand-bold-hovered: #ffe23d;
+  --io-color-background-brand-bold-pressed: #e6c500;
+  --io-color-background-brand-moderate: rgba(251, 215, 0, 0.16);
+  --io-color-background-brand-subtle: rgba(251, 215, 0, 0.1);
+  --io-color-background-brand-minimal: rgba(251, 215, 0, 0.06);
+  --io-color-text-brand: #ffd84d;
+  --io-color-text-brand-on-bold: #18191b;
+  --io-color-icon-brand: #ffd84d;
+  --io-color-border-brand-subtle: rgba(251, 215, 0, 0.22);
+  --io-color-border-brand-moderate: rgba(251, 215, 0, 0.42);
+  --io-color-border-brand-bold: #fbd700;
+
+  --io-color-background-inverted-base: #f9f9f9;
+  --io-color-background-inverted-minimal: rgba(255, 255, 255, 0.06);
+  --io-color-background-inverted-moderate: rgba(255, 255, 255, 0.21);
+  --io-color-text-inverted: #18191b;
+
+  --io-color-background-danger-bold: #d62a12;
+  --io-color-background-danger-minimal: #2d1b18;
+  --io-color-text-danger: #ff9788;
+  --io-color-background-success-bold: #007b6c;
+  --io-color-background-success-minimal: #172220;
+  --io-color-text-success: #74c1b2;
+  --io-color-background-info-bold: #0f6bd0;
+  --io-color-background-info-minimal: #1a202b;
+  --io-color-text-info: #90b4f5;
+
+  --io-color-border-focused: #ffd84d;
+  --io-color-border-outer-focused: rgba(251, 215, 0, 0.3);
+
+  --io-shadow-bevel: 0px 0px 0.5px 1px rgba(249, 249, 249, 0.08) inset;
+  --io-shadow-raised:
+    0px 0px 0.5px 1px rgba(249, 249, 249, 0.08) inset,
+    0px 1.5px 3px 0px rgba(0, 0, 0, 0.18),
+    0px 3px 6px 0px rgba(0, 0, 0, 0.14);
+  --io-shadow-raised-variant:
+    0px 0px 0.5px 1px rgba(249, 249, 249, 0.09) inset,
+    0px 3px 6px -1px rgba(0, 0, 0, 0.18),
+    0px 6px 12px -1px rgba(0, 0, 0, 0.14);
+  --io-shadow-overlay:
+    0px 0px 0.5px 1px rgba(249, 249, 249, 0.09) inset,
+    0px 6px 12px -1px rgba(0, 0, 0, 0.18),
+    0px 12px 24px -1px rgba(0, 0, 0, 0.14);
+
+  --io-gradient-hero:
+    radial-gradient(
+      ellipse 80% 60% at 50% -10%,
+      rgba(251, 215, 0, 0.12),
+      transparent 70%
+    );
+}
+
+/* ---------------------------------------------------------------------------
+ * Reduced motion — there are ~55 transitioning elements across the app and
+ * none were guarded before this.
+ * ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --io-duration-fast: 1ms;
+    --io-duration-base: 1ms;
+    --io-duration-slow: 1ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

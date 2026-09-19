@@ -1,15 +1,124 @@
-<!-- Jumbotron -->
-<app-jumbotron>
-    <div class="flex flex-col gap-4 md:gap-6">
-        <h1 class="font-normal text-[2.75rem] leading-[1.1] md:text-[clamp(4.5rem,8vw,7.5rem)] lg:text-9xl tracking-tight">
-            Good to see you, <br />I’m Isah.
-        </h1>
-        <p class="font-lato text-gray-light uppercase tracking-[0.3em] text-sm md:text-lg lg:text-xl font-light transform translate-x-1 opacity-80">
-            A Software Engineer
-        </p>
+<!--
+  Section order follows the Spaceship pattern — hero with one clear action,
+  then a stack of large rounded cards, each carrying one idea.
+
+  It is ordered for the two audiences PRODUCT.md names: a recruiter or hiring
+  manager who decides inside the first viewport, and a prospective client who
+  wants to see delivered work. Evidence comes before narrative, and contact is
+  a real section rather than a link buried under the fold.
+-->
+
+<!-- Hero -->
+<header class="io-hero-wash relative overflow-hidden">
+  <div class="mx-auto flex min-h-[78svh] w-full max-w-content flex-col justify-center px-5 py-20 sm:px-8 sm:py-28">
+    <div class="flex max-w-4xl flex-col gap-6 animate-io-rise">
+      <h1 class="io-display text-heading">
+        Good to see you,<br />I&rsquo;m Isah.
+      </h1>
+
+      <p class="io-body-lg max-w-prose text-muted">
+        Software engineer. {{ years }} years building payment, calling and edtech
+        platforms used across Africa and Europe &mdash; most recently the payment
+        platform at Talk360.
+      </p>
+
+      <div class="mt-2 flex flex-wrap gap-3">
+        <app-button routerLink="/works" size="lg">See the work</app-button>
+        <app-button href="assets/resume.pdf" [download]="true" variant="secondary" size="lg" icon="pi pi-download">
+          Download r&eacute;sum&eacute;
+        </app-button>
+      </div>
     </div>
-</app-jumbotron>
-<!-- About -->
-<app-about-section></app-about-section>
-<!-- Projects -->
-<app-projects-section></app-projects-section>
+  </div>
+</header>
+
+<!-- Evidence -->
+<app-section spacing="tight" labelledBy="evidence-heading" appReveal>
+  <h2 id="evidence-heading" class="sr-only">Selected outcomes</h2>
+
+  <app-card tone="raised" [padded]="false">
+    <div class="grid grid-cols-1 divide-y divide-subtle sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4">
+      @for (metric of metrics; track metric.label) {
+        <div class="flex flex-col gap-1 p-6 sm:p-8 lg:border-r lg:border-subtle lg:last:border-r-0">
+          <span class="io-heading-md text-brand-text">{{ metric.value }}</span>
+          <span class="io-body-sm text-body">{{ metric.label }}</span>
+          <span class="io-label text-subtle">{{ metric.company }}</span>
+        </div>
+      }
+    </div>
+  </app-card>
+</app-section>
+
+<!-- Selected work -->
+<app-section labelledBy="work-heading" appReveal>
+  <div class="flex flex-col gap-3">
+    <h2 id="work-heading" class="io-heading-lg text-heading">Selected work</h2>
+    <p class="io-body-lg max-w-prose text-muted">
+      Payments, international calling, education and greentech &mdash; shipped for
+      teams in Nigeria, the Netherlands and beyond.
+    </p>
+  </div>
+
+  <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+    @for (project of featured; track project.id) {
+      <app-project-card [project]="project" />
+    }
+  </div>
+
+  <div class="mt-10">
+    <app-button routerLink="/works" variant="secondary">
+      See all {{ totalCount }} projects
+    </app-button>
+  </div>
+</app-section>
+
+<!-- Experience -->
+<app-section spacing="tight" labelledBy="experience-heading" surface="bg-surface-minimal" appReveal>
+  <div class="flex flex-col gap-3">
+    <h2 id="experience-heading" class="io-heading-lg text-heading">Where I&rsquo;ve worked</h2>
+  </div>
+
+  <ul class="mt-8 flex flex-col divide-y divide-subtle border-y border-subtle">
+    @for (role of roles; track role.id) {
+      <li class="flex flex-col gap-1 py-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
+        <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-3">
+          <span class="io-heading-sm text-heading">{{ role.company }}</span>
+          <span class="io-body-sm text-muted">{{ role.role }}</span>
+        </div>
+        <span class="io-body-sm shrink-0 text-subtle">{{ role.duration }}</span>
+      </li>
+    }
+  </ul>
+
+  <div class="mt-8">
+    <app-button routerLink="/about" variant="secondary">
+      Read the full history
+    </app-button>
+  </div>
+</app-section>
+
+<!-- Contact -->
+<app-section labelledBy="contact-heading" appReveal>
+  <app-card tone="brand">
+    <div class="flex flex-col gap-6 py-4 sm:py-8">
+      <div class="flex max-w-prose flex-col gap-3">
+        <h2 id="contact-heading" class="io-heading-lg text-heading">
+          Got something to build?
+        </h2>
+        <p class="io-body-lg text-muted">
+          I&rsquo;m open to engineering roles and contract work. Tell me what
+          you&rsquo;re working on and I&rsquo;ll reply.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <app-button [href]="'mailto:' + email" size="lg" icon="pi pi-envelope">
+          {{ email }}
+        </app-button>
+        <app-button href="assets/resume.pdf" [download]="true" variant="secondary" size="lg">
+          Download r&eacute;sum&eacute;
+        </app-button>
+      </div>
+    </div>
+  </app-card>
+</app-section>

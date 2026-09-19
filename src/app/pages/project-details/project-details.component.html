@@ -1,185 +1,173 @@
 <!-- Unknown project: say so, rather than rendering an empty page or bouncing silently -->
 @if (notFound) {
-<div class="min-h-screen bg-dark-bg text-white flex items-center justify-center px-5">
-  <div class="max-w-lg text-center">
-    <p class="font-lato text-xs font-light uppercase tracking-[0.2em] text-primary-yellow mb-6">Not found</p>
-    <h1 class="font-playfair text-4xl md:text-5xl mb-6">That project isn't here.</h1>
-    <p class="font-lato text-gray-custom font-light leading-relaxed mb-10">
-      The link may be out of date, or the project may have been renamed.
-    </p>
-    <a routerLink="/works"
-       class="inline-flex items-center justify-center px-6 py-3 border border-primary-yellow text-primary-yellow font-lato text-sm tracking-widest uppercase hover:bg-primary-yellow hover:text-black transition-colors duration-300">
-      See all projects
-    </a>
+  <div class="flex min-h-[70svh] items-center justify-center px-5">
+    <div class="max-w-lg text-center">
+      <p class="io-label mb-4 text-brand-text">Not found</p>
+      <h1 class="io-heading-lg mb-4 text-heading">That project isn&rsquo;t here.</h1>
+      <p class="io-body-lg mb-8 text-muted">
+        The link may be out of date, or the project may have been renamed.
+      </p>
+      <app-button routerLink="/works">See all projects</app-button>
+    </div>
   </div>
-</div>
 }
 
-<div *ngIf="project && !notFound" class="min-h-screen bg-dark-bg text-white relative flex flex-col overflow-x-hidden">
-  
-  <!-- Navigation Top Bar -->
-  <div class="fixed top-0 left-0 w-full z-50 py-6 px-5 transition-all md:px-12 pointer-events-none">
-    <div class="max-w-75rem mx-auto flex justify-between items-center w-full pointer-events-auto">
-      <button (click)="goBack()" 
-              class="group flex items-center gap-3 text-white/50 hover:text-white transition-all duration-300 backdrop-blur-md bg-black/20 px-4 py-2 rounded-full border border-white/5">
-        <i class="pi pi-arrow-left text-sm group-hover:-translate-x-1 transition-transform"></i>
-        <span class="font-lato text-xs tracking-[0.2em] uppercase">Back</span>
-      </button>
-    </div>
-  </div>
+@if (project && !notFound) {
+  <article class="flex min-h-screen flex-col">
+    <!-- Hero. The project's own colour becomes a wash rather than a flat fill. -->
+    <header
+      class="relative flex min-h-[46svh] items-center justify-center overflow-hidden border-b border-subtle px-5 py-20 sm:min-h-[56svh]"
+      [ngStyle]="{
+        'background-image':
+          'radial-gradient(ellipse 70% 70% at 50% 40%, ' + project.bgColor + '33, transparent 70%)'
+      }">
+      <div class="relative z-10 flex max-w-3xl flex-col items-center gap-6 text-center">
+        @if (project.logo) {
+          <app-project-logo
+            [src]="project.logo"
+            [title]="project.title"
+            [showWordmark]="false"
+            imgClass="h-14 w-auto object-contain sm:h-20" />
+        }
+        <!-- Single h1 per page: the title is the heading whether or not a logo renders. -->
+        <h1 class="io-heading-lg text-heading">{{ project.title }}</h1>
 
-  <!-- Dynamic Hero Banner -->
-  <section class="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden border-b border-white/5">
-    <!-- Background Glow -->
-    <div class="absolute inset-0 bg-dark-bg"
-         [ngStyle]="{'background-image': 'radial-gradient(circle farthest-corner at 50% 50%, ' + project.bgColor + '40, transparent 60%)'}">
-    </div>
-    
-    <!-- Hero Content -->
-    <div class="relative z-10 flex flex-col items-center justify-center text-center px-5 max-w-4xl">
-      <span class="font-lato font-light text-white/30 text-8xl md:text-9xl mb-4 select-none opacity-50 block md:hidden">
-        0{{project.position}}
-      </span>
-      @if (project.logo) {
-        <app-project-logo
-          [src]="project.logo"
-          [title]="project.title"
-          imgClass="h-16 md:h-28 object-contain drop-shadow-2xl mb-8"
-          wordmarkClass="font-playfair font-bold text-4xl md:text-6xl mb-8 block" />
-      }
-      <!-- Single h1 per page. The title is the heading whether or not a logo renders. -->
-      <h1 class="font-playfair font-normal text-3xl md:text-5xl tracking-wide">{{project.title}}</h1>
-      
-      <!-- Number Decor absolute on desktop -->
-      <span class="hidden md:block absolute -left-32 top-1/2 -translate-y-1/2 font-lato font-bold text-[12rem] text-white/5 select-none pointer-events-none">
-        0{{project.position}}
-      </span>
-    </div>
-  </section>
-
-  <!-- Overview Section -->
-  <section class="max-w-75rem mx-auto px-5 py-24 md:py-32 w-full flex-grow">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-24">
-      
-      <!-- Left Column (Metadata) -->
-      <div class="lg:col-span-4 space-y-12">
         @if (project.portfolio_url) {
-        <div class="pt-4 border-t border-white/10">
-          <h2 class="font-lato text-xs font-light uppercase tracking-[0.2em] text-white/50 mb-4">Website</h2>
-          <a [href]="project.portfolio_url" 
-             target="_blank" rel="noopener noreferrer"
-             class="inline-flex items-center text-primary-yellow hover:text-white transition-colors duration-300 font-lato text-sm tracking-widest uppercase group group-btn border border-primary-yellow/30 px-6 py-3 hover:border-white/50 hover:bg-white/5">
-             Visit Project Live
-             <i class="pi pi-arrow-right ml-3 text-xs group-hover:translate-x-1 transition-transform"></i>
-          </a>
+          <app-button
+            [href]="project.portfolio_url"
+            [external]="true"
+            variant="secondary">
+            Visit the live site
+          </app-button>
+        }
+      </div>
+    </header>
+
+    <!-- Overview -->
+    @if (project.description) {
+      <app-section labelledBy="overview-heading">
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-16">
+          <div class="lg:col-span-4">
+            <h2 id="overview-heading" class="io-label text-brand-text">About the work</h2>
+          </div>
+          <div class="lg:col-span-8">
+            <p class="io-body-lg max-w-prose text-muted">{{ project.description }}</p>
+          </div>
         </div>
-        }
-      </div>
+      </app-section>
+    }
 
-      <!-- Right Column (Description) -->
-      <div class="lg:col-span-8">
-        @if (project.description) {
-          <h2 class="font-lato text-xs font-light uppercase tracking-[0.2em] text-primary-yellow mb-6">About the Work</h2>
-          <p class="text-gray-custom leading-loose font-lato text-lg md:text-[1.3rem] md:leading-[2.2] font-light max-w-3xl">
-            {{project.description}}
-          </p>
-        }
-      </div>
-    </div>
-  </section>
+    <!-- Gallery. Screenshots live here and nowhere else on the site. -->
+    @if (project.images.length > 0) {
+      <app-section
+        spacing="tight"
+        labelledBy="gallery-heading"
+        surface="border-t border-subtle bg-surface-minimal">
+        <h2 id="gallery-heading" class="io-label mb-8 text-subtle">Screens</h2>
 
-  <!-- Native Gallery -->
-  <section *ngIf="project.images && project.images.length > 0" class="w-full bg-black/30 py-24 border-t border-white/5">
-    <div class="max-w-75rem mx-auto px-5">
-      <div class="flex items-center gap-4 mb-16">
-        <div class="w-12 h-px bg-primary-yellow"></div>
-        <h2 class="font-lato text-xs font-light uppercase tracking-[0.2em] text-white/50">Gallery Focus</h2>
-      </div>
-      
-      <!-- Masonry-ish / Large Grid Setup -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-        @for (image of project.images; track image.id; let imgIdx = $index) {
-          <button type="button"
-               class="group relative overflow-hidden bg-[#111] cursor-pointer aspect-[4/3] rounded-sm w-full block text-left"
-               [attr.aria-label]="'Open ' + image.imageName + ' full screen'"
-               [ngClass]="imgIdx === 0 ? 'md:col-span-2 lg:col-span-2 aspect-[16/10] md:aspect-auto' : ''"
-               (click)="openGallery(imgIdx)">
-            
-            <img [src]="image.imageUrl" 
-                 [alt]="image.imageName"
-                 loading="lazy"
-                 decoding="async"
-                 width="1600" height="1200"
-                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03] opacity-80 group-hover:opacity-100" />
-            
-            <!-- Hover overlay -->
-            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-              <span class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center bg-black/50 backdrop-blur-sm shadow-xl">
-                <i class="pi pi-expand text-white text-lg"></i>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">
+          @for (image of project.images; track image.id; let imgIdx = $index) {
+            <button
+              type="button"
+              class="group relative block aspect-[4/3] w-full overflow-hidden rounded-medium border border-subtle bg-surface text-left transition-shadow duration-base ease-io hover:shadow-raised-variant"
+              [attr.aria-label]="'Open ' + image.imageName + ' full screen'"
+              [class.sm:col-span-2]="imgIdx === 0"
+              (click)="openGallery(imgIdx)">
+              <img
+                [src]="image.imageUrl"
+                [alt]="image.imageName"
+                loading="lazy"
+                decoding="async"
+                width="1600"
+                height="1200"
+                class="h-full w-full object-cover transition-transform duration-slow ease-io-out group-hover:scale-[1.03]" />
+
+              <span
+                class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-base ease-io group-hover:opacity-100">
+                <span
+                  class="flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-black/50 backdrop-blur-sm">
+                  <i class="pi pi-expand text-lg text-white" aria-hidden="true"></i>
+                </span>
               </span>
-            </div>
-          </button>
-        }
-      </div>
-    </div>
-  </section>
+            </button>
+          }
+        </div>
+      </app-section>
 
-  <!-- P-Galleria for Fullscreen -->
-  <p-galleria 
-    [value]="getGalleryImages(project)" 
-    [responsiveOptions]="[
-      { breakpoint: '1024px', numVisible: 5 },
-      { breakpoint: '768px', numVisible: 3 },
-      { breakpoint: '560px', numVisible: 1 }
-    ]"
-    [numVisible]="5"
-    [circular]="true"
-    [fullScreen]="true"
-    [showItemNavigators]="true"
-    [showThumbnails]="true"
-    [showItemNavigatorsOnHover]="true"
-    [showIndicators]="true"
-    [(activeIndex)]="activeIndex"
-    [(visible)]="galleryOpen">
-    
-    <ng-template pTemplate="item" let-item>
-      <img [src]="item.previewImageSrc" [alt]="item.alt" width="1600" height="1200" decoding="async" class="w-full h-auto max-h-[85vh] object-contain drop-shadow-2xl" />
-    </ng-template>
-    
-    <ng-template pTemplate="thumbnail" let-item>
-      <div class="grid grid-nogutter justify-content-center p-1">
-        <img [src]="item.thumbnailImageSrc" [alt]="" width="96" height="64" loading="lazy" decoding="async" class="w-20 h-14 md:w-24 md:h-16 object-cover rounded opacity-50 hover:opacity-100 cursor-pointer transition-opacity duration-300" />
-      </div>
-    </ng-template>
-  </p-galleria>
+      <p-galleria
+        [value]="getGalleryImages(project)"
+        [responsiveOptions]="[
+          { breakpoint: '1024px', numVisible: 5 },
+          { breakpoint: '768px', numVisible: 3 },
+          { breakpoint: '560px', numVisible: 1 }
+        ]"
+        [numVisible]="5"
+        [circular]="true"
+        [fullScreen]="true"
+        [showItemNavigators]="true"
+        [showThumbnails]="true"
+        [showItemNavigatorsOnHover]="true"
+        [showIndicators]="true"
+        [(activeIndex)]="activeIndex"
+        [(visible)]="galleryOpen">
+        <ng-template pTemplate="item" let-item>
+          <img
+            [src]="item.previewImageSrc"
+            [alt]="item.alt"
+            width="1600"
+            height="1200"
+            decoding="async"
+            class="h-auto max-h-[85vh] w-full object-contain" />
+        </ng-template>
 
-  <!-- Next / Prev Footer -->
-  <footer class="mt-auto border-t border-white/10 w-full flex flex-col sm:flex-row relative z-10 bottom-0 bg-[#0a0a0a]">
-    <!-- Previous Project -->
-    <a *ngIf="prevProject" 
-       [routerLink]="['/works', prevProject.id]"
-       class="flex-1 p-8 md:p-12 border-b sm:border-b-0 sm:border-r border-white/5 hover:bg-white/5 transition-colors group relative overflow-hidden flex flex-col items-start justify-center text-left">
-      <span class="font-lato text-xs tracking-[0.2em] text-white/40 uppercase mb-3 block group-hover:text-primary-yellow transition-colors">
-        Previous Work
-      </span>
-      <span class="block font-playfair text-2xl md:text-3xl text-white group-hover:translate-x-2 transition-transform duration-500">
-        {{prevProject.title}}
-      </span>
-    </a>
-    
-    <!-- Spacer if no prev -->
-    <div *ngIf="!prevProject" class="flex-1 hidden sm:block border-r border-white/5"></div>
+        <ng-template pTemplate="thumbnail" let-item>
+          <img
+            [src]="item.thumbnailImageSrc"
+            alt=""
+            width="96"
+            height="64"
+            loading="lazy"
+            decoding="async"
+            class="h-14 w-20 rounded-2x-small object-cover opacity-60 transition-opacity duration-base ease-io hover:opacity-100 sm:h-16 sm:w-24" />
+        </ng-template>
+      </p-galleria>
+    }
 
-    <!-- Next Project -->
-    <a *ngIf="nextProject" 
-       [routerLink]="['/works', nextProject.id]"
-       class="flex-1 p-8 md:p-12 hover:bg-white/5 transition-colors group relative overflow-hidden flex flex-col items-end justify-center text-right">
-      <span class="font-lato text-xs tracking-[0.2em] text-white/40 uppercase mb-3 block group-hover:text-primary-yellow transition-colors">
-        Next Work
-      </span>
-      <span class="block font-playfair text-2xl md:text-3xl text-white group-hover:-translate-x-2 transition-transform duration-500">
-        {{nextProject.title}}
-      </span>
-    </a>
-  </footer>
-</div>
+    <!-- Previous / next -->
+    <nav
+      class="mt-auto flex flex-col border-t border-subtle sm:flex-row"
+      aria-label="Other projects">
+      @if (prevProject) {
+        <a
+          [routerLink]="['/works', prevProject.slug]"
+          class="group flex flex-1 flex-col items-start justify-center gap-2 border-b border-subtle p-8 text-left transition-colors duration-base ease-io hover:bg-surface-minimal sm:border-b-0 sm:border-r sm:p-12">
+          <span class="io-label text-subtle transition-colors duration-base group-hover:text-brand-text">
+            Previous
+          </span>
+          <span
+            class="io-heading-sm text-heading transition-transform duration-base ease-io group-hover:translate-x-1">
+            {{ prevProject.title }}
+          </span>
+        </a>
+      } @else {
+        <div class="hidden flex-1 border-r border-subtle sm:block"></div>
+      }
+
+      @if (nextProject) {
+        <a
+          [routerLink]="['/works', nextProject.slug]"
+          class="group flex flex-1 flex-col items-end justify-center gap-2 p-8 text-right transition-colors duration-base ease-io hover:bg-surface-minimal sm:p-12">
+          <span class="io-label text-subtle transition-colors duration-base group-hover:text-brand-text">
+            Next
+          </span>
+          <span
+            class="io-heading-sm text-heading transition-transform duration-base ease-io group-hover:-translate-x-1">
+            {{ nextProject.title }}
+          </span>
+        </a>
+      } @else {
+        <div class="hidden flex-1 sm:block"></div>
+      }
+    </nav>
+  </article>
+}

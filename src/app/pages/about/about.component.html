@@ -1,17 +1,28 @@
-<!-- Hero Section -->
-<app-jumbotron>
-    <h1 class="text-5xl md:text-9xl font-medium">So, <br />My Experiences...</h1>
-    <p class="font-lato mt-4">A Software Engineer</p>
-</app-jumbotron>
-
-<!-- Experience Section -->
-<section class="max-w-75rem mx-auto py-12 sm:px-5">
-    <div class="experiences-wrapper mx-auto">
-        @for (experience of experiences; track experience) {
-        <app-experience-item [experience]="experience"></app-experience-item>
-        }
+<!-- Hero -->
+<header class="io-hero-wash">
+  <div class="mx-auto flex w-full max-w-content flex-col gap-5 px-5 py-20 sm:px-8 sm:py-28">
+    <h1 class="io-display text-heading">Where I&rsquo;ve worked</h1>
+    <p class="io-body-lg max-w-prose text-muted">
+      {{ yearsOfExperience }} years across payments, international calling, education and
+      greentech &mdash; four roles, with what each one shipped.
+    </p>
+    <div class="mt-2 flex flex-wrap gap-3">
+      <app-button href="assets/resume.pdf" [download]="true" icon="pi pi-download">
+        Download r&eacute;sum&eacute;
+      </app-button>
+      <app-button routerLink="/works" variant="secondary">See the work</app-button>
     </div>
-</section>
+  </div>
+</header>
 
-<!-- Scroll to Top Button -->
-<!-- <p-scrolltop /> -->
+<!-- Experience -->
+<app-section labelledBy="experience-heading">
+  <h2 id="experience-heading" class="sr-only">Experience</h2>
+  <div class="flex flex-col gap-12 sm:gap-16">
+    @for (experience of experiences; track experience.id) {
+      <app-experience-item [experience]="experience" />
+    }
+  </div>
+</app-section>
+
+<p-scrolltop />

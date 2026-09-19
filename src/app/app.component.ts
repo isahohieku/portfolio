@@ -14,17 +14,21 @@ import { CommonModule } from '@angular/common';
   template: `
     <!-- Global Loading Spinner -->
     @if (loadingService.isLoading()) {
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div
+      class="fixed inset-0 z-[60] flex items-center justify-center bg-black/60"
+      role="status"
+      aria-live="polite">
       <p-progressSpinner
         strokeWidth="3"
         fill="transparent"
         animationDuration="1s">
       </p-progressSpinner>
+      <span class="sr-only">Loading</span>
     </div>
     }
 
     <app-header />
-    <main>
+    <main id="main" tabindex="-1">
       <router-outlet />
     </main>
     <app-footer />

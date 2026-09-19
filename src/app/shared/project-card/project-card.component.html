@@ -1,37 +1,38 @@
 <!--
-  The card root is an anchor, not a div. Previously the only interactive element was
-  a link inside the hover-revealed caption, which is unreachable on touch — the whole
-  card was a dead end on a phone. As a real link it is tappable, keyboard-focusable,
-  crawlable, and supports middle-click / open-in-new-tab.
+  The card root is an anchor, not a div. Previously the only interactive element
+  was a link inside the hover-revealed caption, which is unreachable on touch —
+  the whole card was a dead end on a phone.
+
+  Nothing load-bearing is hover-gated any more either: the title, the summary
+  and the case-study marker are all visible at rest, because roughly half the
+  audience arrives on a phone and will never produce a hover.
 -->
-<a [routerLink]="['/works', project.slug]"
-   class="project-wrapper block relative w-full md:w-25rem md:h-25rem bg-project-bg overflow-hidden transition-all duration-500 hover:shadow-2xl hover:scale-[1.03] hover:-translate-y-2 hover:z-50 h-30rem group">
-    <!-- Background with subtle inner glow/shadow for contrast -->
-    <div class="project-bg h-full absolute top-0 left-0 w-full transition-all duration-500 ease-out"
-         [ngStyle]="{'backgroundColor': project.bgColor}">
-         <div class="absolute inset-0 bg-gradient-to-tr from-black/10 to-transparent opacity-50"></div>
-    </div>
+<a
+  [routerLink]="['/works', project.slug]"
+  class="project-wrapper group flex h-full flex-col overflow-hidden rounded-x-large border border-subtle bg-surface-minimal shadow-raised transition-all duration-base ease-io hover:-translate-y-1 hover:shadow-raised-variant">
+  <!-- Logo plate: the project's own colour, used as a field rather than a whole-card wash -->
+  <div
+    class="relative flex h-44 items-center justify-center overflow-hidden px-10 sm:h-52"
+    [ngStyle]="{ backgroundColor: project.bgColor }">
+    <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent"></div>
+    <app-project-logo
+      [src]="project.logo"
+      [title]="project.title"
+      imgClass="relative z-10 h-12 w-auto object-contain transition-transform duration-slow ease-io-out group-hover:scale-105 sm:h-14"
+      wordmarkClass="relative z-10 text-center text-xl font-bold tracking-tight text-white sm:text-2xl" />
+  </div>
 
-    <!-- Project title -->
-    <h3 class="project-title font-lato font-light uppercase absolute left-8 top-12 opacity-0 md:text-xl text-white transition-all duration-500 ease-out group-hover:opacity-100 group-hover:top-8 sm:top-5 sm:text-xs sm:opacity-100 tracking-[0.2em]">
-        {{project.title}}
-    </h3>
+  <div class="flex flex-1 flex-col gap-2 p-6">
+    <h3 class="io-heading-sm text-heading">{{ project.title }}</h3>
 
-    <!-- Logo, or the project name as a wordmark when no logo asset resolves -->
-    <div class="flex justify-center items-center h-full relative z-10 px-12">
-        <app-project-logo
-            [src]="project.logo"
-            [title]="project.title"
-            imgClass="h-16 w-auto object-contain transition-all duration-700 ease-out group-hover:scale-110 group-hover:drop-shadow-lg sm:h-10"
-            wordmarkClass="font-playfair text-2xl md:text-3xl text-white/90 text-center transition-all duration-700 ease-out group-hover:scale-105" />
-    </div>
+    @if (project.description) {
+      <p class="io-body-sm text-muted">{{ project.description }}</p>
+    }
 
-    <!-- Caption -->
-    <div class="project-caption absolute left-0 bottom-0 w-full p-8 text-white translate-y-full transition-all duration-500 ease-out z-20 group-hover:translate-y-0 bg-gradient-to-t from-black/80 to-transparent">
-        <p class="font-lato font-light text-sm leading-relaxed">{{project.description}}</p>
-
-        <span class="inline-flex items-center justify-center px-6 py-2 border border-primary-yellow text-primary-yellow text-xs uppercase tracking-widest mt-4 group-hover:bg-primary-yellow group-hover:text-black transition-all duration-300">
-            View Details
-        </span>
-    </div>
+    <span
+      class="mt-auto inline-flex items-center gap-2 pt-4 io-label text-brand-text transition-transform duration-base ease-io group-hover:translate-x-1">
+      {{ hasCaseStudy ? 'Read the case study' : 'View project' }}
+      <i class="pi pi-arrow-right text-xs" aria-hidden="true"></i>
+    </span>
+  </div>
 </a>

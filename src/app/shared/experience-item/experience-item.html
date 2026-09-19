@@ -1,51 +1,57 @@
-<div class="py-8 border-b border-gray-border last:border-b-0 sm:py-5">
-  <div class="flex flex-col md:flex-row">
-    <!-- Left Column - Duration (1/6) -->
-    <div class="w-full md:w-1/6 flex items-center justify-center md:justify-start mb-4 md:mb-0">
-      <span class="text-primary-dark font-semibold text-center">{{experience.duration}}</span>
+<!--
+  Three registers a skimmer can enter at any depth: the role and dates, the
+  quantified outcomes, then the prose overview last — it is the longest and the
+  least scannable, so it no longer sits above the numbers.
+
+  The company colour is applied as an inline style. It used to be
+  [ngClass]="'text-' + companyColor", which Tailwind can never emit a class for
+  because it scans source statically.
+-->
+<article class="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-10">
+  <div class="md:col-span-3">
+    <p class="io-body-sm text-subtle">{{ experience.duration }}</p>
+  </div>
+
+  <div class="flex flex-col gap-6 md:col-span-9">
+    <div class="flex flex-col gap-1">
+      <h3 class="io-heading-md text-heading">{{ experience.role }}</h3>
+
+      @if (experience.companyLink) {
+        <a
+          [href]="experience.companyLink"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex w-fit items-center gap-1.5 io-body-md text-brand-text underline decoration-1 underline-offset-4 hover:no-underline">
+          {{ experience.company }}
+          <i class="pi pi-arrow-up-right text-[0.7rem]" aria-hidden="true"></i>
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+      } @else {
+        <span class="io-body-md text-muted">{{ experience.company }}</span>
+      }
     </div>
 
-    <!-- Right Column - Content (5/6) -->
-    <div class="w-full md:w-5/6 bg-gray-50 md:p-16 sm:p-4">
-      <!-- Role -->
-      <h2 class="text-lg font-lato font-semibold sm:text-base">{{experience.role}}</h2>
-
-      <!-- Company Name -->
-      <a [href]="experience.companyLink" target="_blank" rel="noopener noreferrer"
-        class="font-lato text-primary-dark mb-4"
-        [ngClass]="'text-' + (experience?.companyColor || '')">
-        {{experience.company}} 
-        <i class="pi pi-arrow-up-right text-gray-light" style="font-size: 0.75rem;"></i>
-      </a>
-
-      <!-- Overview -->
-      <p class="mb-6 mt-5 text-gray-light leading-relaxed">{{experience.overview}}</p>
-
-      <!-- Key Accomplishments -->
-      <div class="mb-6">
-        <!-- <h5 class="font-lato text-xl font-medium mb-4 text-primary-dark sm:text-sm">Key Accomplishments</h5> -->
-        <ul class="list-none pl-0">
-          @for (accomplishment of experience.accomplishments; track accomplishment) {
-          <li class="mb-2 pl-6 relative text-gray-light leading-relaxed">
-            <i class="pi pi-check-circle text-green-600 absolute left-0 top-1"></i>
-            {{accomplishment}}
+    @if (experience.accomplishments.length) {
+      <ul class="flex list-none flex-col gap-3 pl-0">
+        @for (accomplishment of experience.accomplishments; track accomplishment) {
+          <li class="relative pl-7 io-body-md text-body">
+            <i
+              class="pi pi-check absolute left-0 top-1 text-xs text-success-text"
+              aria-hidden="true"></i>
+            {{ accomplishment }}
           </li>
-          }
-        </ul>
-      </div>
+        }
+      </ul>
+    }
 
-      <!-- Technologies -->
-      <div class="flex flex-wrap gap-3">
-        @for (tech of experience.technologies; track tech) {
-        <span
-          class="inline-flex items-center md:px-5 md:py-2 bg-white border rounded-full text-primary-dark cursor-pointer hover:bg-amber-300 hover:border-amber-bg-amber-300 transform transition-all duration-300 sm:text-xs sm:px-2 sm:py-1">
-          @if (tech.icon) {
-          <img [src]="tech.icon" alt="" width="16" height="16" loading="lazy" decoding="async" class="h-4 mr-2" />
-          }
-          {{tech.name}}
-        </span>
+    <p class="io-body-md max-w-prose text-muted">{{ experience.overview }}</p>
+
+    @if (experience.technologies.length) {
+      <div class="flex flex-wrap gap-2">
+        @for (tech of experience.technologies; track tech.name) {
+          <app-tag [icon]="tech.icon ?? null">{{ tech.name }}</app-tag>
         }
       </div>
-    </div>
+    }
   </div>
-</div>
+</article>

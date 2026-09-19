@@ -1,0 +1,189 @@
+/* ---------------------------------------------------------------------------
+ * PrimeNG theming
+ *
+ * PrimeNG 19 emits `var(--p-*)` references in styled mode whether or not a
+ * preset is registered; with no preset those variables are simply undefined,
+ * which is why the toast, galleria and spinner rendered unstyled. The preset
+ * packages (@primeng/themes) are not installable into this tree, so the
+ * variables the four components we actually use are defined here directly,
+ * against the --io-* role tokens. They therefore follow light/dark with
+ * everything else.
+ *
+ * Components in use: p-toast, p-progressSpinner, p-galleria, p-scrolltop.
+ * ------------------------------------------------------------------------- */
+
+:root {
+  /* --- Focus ring (shared) ---------------------------------------------- */
+  --p-focus-ring-width: var(--io-border-width-focused);
+  --p-focus-ring-style: solid;
+  --p-focus-ring-offset: 2px;
+  --p-focus-ring-color: var(--io-color-border-focused);
+  --p-focus-ring-shadow: none;
+
+  /* --- Toast ------------------------------------------------------------ */
+  --p-toast-width: 25rem;
+  --p-toast-border-radius: var(--io-radius-medium);
+  --p-toast-border-width: var(--io-border-width);
+  --p-toast-blur: 10px;
+  --p-toast-icon-size: 1.25rem;
+  --p-toast-content-padding: var(--io-space-400);
+  --p-toast-content-gap: var(--io-space-300);
+  --p-toast-text-gap: var(--io-space-100);
+  --p-toast-summary-font-weight: 600;
+  --p-toast-summary-font-size: 1rem;
+  --p-toast-detail-font-weight: 400;
+  --p-toast-detail-font-size: 0.875rem;
+  --p-toast-transition-duration: var(--io-duration-base);
+  --p-toast-close-button-width: 2rem;
+  --p-toast-close-button-height: 2rem;
+  --p-toast-close-button-border-radius: var(--io-radius-full);
+  --p-toast-close-icon-size: 1rem;
+
+  --p-toast-info-background: var(--io-color-background-info-minimal);
+  --p-toast-info-border-color: var(--io-color-border-neutral-subtle);
+  --p-toast-info-color: var(--io-color-text-info);
+  --p-toast-info-detail-color: var(--io-color-text-neutral-variant);
+  --p-toast-info-shadow: var(--io-shadow-overlay);
+  --p-toast-info-close-button-hover-background: var(--io-color-background-inverted-minimal);
+  --p-toast-info-close-button-focus-ring-color: var(--io-color-border-focused);
+  --p-toast-info-close-button-focus-ring-shadow: none;
+
+  --p-toast-success-background: var(--io-color-background-success-minimal);
+  --p-toast-success-border-color: var(--io-color-border-neutral-subtle);
+  --p-toast-success-color: var(--io-color-text-success);
+  --p-toast-success-detail-color: var(--io-color-text-neutral-variant);
+  --p-toast-success-shadow: var(--io-shadow-overlay);
+  --p-toast-success-close-button-hover-background: var(--io-color-background-inverted-minimal);
+  --p-toast-success-close-button-focus-ring-color: var(--io-color-border-focused);
+  --p-toast-success-close-button-focus-ring-shadow: none;
+
+  --p-toast-warn-background: var(--io-color-background-brand-minimal);
+  --p-toast-warn-border-color: var(--io-color-border-brand-subtle);
+  --p-toast-warn-color: var(--io-color-text-brand);
+  --p-toast-warn-detail-color: var(--io-color-text-neutral-variant);
+  --p-toast-warn-shadow: var(--io-shadow-overlay);
+  --p-toast-warn-close-button-hover-background: var(--io-color-background-inverted-minimal);
+  --p-toast-warn-close-button-focus-ring-color: var(--io-color-border-focused);
+  --p-toast-warn-close-button-focus-ring-shadow: none;
+
+  --p-toast-error-background: var(--io-color-background-danger-minimal);
+  --p-toast-error-border-color: var(--io-color-border-neutral-subtle);
+  --p-toast-error-color: var(--io-color-text-danger);
+  --p-toast-error-detail-color: var(--io-color-text-neutral-variant);
+  --p-toast-error-shadow: var(--io-shadow-overlay);
+  --p-toast-error-close-button-hover-background: var(--io-color-background-inverted-minimal);
+  --p-toast-error-close-button-focus-ring-color: var(--io-color-border-focused);
+  --p-toast-error-close-button-focus-ring-shadow: none;
+
+  --p-toast-secondary-background: var(--io-color-background-neutral-minimal);
+  --p-toast-secondary-border-color: var(--io-color-border-neutral-subtle);
+  --p-toast-secondary-color: var(--io-color-text-neutral);
+  --p-toast-secondary-detail-color: var(--io-color-text-neutral-variant);
+  --p-toast-secondary-shadow: var(--io-shadow-overlay);
+  --p-toast-secondary-close-button-hover-background: var(--io-color-background-inverted-minimal);
+  --p-toast-secondary-close-button-focus-ring-color: var(--io-color-border-focused);
+  --p-toast-secondary-close-button-focus-ring-shadow: none;
+
+  --p-toast-contrast-background: var(--io-color-background-neutral-contrast);
+  --p-toast-contrast-border-color: var(--io-color-border-neutral-bold);
+  --p-toast-contrast-color: var(--io-color-text-neutral-on-contrast);
+  --p-toast-contrast-detail-color: var(--io-color-text-neutral-on-contrast);
+  --p-toast-contrast-shadow: var(--io-shadow-overlay);
+  --p-toast-contrast-close-button-hover-background: var(--io-color-background-inverted-minimal);
+  --p-toast-contrast-close-button-focus-ring-color: var(--io-color-border-focused);
+  --p-toast-contrast-close-button-focus-ring-shadow: none;
+
+  /* --- Galleria (case-study screenshots) -------------------------------- */
+  --p-galleria-border-width: 0;
+  --p-galleria-border-color: var(--io-color-border-neutral-subtle);
+  --p-galleria-border-radius: var(--io-radius-medium);
+  --p-galleria-transition-duration: var(--io-duration-base);
+
+  --p-galleria-caption-background: rgba(0, 0, 0, 0.72);
+  --p-galleria-caption-color: #f9f9f9;
+  --p-galleria-caption-padding: var(--io-space-400);
+
+  --p-galleria-nav-button-background: rgba(0, 0, 0, 0.5);
+  --p-galleria-nav-button-hover-background: rgba(0, 0, 0, 0.7);
+  --p-galleria-nav-button-color: #f9f9f9;
+  --p-galleria-nav-button-hover-color: #ffffff;
+  --p-galleria-nav-button-size: 3rem;
+  --p-galleria-nav-button-gutter: var(--io-space-200);
+  --p-galleria-nav-button-prev-border-radius: var(--io-radius-full);
+  --p-galleria-nav-button-next-border-radius: var(--io-radius-full);
+  --p-galleria-nav-button-focus-ring-width: var(--io-border-width-focused);
+  --p-galleria-nav-button-focus-ring-style: solid;
+  --p-galleria-nav-button-focus-ring-color: var(--io-color-border-focused);
+  --p-galleria-nav-button-focus-ring-offset: 2px;
+  --p-galleria-nav-button-focus-ring-shadow: none;
+  --p-galleria-nav-icon-size: 1.25rem;
+
+  --p-galleria-close-button-background: rgba(0, 0, 0, 0.5);
+  --p-galleria-close-button-hover-background: rgba(0, 0, 0, 0.7);
+  --p-galleria-close-button-color: #f9f9f9;
+  --p-galleria-close-button-hover-color: #ffffff;
+  --p-galleria-close-button-size: 3rem;
+  --p-galleria-close-button-gutter: var(--io-space-200);
+  --p-galleria-close-button-border-radius: var(--io-radius-full);
+  --p-galleria-close-button-icon-size: 1.25rem;
+  --p-galleria-close-button-focus-ring-width: var(--io-border-width-focused);
+  --p-galleria-close-button-focus-ring-style: solid;
+  --p-galleria-close-button-focus-ring-color: var(--io-color-border-focused);
+  --p-galleria-close-button-focus-ring-offset: 2px;
+  --p-galleria-close-button-focus-ring-shadow: none;
+
+  --p-galleria-thumbnails-content-background: var(--io-color-background-neutral-minimal);
+  --p-galleria-thumbnails-content-padding: var(--io-space-300);
+  --p-galleria-thumbnail-nav-button-size: 2.5rem;
+  --p-galleria-thumbnail-nav-button-border-radius: var(--io-radius-full);
+  --p-galleria-thumbnail-nav-button-color: var(--io-color-text-neutral-variant);
+  --p-galleria-thumbnail-nav-button-hover-color: var(--io-color-text-neutral);
+  --p-galleria-thumbnail-nav-button-hover-background: var(--io-color-background-inverted-minimal);
+  --p-galleria-thumbnail-nav-button-gutter: var(--io-space-100);
+  --p-galleria-thumbnail-nav-button-icon-size: 1rem;
+  --p-galleria-thumbnail-nav-button-focus-ring-width: var(--io-border-width-focused);
+  --p-galleria-thumbnail-nav-button-focus-ring-style: solid;
+  --p-galleria-thumbnail-nav-button-focus-ring-color: var(--io-color-border-focused);
+  --p-galleria-thumbnail-nav-button-focus-ring-offset: 2px;
+  --p-galleria-thumbnail-nav-button-focus-ring-shadow: none;
+
+  --p-galleria-indicator-button-width: 0.75rem;
+  --p-galleria-indicator-button-height: 0.75rem;
+  --p-galleria-indicator-button-border-radius: var(--io-radius-full);
+  --p-galleria-indicator-button-background: var(--io-color-background-neutral-moderate);
+  --p-galleria-indicator-button-hover-background: var(--io-color-background-neutral-bold);
+  --p-galleria-indicator-button-active-background: var(--io-color-background-brand-bold);
+  --p-galleria-indicator-list-gap: var(--io-space-200);
+  --p-galleria-indicator-list-padding: var(--io-space-300);
+  --p-galleria-indicator-button-focus-ring-width: var(--io-border-width-focused);
+  --p-galleria-indicator-button-focus-ring-style: solid;
+  --p-galleria-indicator-button-focus-ring-color: var(--io-color-border-focused);
+  --p-galleria-indicator-button-focus-ring-offset: 2px;
+  --p-galleria-indicator-button-focus-ring-shadow: none;
+  --p-galleria-inset-indicator-list-background: rgba(0, 0, 0, 0.5);
+  --p-galleria-inset-indicator-button-background: rgba(255, 255, 255, 0.4);
+  --p-galleria-inset-indicator-button-hover-background: rgba(255, 255, 255, 0.6);
+  --p-galleria-inset-indicator-button-active-background: var(--io-color-background-brand-bold);
+}
+
+/* --- Components with no theme keys of their own -------------------------- */
+
+.p-progressspinner-circle {
+  stroke: var(--io-color-background-brand-bold) !important;
+  animation: none;
+}
+
+.p-scrolltop {
+  background: var(--io-color-background-neutral-minimal);
+  border: var(--io-border-width) solid var(--io-color-border-neutral-subtle);
+  border-radius: var(--io-radius-full);
+  box-shadow: var(--io-shadow-raised);
+  color: var(--io-color-text-neutral);
+  width: 3rem;
+  height: 3rem;
+  transition: background var(--io-duration-base) var(--io-ease);
+}
+
+.p-scrolltop:hover {
+  background: var(--io-color-background-neutral-subtle);
+}

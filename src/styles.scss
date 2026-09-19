@@ -234,9 +234,25 @@
     will-change: transform;
   }
 
+  /* Sits to the right of the headline on wide screens and behind it on
+     narrower ones, where the scrim keeps the text legible over it. */
+  .hero-backdrop__globe {
+    position: absolute;
+    inset: 0;
+    left: 28%;
+    opacity: 0.85;
+    transform: translate3d(
+      calc(var(--mx) * -12px),
+      calc(var(--my) * -10px + var(--p) * -18vh),
+      0
+    );
+  }
+
   /* Keeps the verified AA contrast of the headline intact no matter what
-     drifts underneath it. */
+     drifts underneath it. The globe is the one layer that accepts a pointer,
+     so the scrim must not sit over the part of it people can grab. */
   .hero-backdrop__scrim {
+    pointer-events: none;
     position: absolute;
     inset: 0;
     background: linear-gradient(

@@ -43,8 +43,60 @@
       </div>
     </header>
 
-    <!-- Overview -->
-    @if (project.description) {
+    <!--
+      Case study when one exists, otherwise the one-line description. Each
+      block renders only if it has real material behind it: most projects have
+      no recorded outcome, and an empty "Results" heading would either look
+      unfinished or invite something invented to fill it.
+    -->
+    @if (project.caseStudy; as study) {
+      <app-section labelledBy="overview-heading">
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-16">
+          <div class="lg:col-span-4">
+            <h2 id="overview-heading" class="io-label text-brand-text">The work</h2>
+          </div>
+
+          <div class="flex flex-col gap-10 lg:col-span-8">
+            <div class="flex flex-col gap-4">
+              <p class="io-body-lg max-w-prose text-body">{{ study.context }}</p>
+              <p class="io-body-md max-w-prose text-muted">{{ study.contribution }}</p>
+            </div>
+
+            @for (section of study.sections; track section.heading) {
+              <div class="flex flex-col gap-3">
+                <h3 class="io-heading-sm text-heading">{{ section.heading }}</h3>
+                <p class="io-body-md max-w-prose text-muted">{{ section.body }}</p>
+              </div>
+            }
+
+            @if (study.outcomes?.length) {
+              <div class="flex flex-col gap-3">
+                <h3 class="io-heading-sm text-heading">Outcomes</h3>
+                <ul class="flex list-none flex-col gap-3 pl-0">
+                  @for (outcome of study.outcomes; track outcome) {
+                    <li class="relative pl-7 io-body-md text-body">
+                      <i class="pi pi-check absolute left-0 top-1 text-xs text-success-text" aria-hidden="true"></i>
+                      {{ outcome }}
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+
+            @if (study.stack?.length) {
+              <div class="flex flex-col gap-3">
+                <h3 class="io-label text-subtle">Built with</h3>
+                <div class="flex flex-wrap gap-2">
+                  @for (tool of study.stack; track tool) {
+                    <app-tag>{{ tool }}</app-tag>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </app-section>
+    } @else if (project.description) {
       <app-section labelledBy="overview-heading">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-16">
           <div class="lg:col-span-4">
@@ -71,8 +123,14 @@
               type="button"
               class="group relative block aspect-[4/3] w-full overflow-hidden rounded-medium border border-subtle bg-surface text-left transition-shadow duration-base ease-io hover:shadow-raised-variant"
               [attr.aria-label]="'Open ' + image.imageName + ' full screen'"
-              [class.sm:col-span-2]="imgIdx === 0"
               (click)="openGallery(imgIdx)">
+              <!--
+                object-contain, not object-cover: these galleries mix
+                landscape back-office captures with portrait phone screens,
+                and cropping the phone ones to a 4:3 box cut off the header
+                and the confirm button — the two parts that say what the
+                screen is.
+              -->
               <img
                 [src]="image.imageUrl"
                 [alt]="image.imageName"
@@ -80,7 +138,7 @@
                 decoding="async"
                 width="1600"
                 height="1200"
-                class="h-full w-full object-cover transition-transform duration-slow ease-io-out group-hover:scale-[1.03]" />
+                class="h-full w-full bg-surface-subtle object-contain transition-transform duration-slow ease-io-out group-hover:scale-[1.03]" />
 
               <span
                 class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-base ease-io group-hover:opacity-100">

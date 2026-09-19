@@ -23,42 +23,75 @@ Success is a qualified enquiry (a role conversation or a project enquiry). Failu
 
 ## Positioning
 
-**Software Engineer** — confirmed by the user in preference to narrower framings. He is positioned as a generalist software engineer, *not* as frontend-only, despite every recorded job title reading "Frontend Developer".
+**Software Engineer** — confirmed by the user in preference to narrower framings. He is positioned as a generalist software engineer, *not* as frontend-only, despite recorded job titles reading "Frontend Developer" and, most recently, "Frontend & Mobile Software Engineer".
 
-**Open decision:** no sharper differentiating claim has been settled. The user explicitly chose to leave it open rather than adopt one of "ships measurable outcomes", "design-minded engineer", "fintech/payments specialist", or "engineer for African / emerging markets" — each of which the evidence would support. Until it is decided, surfaces should lead with evidence rather than a positioning slogan, and no differentiator should be invented on his behalf.
+**Open decision:** no sharper differentiating claim has been settled. The user explicitly chose to leave it open rather than adopt one of "ships measurable outcomes", "design-minded engineer", "fintech/payments specialist", or "engineer for African / emerging markets" — each of which the evidence would support. Until it is decided, surfaces lead with evidence rather than a positioning slogan, and no differentiator may be invented on his behalf.
+
+This is now implemented rather than aspirational: the landing page opens with a plain factual sentence and an evidence band of quantified outcomes, not a claim.
 
 ## Operating Context
 
 - Visitors are skim-first and time-poor; mobile is a primary, not secondary, context.
 - Deployed to Netlify as a single-page app (`netlify.toml` rewrites all paths to `/` with status 200), so any route must resolve client-side.
 - There is no backend. Contact happens through a `mailto:` address and a downloadable résumé PDF.
-- Project data is static and hand-maintained in source, not fetched from a CMS or API.
+- Project and experience data are static and hand-maintained in source, not fetched from a CMS or API.
+- `node_modules` in the working checkout is root-owned, so `npm install` fails. Anything requiring a new dependency has to be solved another way — this is why the typeface is vendored as files and PrimeNG is themed through CSS variables rather than a preset package.
 
 ## Capabilities and Constraints
 
-- Angular 20 standalone-component SPA; Tailwind CSS; PrimeNG 19 (Galleria, ScrollTop, Toast) ; PrimeIcons. TypeScript 5.6.
+- Angular 20 standalone-component SPA; Tailwind CSS 3.4; PrimeNG 19 (Galleria, ScrollTop, Toast, ProgressSpinner); PrimeIcons. TypeScript 5.6.
 - Routes: `/` (landing), `/about` (experience), `/works` (project listing), `/works/:id` (project detail, accepts a slug or numeric id), `/projects` (redirects to `/works`), and a wildcard 404.
-- `ProjectService` is the single source of truth for project data — 7 projects. Four have case-study material (image galleries); three (Desrio, SwipeNG, Sapphital) have a one-line description and an outbound link only.
+- **Two data sources, both `providedIn: 'root'`:** `ProjectService` (7 projects) and `ExperienceService` (4 roles plus skill categories and a computed years-of-experience). Experience data used to be a literal inside `AboutComponent`, which put the strongest evidence out of the landing page's reach.
 - Contact email: `isahohieku@gmail.com`. Résumé served at `assets/resume.pdf`.
-- All image assets are self-hosted under `src/assets/`. Nothing may be hotlinked to a third-party host: two logos and three skill icons were previously lost this way when the remote URLs died.
+- All assets are self-hosted under `src/assets/`. Nothing may be hotlinked to a third-party host: two logos and three skill icons were previously lost this way when the remote URLs died. The typeface is vendored for the same reason.
+
+### Design system
+
+Added 2026-09-19. Derived from spaceship.com's published `--sds-*` token system, with a yellow accent rather than their blue.
+
+- **Tokens** live in `src/styles/tokens.css`, named for role and surface (`--io-color-{background|text|border}-{role}-{step}`, steps running minimal → contrast). `tailwind.config.js` contains no literal hex; every colour resolves to a token. Nothing outside the token layer and project `bgColor` data may hardcode a colour.
+- **Light and dark**, switched by `data-theme` on `<html>`, resolved before first paint by an inline script in `index.html` and owned at runtime by `ThemeService`. Dark is the default; an explicit choice persists to `localStorage`.
+- **Typeface:** Hanken Grotesk, variable 300–800, self-hosted as two woff2 files. One family at many weights; no uppercase letter-spacing anywhere.
+- **Shape:** Spaceship's radius scale (0.25rem → 4rem, buttons at full pill) and their inset-hairline elevation recipes.
+- **Primitives** in `src/app/shared/ui/`: `app-button`, `app-card`, `app-section`, `app-tag`. CTAs must use `app-button` rather than hand-written utility strings.
+- **PrimeNG** is themed by defining its `--p-*` variables against the tokens in `src/styles/primeng.css`, since the preset packages cannot be installed here.
 
 ## Brand Commitments
 
 - **Name:** Isah Ohieku. Binding.
-- **"IO" monogram**, currently the header wordmark. Binding — carry it forward.
-- Nothing else is fixed. Palette, typography, composition, and project selection are open decisions.
+- **"IO" monogram**, the header wordmark. Binding.
+- **Palette, typography and shape** are no longer open — they are the token system above. Changing them means changing the tokens, not overriding them locally.
+- Composition and project selection remain open.
 
 ## Evidence on Hand
 
-Real, confirmed material:
+### Verified
 
-- **Four roles with companies and dates:** Talk360, Senior Frontend Developer, May 2022–present · Apply Technologies, Senior Frontend Developer, Nov 2020–Jul 2022 · Hobeei, Senior Frontend Developer, Feb 2019–Feb 2021 · SwipeNG, Frontend Developer, Jan 2018–Jan 2019. Roughly 7 years.
-- **Quantified outcomes** (in `src/app/pages/about/about.component.ts`): payment errors reduced 45%; mobile onboarding conversion improved 37%; load times cut from 2.5s to under 1s; ApplyPay frontend performance improved 70%; 80+ API issues resolved; production defects down 25%; bug count down 40%. These are the strongest assets on the site and are currently only reachable on `/about`.
-- **Domains actually worked in:** payments and fintech (Talk360 payments, Applypay, SwipeNG), international calling (Talk360), edtech (Apply Schools, Sapphital), greentech (Hobeei).
+Confirmed by the user against release posts and his work record, 2026-09-19:
+
+- **Talk360** — Frontend & Mobile Software Engineer, May 2022–present. Works across onboarding, the Shop360 marketplace, the webshop, the embedded/web dialler, and the payment platform, on web and Android/WebView.
+  - A hydration bottleneck in onboarding: main-thread block of up to ~120s reduced to under 100ms.
+  - The redesigned country-selection/segmentation release: 1,100+ new sign-ups shortly after launch.
+  - Self-service receipt automation (Marketplace v1.12.0): manual support receipt requests **projected** to fall from ~65 to ~5 per month. The projection is not a measurement and must stay labelled as such wherever it appears.
+  - Rate calculator migrated Vue → React with backward compatibility, plus a Next.js validation app for the new marketing site.
+  - `data-cy` E2E tags standardised and documented; Jest/Cypress coverage added for analytics events.
+  - Full 8-locale support for user-facing flows; onboarding app upgraded to React 19.
+- **Other roles with companies and dates:** Apply Technologies, Senior Frontend Developer, Nov 2020–Jul 2022 · Hobeei, Senior Frontend Developer, Feb 2019–Feb 2021 · SwipeNG, Frontend Developer, Jan 2018–Jan 2019. Roughly 8 years in total, computed from a 2018-01-01 start rather than hardcoded.
+- **Domains actually worked in:** payments and fintech (Talk360 payments, ApplyPay, SwipeNG), international calling (Talk360), edtech (Apply Schools, Sapphital), greentech (Hobeei).
 - **21 client work screenshots**, self-hosted at `src/assets/projects/<slug>/`.
-- **Logos** self-hosted at `src/assets/projects/logos/`.
-- **Résumé PDF**, `src/assets/resume.pdf` (~105KB).
-- **Profiles:** LinkedIn, GitHub, Dribbble, Behance, X. Dribbble and Behance alongside GitHub are factual, whether or not a design-adjacent claim is ever made.
+- **Logos** self-hosted at `src/assets/projects/logos/` — three, for seven projects.
+- **Résumé PDF**, `src/assets/resume.pdf`.
+- **Profiles:** LinkedIn, GitHub, Dribbble, Behance, X.
+
+### Not verified — do not publish
+
+The Talk360 figures the site previously carried (payment errors −45%, mobile onboarding conversion +37%, load 2.5s → <1s, 50% faster processing, 80+ API issues, −35% project time, +20% CSAT) were **removed** on 2026-09-19 because they were absent from the record the user could verify. They must not be reinstated without a source.
+
+**The remaining three roles carry figures of the same vintage and provenance, and have not been through the same audit:** ApplyPay frontend performance +70% (currently on the landing page evidence band), Hobeei performance +30%, production defects −25%, code efficiency +30%, bug count −40%, engagement +50%, and the SwipeNG entry. Treat all of these as unaudited. The ApplyPay figure is the live exposure.
+
+### Verification standard
+
+Established 2026-09-19: a number appears on this site only if the user can point to where it came from. When a claim cannot be sourced it is removed, not softened. Projections are labelled as projections.
 
 ### Usage restriction on the screenshots
 
@@ -67,19 +100,29 @@ The 21 client screenshots may be shown **only inside individual project case-stu
 ### Absences — do not fabricate
 
 - **No testimonials, client quotes, references, or press.** None exist.
-- **No case-study narratives.** Each project has one descriptive sentence; there is no problem/role/approach/result writeup for any of them. Sapphital's description is a two-word stub ("An Edtech"). Team size, individual role, and duration are not recorded per project.
+- **One case study exists.** `talk360-payment-platform` has a written writeup (`caseStudy` on `ProjectData`: context, contribution, sections, optional outcomes, stack), authored from what the screenshots demonstrably show plus the verified record. **It has no `outcomes` block, because no verified outcome for that project exists** — the field is optional precisely so that absence renders as nothing rather than as an empty heading inviting invention. The other six projects still have one descriptive sentence each; Sapphital's is the two-word stub "An Edtech".
 - **Hobeei's company site is offline** (the domain resolves to a decommissioned Heroku dyno), and no logo asset survives. Whether Hobeei stays in the work is undecided.
-- **Desrio, SwipeNG and Sapphital have no case-study material** — no screenshots, no detail beyond one line.
-- No metrics beyond those listed above; no pricing, availability, rates, or service definitions.
+- **Desrio, SwipeNG and Sapphital have no case-study material** — no screenshots, no detail beyond one line. Their cards say "View project"; only projects with a writeup or a gallery say "Read the case study".
+- No pricing, availability, rates, or service definitions.
 
 ## Product Principles
 
 1. **The visitor decides in the first viewport.** Most arrive from a profile link, skim, and leave. Whatever must be believed has to be visible before any scroll.
 2. **Evidence outranks assertion.** Real companies, real numbers, and real work do the persuading. The positioning claim is undecided precisely so that nothing has to be asserted in its place.
 3. **Serve two readers without averaging them.** A recruiter and a prospective client want different things; the surface should let each find theirs rather than addressing a blended non-reader.
-4. **Mobile is the primary case.** A visit that only works with a mouse and a hover is a visit that failed.
-5. **Own every asset, and degrade honestly.** Nothing hotlinked; anything that can go missing must have a designed fallback rather than a broken state.
+4. **Mobile is the primary case.** A visit that only works with a mouse and a hover is a visit that failed. Nothing load-bearing may be hover-gated.
+5. **Own every asset, and degrade honestly.** Nothing hotlinked; anything that can go missing must have a designed fallback rather than a broken state. This extends to content: an absent section renders as nothing, never as an empty heading.
 
 ## Accessibility & Inclusion
 
-No formal standard has been set by the user. A `/impeccable critique` run on 2026-09-12 established concrete defects that the user has scoped in for remediation: unnamed icon-only controls, a mobile navigation overlay that claims `aria-modal` but does not trap focus, heading-order breakage, contrast failures (including a 3.59:1 hero subtitle), tap targets below 44px, and no `prefers-reduced-motion` handling against 55 transitioning elements. Treat WCAG 2.1 AA as the working target until the user sets a different one.
+**WCAG 2.1 AA is the working target** until the user sets a different one.
+
+Verified 2026-09-19:
+
+- All 22 token colour pairs pass AA in both light and dark (4.5:1 body, 3:1 large). The previously recorded failures — a 3.59:1 hero subtitle, 3.77:1 prev/next labels, a 1.11:1 decorative number — no longer exist.
+- Zero horizontal overflow at 400px and 1440px on every route, measured via DevTools protocol rather than by eye.
+- The mobile navigation is a real dialog: it traps focus, moves focus in on open, restores it to the trigger on close, closes on Escape, and locks scroll on `<html>` (a component stylesheet under emulated encapsulation cannot match `body`, which is why the previous lock was inert).
+- `prefers-reduced-motion` is honoured in CSS and in the reveal directive, which skips its hidden starting state entirely rather than animating — content can never be left invisible.
+- Icon-only controls carry accessible names; tap targets clear 44px; a skip link precedes the header.
+
+Still open: a screen-reader pass has not been run, and heading order has been corrected by construction rather than audited end to end.

@@ -7,6 +7,7 @@ import { ProjectService, ProjectData } from '../../services/project.service';
 import { ProjectLogoComponent } from '../../shared/project-logo/project-logo.component';
 import { SectionComponent } from '../../shared/ui/section/section.component';
 import { ButtonComponent } from '../../shared/ui/button/button.component';
+import { TagComponent } from '../../shared/ui/tag/tag.component';
 
 @Component({
   selector: 'app-project-details',
@@ -18,7 +19,8 @@ import { ButtonComponent } from '../../shared/ui/button/button.component';
     GalleriaModule,
     ProjectLogoComponent,
     SectionComponent,
-    ButtonComponent
+    ButtonComponent,
+    TagComponent
   ],
   templateUrl: './project-details.component.html'
 })

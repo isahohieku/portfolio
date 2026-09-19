@@ -15,10 +15,11 @@ export class ProjectCardComponent {
   @Input() project!: ProjectData;
 
   /**
-   * Three of the seven projects have no screenshots, so the card promises
-   * "View project" rather than a case study that does not exist.
+   * The card only promises a case study where one exists. A written writeup
+   * counts, and so does a gallery — but three of the seven projects have
+   * neither, and those say "View project" instead.
    */
   get hasCaseStudy(): boolean {
-    return this.project.images.length > 0;
+    return !!this.project.caseStudy || this.project.images.length > 0;
   }
 }

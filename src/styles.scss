@@ -139,6 +139,113 @@
     background-image: var(--io-gradient-hero);
   }
 
+  /* --- Pinned scroll scenes --------------------------------------------- */
+  /* The track scrolls; the scene inside it sticks to the viewport while it
+     does. ScrollSceneDirective writes --p (0 -> 1) onto the track, and every
+     transform below reads it. --p defaults to 0 so the scene composes
+     correctly before, and without, any script. */
+
+  .scene-track {
+    --p: 0;
+    position: relative;
+  }
+
+  .scene {
+    position: sticky;
+    top: 0;
+    display: flex;
+    min-height: 100svh;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  /* --- Hero atmosphere --------------------------------------------------- */
+
+  .hero-backdrop {
+    --mx: 0;
+    --my: 0;
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero-backdrop__orb {
+    position: absolute;
+    border-radius: 50%;
+    /* One big blur is far cheaper than many; each orb is a single layer. */
+    filter: blur(80px);
+    will-change: transform;
+  }
+
+  .hero-backdrop__orb--brand {
+    top: -18%;
+    left: 8%;
+    width: min(46rem, 90vw);
+    height: min(46rem, 90vw);
+    background: radial-gradient(circle, rgba(251, 215, 0, 0.28), transparent 68%);
+    transform: translate3d(
+      calc(var(--mx) * 26px),
+      calc(var(--my) * 20px + var(--p) * -14vh),
+      0
+    );
+  }
+
+  .hero-backdrop__orb--cool {
+    top: 6%;
+    right: -6%;
+    width: min(38rem, 80vw);
+    height: min(38rem, 80vw);
+    background: radial-gradient(circle, rgba(57, 78, 255, 0.22), transparent 66%);
+    transform: translate3d(
+      calc(var(--mx) * -34px),
+      calc(var(--my) * -24px + var(--p) * -26vh),
+      0
+    );
+  }
+
+  .hero-backdrop__orb--deep {
+    bottom: -24%;
+    left: 34%;
+    width: min(34rem, 76vw);
+    height: min(34rem, 76vw);
+    background: radial-gradient(circle, rgba(0, 123, 108, 0.2), transparent 68%);
+    transform: translate3d(
+      calc(var(--mx) * 18px),
+      calc(var(--my) * 14px + var(--p) * -36vh),
+      0
+    );
+  }
+
+  /* A faint engineering grid, masked to a soft vignette so it never reads as
+     a hard edge behind the headline. */
+  .hero-backdrop__grid {
+    position: absolute;
+    inset: -10%;
+    background-image:
+      linear-gradient(to right, var(--io-color-border-neutral-subtle) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--io-color-border-neutral-subtle) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 78%);
+    opacity: 0.6;
+    transform: translate3d(
+      calc(var(--mx) * -10px),
+      calc(var(--my) * -8px + var(--p) * -8vh),
+      0
+    );
+    will-change: transform;
+  }
+
+  /* Keeps the verified AA contrast of the headline intact no matter what
+     drifts underneath it. */
+  .hero-backdrop__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--io-color-background-neutral-base) 92%
+    );
+  }
+
   /* --- Scroll reveal ---------------------------------------------------- */
   /* Applied by [appReveal]. The reduced-motion block in tokens.css collapses
      the transition, and the directive skips the starting state entirely, so

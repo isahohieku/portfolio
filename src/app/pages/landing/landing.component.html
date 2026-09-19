@@ -8,38 +8,56 @@
   a real section rather than a link buried under the fold.
 -->
 
-<!-- Hero -->
-<header class="io-hero-wash relative overflow-hidden">
-  <div class="mx-auto flex min-h-[78svh] w-full max-w-content flex-col justify-center px-5 py-20 sm:px-8 sm:py-28">
-    <div class="flex max-w-4xl flex-col gap-6 animate-io-rise">
-      <h1 class="io-display text-heading">
-        Good to see you,<br />I&rsquo;m Isah.
-      </h1>
+<!--
+  Hero as a pinned scene: the track is taller than the viewport, the scene
+  inside it sticks, and the backdrop layers drift at different rates as you
+  scroll through. The track is only ~1.6 viewports on phones so the evidence
+  band stays within one flick of the fold — PRODUCT.md is explicit that the
+  first viewport usually is the whole visit.
+-->
+<header
+  class="scene-track h-[140svh] sm:h-[175svh]"
+  appScrollScene
+  appPointerParallax>
+  <div class="scene">
+    <app-hero-backdrop />
 
-      <p class="io-body-lg max-w-prose text-muted">
-        Software engineer. {{ years }} years building payment, calling and edtech
-        platforms used across Africa and beyond &mdash; currently on the global
-        calling and top-up platform at Talk360.
-      </p>
+    <div
+      class="relative z-10 mx-auto w-full max-w-content px-5 sm:px-8"
+      [style.transform]="'translateY(calc(var(--p) * -10vh))'"
+      [style.opacity]="'calc(1 - var(--p) * 0.6)'">
+      <div class="flex max-w-4xl flex-col gap-6 animate-io-rise">
+        <h1 class="io-display text-heading">
+          Good to see you,<br />I&rsquo;m Isah.
+        </h1>
 
-      <div class="mt-2 flex flex-wrap gap-3">
-        <app-button routerLink="/works" size="lg">See the work</app-button>
-        <app-button href="assets/resume.pdf" [download]="true" variant="secondary" size="lg" icon="pi pi-download">
-          Download r&eacute;sum&eacute;
-        </app-button>
+        <p class="io-body-lg max-w-prose text-muted">
+          Software engineer. {{ years }} years building payment, calling and edtech
+          platforms used across Africa and beyond &mdash; currently on the global
+          calling and top-up platform at Talk360.
+        </p>
+
+        <div class="mt-2 flex flex-wrap gap-3">
+          <app-button routerLink="/works" size="lg">See the work</app-button>
+          <app-button href="assets/resume.pdf" [download]="true" variant="secondary" size="lg" icon="pi pi-download">
+            Download r&eacute;sum&eacute;
+          </app-button>
+        </div>
       </div>
     </div>
   </div>
 </header>
 
 <!-- Evidence -->
-<app-section spacing="tight" labelledBy="evidence-heading" appReveal>
+<app-section spacing="tight" labelledBy="evidence-heading">
   <h2 id="evidence-heading" class="sr-only">Selected outcomes</h2>
 
   <app-card tone="raised" [padded]="false">
     <div class="grid grid-cols-1 divide-y divide-subtle sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4">
-      @for (metric of metrics; track metric.label) {
-        <div class="flex flex-col gap-1 p-6 sm:p-8 lg:border-r lg:border-subtle lg:last:border-r-0">
+      @for (metric of metrics; track metric.label; let i = $index) {
+        <div
+          class="flex flex-col gap-1 p-6 sm:p-8 lg:border-r lg:border-subtle lg:last:border-r-0"
+          [appReveal]="i * 90">
           <span class="io-heading-md text-brand-text">{{ metric.value }}</span>
           <span class="io-body-sm text-body">{{ metric.label }}</span>
           <!-- mt-auto keeps the company line aligned across tiles when one
@@ -52,7 +70,7 @@
 </app-section>
 
 <!-- Selected work -->
-<app-section labelledBy="work-heading" appReveal>
+<app-section labelledBy="work-heading">
   <div class="flex flex-col gap-3">
     <h2 id="work-heading" class="io-heading-lg text-heading">Selected work</h2>
     <p class="io-body-lg max-w-prose text-muted">
@@ -62,8 +80,8 @@
   </div>
 
   <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-    @for (project of featured; track project.id) {
-      <app-project-card [project]="project" />
+    @for (project of featured; track project.id; let i = $index) {
+      <app-project-card [project]="project" [appReveal]="i * 110" />
     }
   </div>
 
@@ -75,14 +93,16 @@
 </app-section>
 
 <!-- Experience -->
-<app-section spacing="tight" labelledBy="experience-heading" surface="bg-surface-minimal" appReveal>
+<app-section spacing="tight" labelledBy="experience-heading" surface="bg-surface-minimal">
   <div class="flex flex-col gap-3">
     <h2 id="experience-heading" class="io-heading-lg text-heading">Where I&rsquo;ve worked</h2>
   </div>
 
   <ul class="mt-8 flex flex-col divide-y divide-subtle border-y border-subtle">
-    @for (role of roles; track role.id) {
-      <li class="flex flex-col gap-1 py-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
+    @for (role of roles; track role.id; let i = $index) {
+      <li
+        class="flex flex-col gap-1 py-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
+        [appReveal]="i * 80">
         <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-3">
           <span class="io-heading-sm text-heading">{{ role.company }}</span>
           <span class="io-body-sm text-muted">{{ role.role }}</span>

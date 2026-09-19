@@ -4,6 +4,9 @@ import { SectionComponent } from '../../shared/ui/section/section.component';
 import { CardComponent } from '../../shared/ui/card/card.component';
 import { ButtonComponent } from '../../shared/ui/button/button.component';
 import { RevealDirective } from '../../shared/directives/reveal/reveal.directive';
+import { ScrollSceneDirective } from '../../shared/directives/scroll-scene/scroll-scene.directive';
+import { PointerParallaxDirective } from '../../shared/directives/pointer-parallax/pointer-parallax.directive';
+import { HeroBackdropComponent } from '../../shared/ui/hero-backdrop/hero-backdrop.component';
 import { ProjectService } from '../../services/project.service';
 import { ExperienceService } from '../../services/experience.service';
 
@@ -25,6 +28,9 @@ interface Metric {
     CardComponent,
     ButtonComponent,
     RevealDirective,
+    ScrollSceneDirective,
+    PointerParallaxDirective,
+    HeroBackdropComponent,
   ],
 })
 export class LandingComponent {

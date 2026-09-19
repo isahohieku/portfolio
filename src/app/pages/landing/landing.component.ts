@@ -39,15 +39,18 @@ export class LandingComponent {
   readonly email = 'isahohieku@gmail.com';
 
   /**
-   * Quoted verbatim from the accomplishments already recorded against each
-   * role in ExperienceService. These are the strongest assets on the site and
-   * used to sit only on /about — the page a recruiter is least likely to open.
-   * No figure here is new, estimated or rounded.
+   * Quoted from the accomplishments recorded against each role in
+   * ExperienceService. These are the strongest assets on the site and used to
+   * sit only on /about — the page a recruiter is least likely to open.
+   *
+   * No figure here is new, estimated or rounded, and the receipt figure says
+   * "projected" because that is what it is: the release note projects the
+   * reduction rather than reporting a measured one.
    */
   readonly metrics: Metric[] = [
-    { value: '−45%', label: 'payment errors', company: 'Talk360' },
-    { value: '+37%', label: 'mobile onboarding conversion', company: 'Talk360' },
-    { value: '2.5s → <1s', label: 'page load time', company: 'Talk360' },
+    { value: '120s → <100ms', label: 'onboarding main-thread block', company: 'Talk360' },
+    { value: '1,100+', label: 'new sign-ups after launch', company: 'Talk360' },
+    { value: '65 → 5', label: 'manual receipt requests a month (projected)', company: 'Talk360' },
     { value: '+70%', label: 'frontend performance', company: 'ApplyPay' },
   ];
 }

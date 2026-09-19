@@ -18,8 +18,8 @@
 
       <p class="io-body-lg max-w-prose text-muted">
         Software engineer. {{ years }} years building payment, calling and edtech
-        platforms used across Africa and Europe &mdash; most recently the payment
-        platform at Talk360.
+        platforms used across Africa and beyond &mdash; currently on the global
+        calling and top-up platform at Talk360.
       </p>
 
       <div class="mt-2 flex flex-wrap gap-3">
@@ -42,7 +42,9 @@
         <div class="flex flex-col gap-1 p-6 sm:p-8 lg:border-r lg:border-subtle lg:last:border-r-0">
           <span class="io-heading-md text-brand-text">{{ metric.value }}</span>
           <span class="io-body-sm text-body">{{ metric.label }}</span>
-          <span class="io-label text-subtle">{{ metric.company }}</span>
+          <!-- mt-auto keeps the company line aligned across tiles when one
+               label wraps to a second line. -->
+          <span class="io-label mt-auto pt-1 text-subtle">{{ metric.company }}</span>
         </div>
       }
     </div>

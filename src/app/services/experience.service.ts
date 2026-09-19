@@ -21,97 +21,36 @@ export class ExperienceService {
       id: 'talk360',
       company: 'Talk360',
       companyLink: 'https://talk360.com/',
-      role: 'Senior Frontend Developer',
+      role: 'Frontend & Mobile Software Engineer',
       duration: 'May 2022 – Present',
-      overview: 'Developed new features and resolved bugs to enhance the payment platform; collaborated closely with the QA team to test and validate updates; reduced payment errors by 45%. Facilitated integration and maintenance of third-party APIs to ensure seamless functionality of payment platform; identified and resolved 80+ API issues, resulting in 50% faster payment processing time. Guaranteed team met project deadlines, delivering high-quality code, and successfully completed payment platform overhaul; reduced project completion time by 35% through improved project management and delegation of tasks. Executed appealing webpages on the admin dashboard of the payment platform utilizing Figma; optimized UI to enhance user experience; increased customer satisfaction ratings by 20%. Create documentation for website design and development standards for knowledge transfer.',
+      overview:
+        'A global calling and top-up platform. I work across onboarding, the Shop360 marketplace, the webshop, the embedded web dialler and the payment platform, on web and Android/WebView. Features are owned end to end: technical design, performance, internationalisation, analytics instrumentation, testing and release.',
       accomplishments: [
-        'Reduced payment errors by 45% through logic improvements',
-        'Improved mobile onboarding conversion by 37%',
-        'Cut load times from 2.5s to <1s using optimization techniques',
-        'Led admin dashboard redesign and release'
+        'Diagnosed and fixed a hydration bottleneck in onboarding, cutting a main-thread block of up to ~120s to under 100ms',
+        'Shipped the redesigned country-selection and segmentation release that carried 1,100+ new sign-ups shortly after launch',
+        'Built self-service receipt automation in Marketplace v1.12.0 — PDF request, poll and preview over the native host bridge — projected to cut manual support receipt requests from ~65 to ~5 a month',
+        'Owned the rate calculator end to end, migrating it from Vue to React with backward compatibility and building a Next.js validation app for the new marketing site',
+        'Standardised and documented data-cy E2E tags as one source of truth for QA and Engineering, and added Jest/Cypress coverage for analytics events to stop silent tracking regressions',
+        'Delivered full 8-locale support for user-facing flows, and led the onboarding app’s upgrade to React 19'
       ],
       technologies: [
-        {
-          name: "JavaScript",
-          icon: "assets/skills/javascript.png"
-        },
-        {
-          name: "React.js",
-          icon: "assets/skills/react-js.svg"
-        },
-        {
-          name: "Vue.js",
-          icon: "assets/skills/vue-js.png"
-        },
-        {
-          name: "Docker",
-          icon: "assets/skills/docker.svg"
-        },
-        {
-          name: "PostgreSQL",
-          icon: "assets/skills/postgresql.png"
-        },
-        {
-          name: "Ruby on Rails",
-        },
-        {
-          name: "TypeScript",
-          icon: "assets/skills/typescript.svg"
-        },
-        {
-          name: "AWS S3",
-          icon: "assets/skills/aws-s3.svg"
-        },
-        {
-          name: "Android",
-          icon: "assets/skills/android.png"
-        },
-        {
-          name: "Next.js",
-          icon: "assets/skills/next-js.svg"
-        },
-        {
-          name: "Kotlin",
-        },
-        {
-          name: "SCSS",
-          icon: "assets/skills/scss.png"
-        },
-        {
-          name: "Tailwind",
-          icon: "assets/skills/tailwind.png"
-        },
-        {
-          name: "Firebase",
-          icon: "assets/skills/firebase.png"
-        },
-        {
-          name: "Git",
-          icon: "assets/skills/git.png"
-        },
-        {
-          name: "Vuetify",
-        },
-        {
-          name: "Sentry",
-          icon: "assets/skills/sentry.png"
-        },
-        {
-          name: "Cypress",
-          icon: "assets/skills/cypress.png"
-        },
-        {
-          name: "Automation testing",
-          icon: ""
-        },
-        {
-          name: "Jest",
-          icon: "assets/skills/jest.png"
-        },
-        {
-          name: "Jetpack Compose",
-          icon: "assets/skills/jetpack-compose.png"
-        }
+        { name: 'TypeScript', icon: 'assets/skills/typescript.svg' },
+        { name: 'JavaScript', icon: 'assets/skills/javascript.png' },
+        { name: 'React.js', icon: 'assets/skills/react-js.svg' },
+        { name: 'Next.js', icon: 'assets/skills/next-js.svg' },
+        { name: 'Vue.js', icon: 'assets/skills/vue-js.png' },
+        { name: 'Kotlin' },
+        { name: 'Android', icon: 'assets/skills/android.png' },
+        { name: 'Jetpack Compose', icon: 'assets/skills/jetpack-compose.png' },
+        { name: 'Cypress', icon: 'assets/skills/cypress.png' },
+        { name: 'Jest', icon: 'assets/skills/jest.png' },
+        { name: 'Mixpanel' },
+        { name: 'Firebase', icon: 'assets/skills/firebase.png' },
+        { name: 'Sentry', icon: 'assets/skills/sentry.png' },
+        { name: 'Storybook' },
+        { name: 'Tailwind', icon: 'assets/skills/tailwind.png' },
+        { name: 'SCSS', icon: 'assets/skills/scss.png' },
+        { name: 'Git', icon: 'assets/skills/git.png' }
       ]
     },
     {

@@ -31,7 +31,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
         [href]="href"
         [attr.target]="external ? '_blank' : null"
         [attr.rel]="external ? 'noopener noreferrer' : null"
-        [attr.download]="download ? '' : null"
+        [attr.download]="downloadAttr"
         [class]="classes"
         [attr.aria-label]="ariaLabel">
         <ng-container *ngTemplateOutlet="content"></ng-container>
@@ -68,13 +68,26 @@ export class ButtonComponent {
   @Input() href: string | null = null;
   /** Opens in a new tab with rel="noopener noreferrer". */
   @Input() external = false;
-  @Input() download = false;
+  /**
+   * `true` downloads under the server's filename; a string sets the saved
+   * filename. The footer's resume link named its file before it moved onto
+   * this component, and a CTA should not lose that by being systematised.
+   */
+  @Input() download: boolean | string = false;
   @Input() disabled = false;
   @Input() type: 'button' | 'submit' = 'button';
   /** A PrimeIcons class, rendered before the label and hidden from the a11y tree. */
   @Input() icon: string | null = null;
   /** Required when the content is an icon alone. */
   @Input() ariaLabel: string | null = null;
+
+  /** '' for a bare download attribute, the filename when one is given. */
+  get downloadAttr(): string | null {
+    if (!this.download) {
+      return null;
+    }
+    return typeof this.download === 'string' ? this.download : '';
+  }
 
   private static readonly base =
     'inline-flex items-center justify-center gap-2 rounded-full font-medium ' +

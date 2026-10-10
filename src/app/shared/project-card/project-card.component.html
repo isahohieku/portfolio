@@ -9,27 +9,70 @@
 -->
 <a
   [routerLink]="['/works', project.slug]"
-  class="project-wrapper group flex h-full flex-col overflow-hidden rounded-x-large border border-subtle bg-surface-minimal shadow-raised transition-all duration-base ease-io hover:-translate-y-1 hover:shadow-raised-variant">
+  [attr.data-cursor]="hasCaseStudy ? 'Read' : 'View'"
+  [class]="rootClasses">
   <!-- Logo plate: the project's own colour, used as a field rather than a whole-card wash -->
   <div
-    class="relative flex h-44 items-center justify-center overflow-hidden px-10 sm:h-52"
-    [ngStyle]="{ backgroundColor: project.bgColor }">
-    <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent"></div>
+    [class]="plateClasses"
+    [ngStyle]="{ backgroundColor: project.bgColor }"
+    appReveal
+    appScrollDrift>
+    <!-- The light over the colour drifts, so the plate is never quite still
+         while it is on screen. The mark itself holds: a drifting logo reads as
+         a misalignment rather than as depth. -->
+    <div class="io-drift absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent"></div>
     <!-- The card states the title in its body, so a missing logo leaves the
-         plate as a plain colour field rather than saying the name twice. -->
-    <app-project-logo
-      [src]="project.logo"
-      [title]="project.title"
-      [showWordmark]="false"
-      imgClass="relative z-10 h-12 w-auto object-contain transition-transform duration-slow ease-io-out group-hover:scale-105 sm:h-14"
-      wordmarkClass="relative z-10 text-center text-xl font-bold tracking-tight text-white sm:text-2xl" />
+         plate as a plain colour field rather than saying the name twice.
+
+         Where the project has sourced facts to show, the plate carries those
+         instead of staying empty. Three of the ten projects have no logo and
+         no screenshots — PRODUCT.md bars client screenshots from any listing —
+         so an empty plate was reading as a loading failure rather than as the
+         honest absence it is. Facts are set per project, never derived: a
+         project with nothing checkable still shows nothing. -->
+    @if (!project.logo && plateFacts.length) {
+      <div class="relative z-10 flex flex-col items-center gap-2 text-center">
+        <code class="font-mono text-xs leading-snug text-white sm:text-sm">{{ plateFacts[0] }}</code>
+        @if (plateFacts.length > 1) {
+          <span class="io-label text-white/80">{{ plateFacts.slice(1).join(' · ') }}</span>
+        }
+      </div>
+    } @else {
+      <app-project-logo
+        [src]="project.logo"
+        [title]="project.title"
+        [showWordmark]="false"
+        [imgClass]="logoClasses"
+        wordmarkClass="relative z-10 text-center text-xl font-bold tracking-tight text-white sm:text-2xl" />
+    }
   </div>
 
   <div class="flex flex-1 flex-col gap-2 p-6">
-    <h3 class="io-heading-sm text-heading">{{ project.title }}</h3>
+    <h3 [class]="titleClasses">{{ project.title }}</h3>
 
     @if (project.description) {
-      <p class="io-body-sm text-muted">{{ project.description }}</p>
+      <p [class]="descriptionClasses">{{ project.description }}</p>
+    }
+
+    <!--
+      The technologies, where they are on record. The landing page named no
+      stack at all before this, so a prospective client read the whole page
+      without learning what any of it was built with — while app-tag existed
+      as a primitive and went unused outside the detail pages.
+
+      Tags are static spans, so nothing interactive nests inside the card's
+      anchor. The sr-only lead-in keeps the link's accessible name a sentence
+      rather than a bare run of product names.
+    -->
+    @if (techTags.length) {
+      <ul class="mt-3 flex flex-wrap gap-2 pl-0">
+        <li class="sr-only">Built with</li>
+        @for (tech of techTags; track tech) {
+          <li>
+            <app-tag>{{ tech }}</app-tag>
+          </li>
+        }
+      </ul>
     }
 
     <span

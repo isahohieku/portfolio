@@ -9,93 +9,237 @@
 -->
 
 <!--
-  Hero as a pinned scene: the track is taller than the viewport, the scene
-  inside it sticks, and the backdrop layers drift at different rates as you
-  scroll through. The track is only ~1.6 viewports on phones so the evidence
-  band stays within one flick of the fold — PRODUCT.md is explicit that the
-  first viewport usually is the whole visit.
+  The hero is one viewport, not two.
+
+  It used to be a pinned scene 1.4–1.9 viewports tall that dissolved the
+  headline to 40% and left a void before the first fact: measured, the first
+  metric sat at y=1,296 on a phone and y=1,721 at 1440. PRODUCT.md's first
+  principle is that the visitor decides in the first viewport, so the track is
+  now barely taller than the screen — just enough travel for the hero to hand
+  off to the evidence band — and two of the receipts have moved up into the
+  hero itself. The opacity fade is gone with it: it made a fully clickable,
+  fully focusable CTA look disabled.
 -->
 <header
-  class="scene-track h-[140svh] sm:h-[175svh]"
-  appScrollScene
+  class="scene-track h-[112svh] sm:h-[116svh]"
+  appScrollScene="pin"
   appPointerParallax>
   <div class="scene">
     <app-hero-backdrop />
 
+    <!--
+      The wrapper spans the full content width but only its left column holds
+      anything, and it was swallowing every pointer event across the rest —
+      which meant the globe's drag was not merely undiscoverable, it was
+      unreachable on desktop. The wrapper is transparent to the pointer now and
+      the column that actually has content takes it back, so selecting the
+      headline still works and the empty right side reaches the globe.
+    -->
     <div
-      class="relative z-10 mx-auto w-full max-w-content px-5 sm:px-8"
-      [style.transform]="'translateY(calc(var(--p) * -10vh))'"
-      [style.opacity]="'calc(1 - var(--p) * 0.6)'">
-      <div class="flex max-w-4xl flex-col gap-6 animate-io-rise">
-        <h1 class="io-display text-heading">
-          Good to see you,<br />I&rsquo;m Isah.
+      class="pointer-events-none relative z-10 mx-auto w-full max-w-content px-5 py-16 sm:px-8"
+      [style.transform]="'translateY(calc(var(--p) * -5vh))'">
+      <div class="pointer-events-auto flex max-w-5xl flex-col gap-6 animate-io-rise">
+        <h1 class="io-display text-pretty text-heading" [appSplitReveal]="14">
+          {{ years }} years building payment, calling and edtech platforms.
         </h1>
 
         <p class="io-body-lg max-w-prose text-muted">
-          Software engineer. {{ years }} years building payment, calling and edtech
-          platforms used across Africa and beyond &mdash; currently on the global
-          calling and top-up platform at Talk360.
+          I&rsquo;m Isah Ohieku, a software engineer &mdash; currently on the
+          global calling and top-up platform at Talk360, used across Africa and
+          beyond.
         </p>
 
         <div class="mt-2 flex flex-wrap gap-3">
-          <app-button routerLink="/works" size="lg">See the work</app-button>
-          <app-button href="assets/resume.pdf" [download]="true" variant="secondary" size="lg" icon="pi pi-download">
+          <app-button routerLink="/works" size="lg" appMagnetic data-cursor="Browse">
+            See the work
+          </app-button>
+          <app-button
+            href="/Isah%20Ohieku%20-%20Resume.pdf"
+            [download]="true"
+            variant="secondary"
+            size="lg"
+            icon="pi pi-download"
+            appMagnetic
+            data-cursor="Download">
             Download r&eacute;sum&eacute;
           </app-button>
         </div>
+
+        <!--
+          Two receipts above the fold. Deliberately not the big-number tile
+          template: the figure leads at heading size and its source rides on
+          the same line, because the argument this page makes is that every
+          number here has somewhere it came from.
+        -->
+        <ul class="mt-8 flex flex-col gap-4 border-t border-subtle pt-6 sm:flex-row sm:gap-12">
+          @for (metric of heroMetrics; track metric.label) {
+            <li class="flex flex-col gap-1">
+              <span class="io-heading-sm text-brand-text" appCountUp>{{ metric.value }}</span>
+              <span class="io-body-sm text-muted">
+                {{ metric.label }} &middot; {{ metric.company }}
+              </span>
+            </li>
+          }
+        </ul>
       </div>
     </div>
   </div>
 </header>
 
-<!-- Evidence -->
-<app-section spacing="tight" labelledBy="evidence-heading">
-  <h2 id="evidence-heading" class="sr-only">Selected outcomes</h2>
+<!--
+  Evidence.
 
-  <app-card tone="raised" [padded]="false">
-    <div class="grid grid-cols-1 divide-y divide-subtle sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4">
-      @for (metric of metrics; track metric.label; let i = $index) {
-        <div
-          class="flex flex-col gap-1 p-6 sm:p-8 lg:border-r lg:border-subtle lg:last:border-r-0"
-          [appReveal]="i * 90">
-          <span class="io-heading-md text-brand-text">{{ metric.value }}</span>
-          <span class="io-body-sm text-body">{{ metric.label }}</span>
-          <!-- mt-auto keeps the company line aligned across tiles when one
-               label wraps to a second line. -->
-          <span class="io-label mt-auto pt-1 text-subtle">{{ metric.company }}</span>
-        </div>
-      }
-    </div>
-  </app-card>
+  Its heading used to be sr-only, which gave a screen-reader user a better
+  experience than a sighted skimmer: four yellow numbers arriving with nothing
+  to say what they were or that they had been audited. The heading is visible
+  now, and the sourcing sentence is stated rather than implied.
+
+  The band is its own surface instead of a card on a near-identical one — the
+  old card was #f9f9f9 on #ffffff, 1.05:1, held up entirely by an 8%-alpha
+  hairline. Separation is now gap-px over a moderate surface, which draws real
+  hairlines at one, two and four columns alike; the previous rule vanished
+  entirely between 640px and 1024px, where sm:divide-y-0 had already killed it
+  and lg:border-r had not yet started.
+-->
+<app-section
+  spacing="tight"
+  labelledBy="evidence-heading"
+  surface="bg-surface-subtle"
+  [scene]="true"
+  appPointerParallax>
+  <div class="flex max-w-prose flex-col gap-3">
+    <h2 id="evidence-heading" class="io-heading-lg text-heading" appSplitReveal>Verified outcomes</h2>
+    <p class="io-body-md max-w-[66ch] text-muted" appLineReveal [lineRevealDelay]="180">
+      Every figure here comes from a release record or the npm registry, read in
+      September 2026. Where a number is projected rather than measured, it says so.
+    </p>
+  </div>
+
+  <div
+    class="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-large border border-subtle bg-surface-moderate sm:grid-cols-2 lg:grid-cols-4">
+    @for (metric of metrics; track metric.label; let i = $index) {
+      <div
+        class="flex flex-col gap-1 bg-surface-subtle p-6 sm:p-8"
+        [appReveal]="i * 90">
+        <span class="io-heading-md text-brand-text" [appCountUp]="1300">{{ metric.value }}</span>
+        <span class="io-body-sm text-body">{{ metric.label }}</span>
+        <!-- mt-auto keeps the source line aligned across tiles when one
+             label wraps to a second line. -->
+        <span class="io-label mt-auto pt-1 text-subtle">
+          {{ metric.company }}@if (metric.qualifier) { &middot; {{ metric.qualifier }} }
+        </span>
+      </div>
+    }
+  </div>
 </app-section>
 
 <!-- Selected work -->
-<app-section labelledBy="work-heading">
+<app-section
+  labelledBy="work-heading"
+  [scene]="true"
+  appPointerParallax>
   <div class="flex flex-col gap-3">
-    <h2 id="work-heading" class="io-heading-lg text-heading">Selected work</h2>
-    <p class="io-body-lg max-w-prose text-muted">
+    <h2 id="work-heading" class="io-heading-lg text-heading" appSplitReveal>Selected work</h2>
+    <p class="io-body-lg max-w-prose text-muted" appLineReveal [lineRevealDelay]="180">
       Payments, international calling, education and greentech &mdash; shipped for
       teams in Nigeria, the Netherlands and beyond.
     </p>
   </div>
 
-  <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-    @for (project of featured; track project.id; let i = $index) {
-      <app-project-card [project]="project" [appReveal]="i * 110" />
+  <!--
+    Composed by kind, not by array position.
+
+    Three equal tiles said the three pieces of work were the same kind of
+    claim. They are not: two are client engagements, recognised by a brand
+    plate, and the third is a published package whose argument is its public
+    record — downloads, licence, version — which a 176px colour field could
+    only hide. /works has separated the two since the open-source work landed;
+    the teaser now agrees with it.
+  -->
+  <div class="mt-10 flex flex-col gap-6">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      @for (project of featuredClient; track project.id; let i = $index) {
+        <app-project-card
+          [project]="project"
+          [lead]="i === 0"
+          [class]="i === 0 ? 'lg:col-span-2' : ''"
+          [appReveal]="i * 110" />
+      }
+    </div>
+
+    <!--
+      The package record. Every value here is read from the project's own
+      plateFacts, which exist only where the facts are sourced — so a package
+      with nothing on file renders its name and stops, rather than inviting a
+      number to fill the row.
+    -->
+    @for (pkg of featuredPackages; track pkg.id) {
+      <a
+        [routerLink]="['/works', pkg.slug]"
+        [attr.data-cursor]="'Read'"
+        [appReveal]="220"
+        class="group flex flex-col gap-5 overflow-hidden rounded-x-large border border-subtle bg-surface-minimal p-6 shadow-raised transition-colors duration-base ease-io hover:border-brand-moderate sm:p-8 lg:flex-row lg:items-center lg:gap-10">
+        <div class="flex min-w-0 flex-1 flex-col gap-3">
+          <div class="flex items-center gap-3">
+            <!-- The project's colour, kept as a mark rather than a field. -->
+            <span
+              class="h-2.5 w-2.5 shrink-0 rounded-full"
+              [style.backgroundColor]="pkg.bgColor"
+              aria-hidden="true"></span>
+            <code class="truncate font-mono io-body-sm text-heading">
+              {{ pkg.plateFacts?.[0] ?? pkg.title }}
+            </code>
+          </div>
+
+          @if (pkg.description) {
+            <p class="io-body-sm max-w-prose text-muted">{{ pkg.description }}</p>
+          }
+        </div>
+
+        <!--
+          A list, not a definition list: these facts are self-describing values
+          ("5,479 downloads", "MIT"), not term/definition pairs, and a <dl> of
+          bare <dd>s is invalid markup besides. The first fact leads at heading
+          size and the rest ride alongside it, which is the same figure-then-
+          source hierarchy the evidence band uses.
+        -->
+        @if ((pkg.plateFacts?.length ?? 0) > 1) {
+          <ul class="flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-subtle pt-5 pl-0 lg:shrink-0 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+            @for (fact of pkg.plateFacts?.slice(1) ?? []; track fact; let first = $first) {
+              <li [class]="first ? 'io-heading-sm text-brand-text' : 'io-body-sm text-muted'">
+                {{ fact }}
+              </li>
+            }
+          </ul>
+        }
+
+        <span
+          class="inline-flex shrink-0 items-center gap-2 io-label text-brand-text transition-transform duration-base ease-io group-hover:translate-x-1">
+          Read the case study
+          <i class="pi pi-arrow-right text-xs" aria-hidden="true"></i>
+        </span>
+      </a>
     }
   </div>
 
   <div class="mt-10">
-    <app-button routerLink="/works" variant="secondary">
+    <app-button routerLink="/works" variant="secondary" appMagnetic data-cursor="Browse">
       See all {{ totalCount }} projects
     </app-button>
   </div>
 </app-section>
 
 <!-- Experience -->
-<app-section spacing="tight" labelledBy="experience-heading" surface="bg-surface-minimal">
+<app-section
+  spacing="tight"
+  labelledBy="experience-heading"
+  surface="bg-surface-minimal"
+  [scene]="true"
+  appPointerParallax>
   <div class="flex flex-col gap-3">
-    <h2 id="experience-heading" class="io-heading-lg text-heading">Where I&rsquo;ve worked</h2>
+    <h2 id="experience-heading" class="io-heading-lg text-heading" appSplitReveal>
+      Where I&rsquo;ve worked
+    </h2>
   </div>
 
   <ul class="mt-8 flex flex-col divide-y divide-subtle border-y border-subtle">
@@ -113,34 +257,87 @@
   </ul>
 
   <div class="mt-8">
-    <app-button routerLink="/about" variant="secondary">
+    <app-button routerLink="/about" variant="secondary" appMagnetic data-cursor="Read">
       Read the full history
     </app-button>
   </div>
 </app-section>
 
-<!-- Contact -->
-<app-section labelledBy="contact-heading" appReveal>
+<!--
+  Contact.
+
+  mailto: was the only route to the page's single success metric, so on a
+  desktop with no mail client bound the conversion action silently did nothing.
+  It now has a copy fallback. The second column carries the facts a stranger
+  needs before writing — where he is, what time it is there, what he is open to
+  — which the card had room for all along: its copy is max-w-prose inside an
+  1,134px card, so the right 45% was empty.
+-->
+<app-section
+  labelledBy="contact-heading"
+  [scene]="true"
+  appPointerParallax
+  appReveal>
   <app-card tone="brand">
-    <div class="flex flex-col gap-6 py-4 sm:py-8">
-      <div class="flex max-w-prose flex-col gap-3">
-        <h2 id="contact-heading" class="io-heading-lg text-heading">
-          Got something to build?
-        </h2>
-        <p class="io-body-lg text-muted">
-          I&rsquo;m open to engineering roles and contract work. Tell me what
-          you&rsquo;re working on and I&rsquo;ll reply.
-        </p>
+    <div class="flex flex-col gap-10 py-4 sm:py-8 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
+      <div class="flex max-w-prose flex-col gap-6">
+        <div class="flex flex-col gap-3">
+          <h2 id="contact-heading" class="io-heading-lg text-heading" appSplitReveal>
+            Got something to build?
+          </h2>
+          <p class="io-body-lg text-muted" appLineReveal [lineRevealDelay]="180">
+            Tell me what you&rsquo;re working on and I&rsquo;ll reply.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <app-button
+            [href]="'mailto:' + email"
+            size="lg"
+            icon="pi pi-envelope"
+            appMagnetic
+            data-cursor="Email">
+            {{ email }}
+          </app-button>
+          <app-button
+            variant="secondary"
+            size="lg"
+            [icon]="copied() ? 'pi pi-check' : 'pi pi-copy'"
+            [ariaLabel]="copied() ? 'Email address copied' : 'Copy email address'"
+            [attr.data-cursor]="copied() ? 'Copied' : 'Copy'"
+            appMagnetic
+            (click)="copyEmail()">
+            {{ copied() ? 'Copied' : 'Copy address' }}
+          </app-button>
+        </div>
+        <!-- Announced rather than left to the icon swap, which a screen
+             reader would not report. -->
+        <span class="sr-only" role="status" aria-live="polite">
+          {{ copied() ? 'Email address copied to clipboard' : '' }}
+        </span>
       </div>
 
-      <div class="flex flex-wrap gap-3">
-        <app-button [href]="'mailto:' + email" size="lg" icon="pi pi-envelope">
-          {{ email }}
-        </app-button>
-        <app-button href="assets/resume.pdf" [download]="true" variant="secondary" size="lg">
-          Download r&eacute;sum&eacute;
-        </app-button>
-      </div>
+      <dl class="flex shrink-0 flex-col gap-5 border-t border-brand-subtle pt-6 lg:min-w-[15rem] lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+        @for (fact of contactFacts; track fact.label) {
+          <div class="flex flex-col gap-1">
+            <dt class="io-label text-subtle">{{ fact.label }}</dt>
+            <dd class="io-body-md text-body">{{ fact.value }}</dd>
+          </div>
+        }
+        <div class="flex flex-col gap-1">
+          <dt class="io-label text-subtle">Elsewhere</dt>
+          <dd>
+            <a
+              [href]="linkedIn"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-mask io-body-md text-brand-text"
+              data-cursor="Open">
+              LinkedIn
+            </a>
+          </dd>
+        </div>
+      </dl>
     </div>
   </app-card>
 </app-section>

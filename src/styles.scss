@@ -37,9 +37,29 @@
 }
 
 @layer base {
+  /* No `scroll-behavior: smooth` here. SmoothScrollService owns wheel
+     smoothing on pointer-fine devices and deliberately stays off on touch and
+     under reduced motion — so this declaration only ever applied where it was
+     unwanted, gliding the skip link on a touch device driven by a keyboard. */
   html {
-    scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+  }
+
+  /* Lenis owns the scroll when it is running, and its own docs require
+     scroll-behavior to be off or the two interpolators fight. A welcome side
+     effect: the skip link jumps again instead of gliding, which is what a
+     skip link is for. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  html.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  html.lenis-stopped {
+    overflow: hidden;
   }
 
   body {
@@ -83,7 +103,11 @@
      xs (3.5rem/1.0714) and wide (7.5rem/1.0667) display breakpoints. */
 
   .io-display {
-    font-size: clamp(2.75rem, 1.5rem + 6.25vw, 7.5rem);
+    /* Capped at 5.5rem, down from 7.5rem. The hero headline is a sentence
+       carrying the years, the domains and the discipline now rather than a
+       two-word greeting, so it needs a size that lets a real sentence set in
+       three lines at 1440 instead of one that only ever fitted a name. */
+    font-size: clamp(2.5rem, 1.2rem + 4.6vw, 5.5rem);
     line-height: 1.0667;
     letter-spacing: -0.01em;
     font-weight: 700;
@@ -168,70 +192,56 @@
     inset: 0;
   }
 
-  .hero-backdrop__orb {
+  /* One authored element instead of an orb field.
+     Concentric hairline rings, struck from the same centre the globe turns
+     on, so the atmosphere states the orbital motif with an edge rather than
+     with a coloured haze. They are the layer the mobile audience actually
+     receives — canRenderGlobe() rejects most phones — so they have to carry
+     the hero on their own, which a blurred gradient could not. */
+  .hero-backdrop__arc {
     position: absolute;
+    /* Centred below the fold, so what crosses the hero is the top of each
+       ring — an arc sweeping the composition — rather than the two side
+       edges, which is what a ring centred on screen actually shows. */
+    top: 105%;
+    left: 50%;
+    height: var(--arc-size);
+    aspect-ratio: 1;
+    border: 1px solid var(--io-color-border-brand-subtle);
     border-radius: 50%;
-    /* One big blur is far cheaper than many; each orb is a single layer. */
-    filter: blur(80px);
-    will-change: transform;
-  }
-
-  .hero-backdrop__orb--brand {
-    top: -18%;
-    left: 8%;
-    width: min(46rem, 90vw);
-    height: min(46rem, 90vw);
-    background: radial-gradient(circle, rgba(251, 215, 0, 0.28), transparent 68%);
+    /* Sized against the viewport HEIGHT: the scene is always ~one viewport
+       tall, so height-relative rings land in the same place on a phone and a
+       desktop. Width-relative ones flew off the top of wide screens. */
+    mask-image: linear-gradient(to right, transparent 2%, #000 22%, #000 78%, transparent 98%);
+    /* Both axes need the -50%: `top`/`left` place the ring's corner, and the
+       centre is what has to sit below the fold. Without the Y half the whole
+       circle starts at 105% and is clipped away by the scene's overflow. */
     transform: translate3d(
-      calc(var(--mx) * 26px),
-      calc(var(--my) * 20px + var(--p) * -14vh),
-      0
-    );
-  }
-
-  .hero-backdrop__orb--cool {
-    top: 6%;
-    right: -6%;
-    width: min(38rem, 80vw);
-    height: min(38rem, 80vw);
-    background: radial-gradient(circle, rgba(57, 78, 255, 0.22), transparent 66%);
-    transform: translate3d(
-      calc(var(--mx) * -34px),
-      calc(var(--my) * -24px + var(--p) * -26vh),
-      0
-    );
-  }
-
-  .hero-backdrop__orb--deep {
-    bottom: -24%;
-    left: 34%;
-    width: min(34rem, 76vw);
-    height: min(34rem, 76vw);
-    background: radial-gradient(circle, rgba(0, 123, 108, 0.2), transparent 68%);
-    transform: translate3d(
-      calc(var(--mx) * 18px),
-      calc(var(--my) * 14px + var(--p) * -36vh),
-      0
-    );
-  }
-
-  /* A faint engineering grid, masked to a soft vignette so it never reads as
-     a hard edge behind the headline. */
-  .hero-backdrop__grid {
-    position: absolute;
-    inset: -10%;
-    background-image:
-      linear-gradient(to right, var(--io-color-border-neutral-subtle) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--io-color-border-neutral-subtle) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 78%);
-    opacity: 0.6;
-    transform: translate3d(
-      calc(var(--mx) * -10px),
-      calc(var(--my) * -8px + var(--p) * -8vh),
+      calc(-50% + var(--mx) * var(--arc-drift)),
+      calc(-50% + var(--my) * 8px + var(--p) * var(--arc-rise)),
       0
     );
     will-change: transform;
+  }
+
+  .hero-backdrop__arc--inner {
+    --arc-size: 115svh;
+    --arc-drift: 14px;
+    --arc-rise: -10vh;
+    border-color: var(--io-color-border-brand-moderate);
+  }
+
+  .hero-backdrop__arc--mid {
+    --arc-size: 160svh;
+    --arc-drift: 22px;
+    --arc-rise: -16vh;
+  }
+
+  .hero-backdrop__arc--outer {
+    --arc-size: 220svh;
+    --arc-drift: 30px;
+    --arc-rise: -22vh;
+    border-color: var(--io-color-border-neutral-moderate);
   }
 
   /* Sits to the right of the headline on wide screens and behind it on
@@ -262,20 +272,288 @@
     );
   }
 
+  /* --- Section scenes ---------------------------------------------------- */
+  /*
+    Every landing section is a scene: at least one viewport tall, with its
+    content centred and an atmosphere layer behind it.
+
+    No scroll parallax on either plane, deliberately. The near plane is the
+    worst place a page can spend the effect, because what it displaces is the
+    text the eye is already tracking — the reader is asked to follow a line
+    that is itself still moving. The far plane was a defensible place for it,
+    but it only read as depth against a near plane that moved too; on its own
+    it was a hairline sliding behind stationary text.
+
+    The atmosphere does still move, from the pointer (--mx / --my) rather than
+    from the scroll position, which keeps the depth cue without attaching it to
+    the one axis the reader is using to read.
+  */
+
+  /* Near plane. Its only job is to sit above the atmosphere behind it. */
+  .scene-layer {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-atmosphere {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* One ring per section, alternating sides down the page, continuing the
+     orbit the hero opens on. */
+  .section-atmosphere__ring {
+    position: absolute;
+    top: 50%;
+    left: var(--ring-x, -20%);
+    height: 150svh;
+    aspect-ratio: 1;
+    border: 1px solid var(--io-color-border-neutral-moderate);
+    border-radius: 50%;
+    /* A ring's stroke sits at 100% of its own box, so a centred radial mask
+       that fades out before the edge erases the whole outline. The fade has to
+       run across the ring, not out from its middle. */
+    mask-image: linear-gradient(to bottom, transparent 4%, #000 32%, #000 68%, transparent 96%);
+    transform: translate3d(calc(var(--mx, 0) * 12px), calc(-50% + var(--my, 0) * 10px), 0);
+    will-change: transform;
+  }
+
+  /* Alternate the ring's side so the eye is not pulled to one edge the whole
+     way down, and tint every other one with the brand hairline. */
+  app-section:nth-of-type(even) .section-atmosphere__ring {
+    --ring-x: 62%;
+    border-color: var(--io-color-border-brand-subtle);
+  }
+
+  /* --- Split heading reveal ---------------------------------------------- */
+  /* The outer span clips; the inner one rises through it. Overflow on the
+     character rather than the heading is what lets a descender survive — a
+     single clip on the whole line shears the tails off g, y and p. */
+  .split__word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .split__char {
+    display: inline-block;
+    overflow: hidden;
+    /* Room for the descender inside the clip, pulled back off the layout so
+       the heading's line box is unchanged. */
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+
+  .split__inner {
+    display: inline-block;
+    transform: translateY(105%);
+    transition: transform var(--io-duration-reveal) var(--io-ease-entrance);
+    will-change: transform;
+  }
+
+  .split.is-revealed .split__inner {
+    transform: translateY(0);
+  }
+
+  /* --- Line reveal -------------------------------------------------------- */
+  /* Applied by [appLineReveal]. Body copy arrives a line at a time, each line
+     rising out of its own clip — the heading gesture above, at the scale copy
+     can carry. The unit is the word, because a word is what the browser lets
+     us clip without taking wrapping away from it; words on one rendered line
+     share a delay, so a line still moves as one piece. */
+  .lines__word {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    /* Descender room inside the clip, pulled back off the layout so the line
+       box is exactly what it was before the split. */
+    padding-bottom: 0.16em;
+    margin-bottom: -0.16em;
+  }
+
+  .lines__inner {
+    display: inline-block;
+    transform: translateY(110%);
+    /* Opacity as well as travel: a line of copy is lighter than a display
+       heading, and travel alone leaves it looking as though it slid rather
+       than arrived. */
+    opacity: 0;
+    transition:
+      transform var(--io-duration-reveal) var(--io-ease-entrance),
+      opacity var(--io-duration-reveal) var(--io-ease-entrance);
+    transition-delay: inherit;
+    will-change: transform;
+  }
+
+  .lines.is-revealed .lines__inner {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* --- Media wipe and scroll drift ---------------------------------------- */
+  /*
+    Two halves of one gesture, so they share one transform.
+
+    The frame unclips from the bottom while the layer inside settles out of an
+    overscale — the image is revealed by an edge travelling across it rather
+    than by fading, and it is still moving as it lands. Then it keeps moving:
+    [appScrollDrift] writes --d from -1 to 1 across the element's traversal of
+    the viewport, so the layer runs against the page for as long as it is on
+    screen.
+
+    Composed into a single declaration on purpose. Written as two rules, the
+    second `transform` would silently erase the first, and whichever gesture
+    lost would look like a broken animation rather than a CSS collision.
+  */
+  .io-wipe {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path var(--io-duration-reveal) var(--io-ease-entrance);
+    will-change: clip-path;
+  }
+
+  .io-wipe > * {
+    /* --settle is the entrance (1.12 -> 1); --d is the ongoing drift, and
+       --drift is how far a layer opts in to travelling. A child that sets no
+       --drift simply does not move after it lands. */
+    transform: scale(var(--settle, 1.12))
+      translate3d(0, calc(var(--d, 0) * -1 * var(--drift, 0%)), 0);
+    transition: transform calc(var(--io-duration-reveal) * 1.3) var(--io-ease-entrance);
+    /* The directive writes its stagger delay inline on the frame; `inherit`
+       pulls that computed value down so the settle starts with the wipe rather
+       than ahead of it. */
+    transition-delay: inherit;
+    will-change: transform;
+  }
+
+  .io-wipe.io-revealed {
+    clip-path: inset(0 0 0 0);
+  }
+
+  .io-wipe.io-revealed > * {
+    --settle: 1;
+  }
+
+  /* Opt a layer into the drift. The overscale it lands from is the same figure,
+     so the travel is spent inside slack the frame already has and no edge is
+     ever exposed. */
+  .io-drift {
+    --drift: 5%;
+  }
+
   /* --- Scroll reveal ---------------------------------------------------- */
   /* Applied by [appReveal]. The reduced-motion block in tokens.css collapses
      the transition, and the directive skips the starting state entirely, so
      content is never left invisible. */
   .io-reveal {
     opacity: 0;
-    transform: translateY(1.25rem);
+    /* A longer distance than the old 1.25rem, over a longer time. The short
+       hop read as a UI state change; the entrance wants to look like the block
+       is catching up with the page. */
+    transform: translateY(2.5rem);
     transition:
-      opacity var(--io-duration-slow) var(--io-ease-out),
-      transform var(--io-duration-slow) var(--io-ease-out);
+      opacity var(--io-duration-reveal) var(--io-ease-entrance),
+      transform var(--io-duration-reveal) var(--io-ease-entrance),
+      clip-path var(--io-duration-reveal) var(--io-ease-entrance);
   }
 
   .io-revealed {
     opacity: 1;
     transform: none;
+  }
+
+  /* [appReveal] always applies .io-reveal, so a frame that wipes would
+     otherwise fade and travel as well — three gestures for one arrival. The
+     wipe is the gesture; the other two are suppressed where it is present. */
+  .io-reveal.io-wipe {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Route transitions.
+ *
+ * withViewTransitions() snapshots the page before the outlet swaps and
+ * cross-fades old against new. The chrome — header, footer, cursor — gets its
+ * own view-transition-name so it is lifted out of the root snapshot and holds
+ * still while the page underneath changes; without that the whole viewport
+ * fades and the header appears to blink.
+ *
+ * The incoming view also rises a little, which reads as the new page arriving
+ * rather than the old one simply dissolving.
+ * ------------------------------------------------------------------------- */
+
+/* The nav is fixed to the viewport. A fixed ancestor does not become the
+   containing block for its fixed descendants, so the mobile drawer inside
+   this host still resolves against the viewport and covers the screen. */
+app-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 50;
+}
+
+/* The view-transition-name goes on the BAR, not on the host. Naming an
+   element makes it a containing block, and naming the host would capture the
+   drawer with it — a fixed inset-0 scrim would collapse to the height of the
+   header strip. The bar is not an ancestor of the drawer, so naming it lifts
+   the chrome out of the root snapshot and leaves the drawer alone.
+   The cursor is left unnamed for that same containing-block reason: it is
+   position: fixed and must stay anchored to the viewport. */
+app-header > header {
+  view-transition-name: io-header;
+}
+
+/* A fixed header is out of flow, so the space it used to occupy while sticky
+   has to be given back. Without this every page starts underneath it, and the
+   landing scenes — measured in svh — would each be a header taller than the
+   screen they are meant to fill. */
+main {
+  padding-top: var(--io-header-height);
+}
+
+app-footer {
+  display: block;
+  view-transition-name: io-footer;
+}
+
+@keyframes io-route-out {
+  to {
+    opacity: 0;
+    transform: translateY(-0.75rem);
+  }
+}
+
+@keyframes io-route-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+}
+
+::view-transition-old(root) {
+  animation: io-route-out 220ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: io-route-in 420ms var(--io-ease-out) both;
+}
+
+/* The chrome is named only so it stays out of the root fade — it should not
+   animate on its own. */
+::view-transition-old(io-header),
+::view-transition-new(io-header),
+::view-transition-old(io-footer),
+::view-transition-new(io-footer) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
   }
 }

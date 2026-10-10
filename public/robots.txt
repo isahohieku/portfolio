@@ -1,0 +1,5 @@
+# https://isahohieku.com
+User-agent: *
+Allow: /
+
+Sitemap: https://isahohieku.com/sitemap.xml

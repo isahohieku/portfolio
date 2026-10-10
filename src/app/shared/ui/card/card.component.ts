@@ -28,8 +28,6 @@ export type CardTone = 'raised' | 'minimal' | 'brand' | 'bare';
 export class CardComponent {
   @Input() tone: CardTone = 'raised';
   @Input() padded = true;
-  /** Lifts on hover — only for cards that are themselves a link. */
-  @Input() interactive = false;
 
   private static readonly tones: Record<CardTone, string> = {
     raised: 'bg-surface-minimal border border-subtle shadow-raised',
@@ -43,9 +41,6 @@ export class CardComponent {
       'rounded-x-large overflow-hidden',
       CardComponent.tones[this.tone],
       this.padded ? 'p-6 sm:p-8' : '',
-      this.interactive
-        ? 'transition-all duration-base ease-io hover:shadow-raised-variant hover:-translate-y-1'
-        : '',
     ]
       .filter(Boolean)
       .join(' ');

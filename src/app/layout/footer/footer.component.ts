@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ButtonComponent } from '../../shared/ui/button/button.component';
 
 interface SocialLink {
   label: string;
@@ -12,7 +13,7 @@ interface SocialLink {
   templateUrl: './footer.component.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink, ButtonComponent],
 })
 export class FooterComponent {
   readonly year = new Date().getFullYear();
@@ -21,7 +22,7 @@ export class FooterComponent {
   readonly socials: SocialLink[] = [
     {
       label: 'LinkedIn',
-      href: 'https://www.linkedin.com/in/isah-ohieku-b982a6164',
+      href: 'https://www.linkedin.com/in/isah-ohieku',
       icon: 'pi pi-linkedin',
     },
     { label: 'GitHub', href: 'https://www.github.com/isahohieku', icon: 'pi pi-github' },

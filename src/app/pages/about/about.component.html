@@ -6,8 +6,16 @@
       {{ yearsOfExperience }} years across payments, international calling, education and
       greentech &mdash; four roles, with what each one shipped.
     </p>
+    <!--
+      The résumé's professional summary. It was the one part of the PDF with no
+      counterpart anywhere on the site, which left this page opening on a list of
+      four employers without ever saying what the person does. Set at body size
+      rather than lead size: it supports the line above, it does not compete with
+      it.
+    -->
+    <p class="io-body-md max-w-prose text-body">{{ summary }}</p>
     <div class="mt-2 flex flex-wrap gap-3">
-      <app-button href="assets/resume.pdf" [download]="true" icon="pi pi-download">
+      <app-button href="/Isah%20Ohieku%20-%20Resume.pdf" [download]="true" icon="pi pi-download">
         Download r&eacute;sum&eacute;
       </app-button>
       <app-button routerLink="/works" variant="secondary">See the work</app-button>
@@ -22,6 +30,82 @@
     @for (experience of experiences; track experience.id) {
       <app-experience-item [experience]="experience" />
     }
+  </div>
+</app-section>
+
+<!--
+  Skills.
+
+  ExperienceService has carried skillCategories since the data moved out of this
+  component, and no template ever rendered them — so the résumé's technology
+  inventory existed in source and nowhere on the site. A definition list because
+  that is what it is: a group name and its members.
+-->
+<app-section spacing="tight" labelledBy="skills-heading" surface="bg-surface-subtle">
+  <div class="flex flex-col gap-3">
+    <h2 id="skills-heading" class="io-heading-lg text-heading">Skills</h2>
+    <p class="io-body-md max-w-prose text-muted">
+      Grouped from the r&eacute;sum&eacute;&rsquo;s inventory. Depth varies: the
+      frontend and payments entries are years of daily work, others are a project
+      or two.
+    </p>
+  </div>
+
+  <dl class="mt-8 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+    @for (category of skillCategories; track category.name) {
+      <div class="flex flex-col gap-3">
+        <dt class="io-label text-subtle">{{ category.name }}</dt>
+        <dd class="m-0">
+          <ul class="flex list-none flex-wrap gap-2 pl-0">
+            @for (skill of category.skills; track skill) {
+              <li><app-tag>{{ skill }}</app-tag></li>
+            }
+          </ul>
+        </dd>
+      </div>
+    }
+  </dl>
+</app-section>
+
+<!--
+  Education and certifications.
+
+  Both are on the résumé and were on no page. They share one band, side by side
+  on desktop, because neither is the argument this site makes — a recruiter
+  checking for a degree should find it without it displacing the work above.
+-->
+<app-section labelledBy="credentials-heading">
+  <h2 id="credentials-heading" class="sr-only">Education and certifications</h2>
+
+  <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+    <div class="flex flex-col gap-6">
+      <h3 class="io-heading-md text-heading">Education</h3>
+      <ul class="flex list-none flex-col divide-y divide-subtle border-y border-subtle pl-0">
+        @for (entry of education; track entry.id) {
+          <li class="flex flex-col gap-1 py-5">
+            <span class="io-body-md text-heading">
+              {{ entry.qualification }} in {{ entry.field }}
+            </span>
+            <span class="io-body-sm text-muted">{{ entry.institution }}</span>
+            <span class="io-body-sm text-subtle">{{ entry.duration }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div class="flex flex-col gap-6">
+      <h3 class="io-heading-md text-heading">Certifications</h3>
+      <ul class="flex list-none flex-col divide-y divide-subtle border-y border-subtle pl-0">
+        @for (certification of certifications; track certification.name) {
+          <li class="flex flex-col gap-1 py-5">
+            <span class="io-body-md text-heading">{{ certification.name }}</span>
+            <span class="io-body-sm text-subtle">
+              {{ certification.issuer }} &middot; {{ certification.awarded }}
+            </span>
+          </li>
+        }
+      </ul>
+    </div>
   </div>
 </app-section>
 

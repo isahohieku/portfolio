@@ -41,7 +41,7 @@ import {
   selector: 'app-globe',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<canvas #canvas aria-hidden="true"></canvas>`,
+  template: `<canvas #canvas aria-hidden="true" data-cursor="Drag"></canvas>`,
   styles: [
     `
       :host {

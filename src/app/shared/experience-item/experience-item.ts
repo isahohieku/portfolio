@@ -12,6 +12,9 @@ export interface ExperienceData {
   companyColor?: string;
   companyLink?: string;
   role: string;
+  /** Where the role was based, as the résumé records it. Optional: an entry
+   *  without a recorded location renders the dates alone. */
+  location?: string;
   duration: string;
   overview: string;
   accomplishments: string[];

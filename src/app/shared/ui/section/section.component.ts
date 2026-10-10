@@ -15,7 +15,17 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section [class]="classes" [attr.aria-labelledby]="labelledBy">
-      <div class="mx-auto w-full max-w-content px-5 sm:px-8">
+      @if (scene) {
+        <!-- The hero's orbit, carried down the page. Decorative and inert; it
+             answers the pointer, but not the scroll position — see the scene
+             notes in styles.scss for why. -->
+        <div class="section-atmosphere" aria-hidden="true">
+          <div class="section-atmosphere__ring"></div>
+        </div>
+      }
+      <div
+        class="mx-auto w-full max-w-content px-5 sm:px-8"
+        [class.scene-layer]="scene">
         <ng-content></ng-content>
       </div>
     </section>
@@ -34,6 +44,15 @@ export class SectionComponent {
   @Input() labelledBy: string | null = null;
   /** Extra classes for the outer <section> — backgrounds, washes. */
   @Input() surface = '';
+  /**
+   * Makes the section a full-viewport scroll scene: at least 100svh tall,
+   * content centred in it, with an atmosphere layer behind.
+   *
+   * Self-contained — it needs no companion directive on the host. It used to
+   * require `appScrollScene="traverse"` to supply the progress its layers
+   * drifted on; those layers no longer read the scroll position at all.
+   */
+  @Input() scene = false;
 
   private static readonly spacings = {
     tight: 'py-12 sm:py-16',
@@ -42,6 +61,14 @@ export class SectionComponent {
   };
 
   get classes(): string {
-    return [SectionComponent.spacings[this.spacing], this.surface].filter(Boolean).join(' ');
+    return [
+      SectionComponent.spacings[this.spacing],
+      // min-h rather than h: a section whose content is taller than the screen
+      // (the work grid on a phone is roughly three) has to grow, not clip.
+      this.scene ? 'relative flex min-h-[100svh] items-center overflow-hidden' : '',
+      this.surface,
+    ]
+      .filter(Boolean)
+      .join(' ');
   }
 }

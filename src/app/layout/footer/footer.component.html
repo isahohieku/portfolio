@@ -45,13 +45,15 @@
           </ul>
         </nav>
 
-        <a
-          href="assets/resume.pdf"
+        <!-- Was a hand-written six-class button string, the one place a CTA
+             bypassed the system. app-button renders the same <a href download>. -->
+        <app-button
+          href="/Isah%20Ohieku%20-%20Resume.pdf"
           download="Isah Ohieku - Resume.pdf"
-          class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-moderate px-6 py-3 io-body-sm text-body transition-colors duration-base ease-io hover:border-bold hover:bg-surface-subtle">
-          <i class="pi pi-download text-xs" aria-hidden="true"></i>
+          variant="secondary"
+          icon="pi pi-download">
           Download r&eacute;sum&eacute;
-        </a>
+        </app-button>
       </div>
     </div>
 

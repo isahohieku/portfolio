@@ -51,6 +51,12 @@ export interface ProjectData {
   images: ProjectImage[];
   /** Extra destinations — a repository, a package page, a live demo. */
   links?: ProjectLink[];
+  /**
+   * Short, externally checkable facts rendered on the card's colour plate
+   * where no logo asset exists. Only set where the facts are sourced — an
+   * empty plate is the honest result otherwise, not an invitation to invent.
+   */
+  plateFacts?: string[];
   /** Present only where a real writeup exists. */
   caseStudy?: CaseStudy;
 }
@@ -205,6 +211,7 @@ export class ProjectService {
       bgColor: "#c2410c",
       logo: null,
       images: [],
+      plateFacts: ["ngx-horizontal-scroll-menu", "5,479 downloads", "MIT", "v2.2.0"],
       links: [
         { label: "View on GitHub", href: "https://github.com/isahohieku/ngx-horizontal-menu-scroll" },
         { label: "npm package", href: "https://www.npmjs.com/package/ngx-horizontal-scroll-menu" },
@@ -244,6 +251,7 @@ export class ProjectService {
       bgColor: "#475569",
       logo: null,
       images: [],
+      plateFacts: ["contacts-manager", "94.56% covered", "281 commits", "MIT"],
       links: [
         { label: "View on GitHub", href: "https://github.com/isahohieku/contacts-manager" }
       ],
@@ -281,6 +289,7 @@ export class ProjectService {
       bgColor: "#3730a3",
       logo: null,
       images: [],
+      plateFacts: ["advance-chatbot", "127 commits", "FastAPI"],
       links: [
         { label: "View on GitHub", href: "https://github.com/isahohieku/advance-chatbot" }
       ],
@@ -312,9 +321,36 @@ export class ProjectService {
     return this.projects;
   }
 
-  /** The first `count` projects, for the landing page teaser. Drawn from the same list as /works. */
+  /**
+   * The landing page teaser, named rather than positional.
+   *
+   * `slice(0, count)` returned whatever sorted first, which meant the teaser
+   * opened on Hobeei — a company whose site is decommissioned, with no logo
+   * asset, so the first artefact of "delivered work" a visitor saw was an
+   * empty colour plate. It also omitted ngx-horizontal-scroll-menu, the only
+   * project on the site a stranger can verify without taking his word for it,
+   * and the source of the npm figure the evidence band leads with.
+   *
+   * Positional fill keeps the row full if a slug is ever renamed.
+   */
+  private readonly featuredSlugs = [
+    'talk360-payment-platform',
+    'apply-schools-and-applypay',
+    'ngx-horizontal-scroll-menu',
+  ];
+
   getFeatured(count = 3): ProjectData[] {
-    return this.projects.slice(0, count);
+    const bySlug = new Map(this.projects.map((project) => [project.slug, project]));
+    const picked = this.featuredSlugs
+      .map((slug) => bySlug.get(slug))
+      .filter((project): project is ProjectData => !!project);
+
+    for (const project of this.projects) {
+      if (picked.length >= count) break;
+      if (!picked.includes(project)) picked.push(project);
+    }
+
+    return picked.slice(0, count);
   }
 
   /** Client engagements and open-source work make different claims, so the

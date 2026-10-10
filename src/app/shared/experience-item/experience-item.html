@@ -8,8 +8,13 @@
   because it scans source statically.
 -->
 <article class="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-10">
-  <div class="md:col-span-3">
+  <div class="flex flex-col gap-1 md:col-span-3">
     <p class="io-body-sm text-subtle">{{ experience.duration }}</p>
+    <!-- Four roles across three countries is part of the record, and the dates
+         column had the room for it. -->
+    @if (experience.location) {
+      <p class="io-body-sm text-subtle">{{ experience.location }}</p>
+    }
   </div>
 
   <div class="flex flex-col gap-6 md:col-span-9">

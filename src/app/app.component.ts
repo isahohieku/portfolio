@@ -6,6 +6,9 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LoadingService } from './shared/services/loading';
+import { SmoothScrollService } from './shared/services/smooth-scroll';
+import { RouteScrollService } from './shared/services/route-scroll';
+import { CursorComponent } from './shared/ui/cursor/cursor.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -27,6 +30,7 @@ import { CommonModule } from '@angular/common';
     </div>
     }
 
+    <app-cursor />
     <app-header />
     <main id="main" tabindex="-1">
       <router-outlet />
@@ -36,9 +40,26 @@ import { CommonModule } from '@angular/common';
     <p-toast position="top-right"></p-toast>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent, ToastModule, ProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    HeaderComponent,
+    FooterComponent,
+    ToastModule,
+    ProgressSpinnerModule,
+    CursorComponent,
+  ],
   providers: [MessageService]
 })
 export class AppComponent {
   loadingService = inject(LoadingService);
+
+  private readonly smoothScroll = inject(SmoothScrollService);
+  private readonly routeScroll = inject(RouteScrollService);
+
+  constructor() {
+    // Declines to start on touch and under reduced motion; see the service.
+    this.smoothScroll.start();
+    this.routeScroll.start();
+  }
 }

@@ -16,6 +16,12 @@ import {
  * stays on low-capability devices and under reduced motion, and what the
  * WebGL globe degrades to.
  *
+ * Three concentric hairline rings replaced a field of blurred accent orbs
+ * and a ruled grid: the orbs were a floating coloured haze with no edge, and
+ * they were also what the mobile audience got *instead* of the globe, since
+ * canRenderGlobe() rejects most phones. The rings share the globe's centre,
+ * so the fallback states the same idea the globe does.
+ *
  * Layers drift on two inputs: `--p` (scroll progress, from ScrollSceneDirective)
  * and `--mx`/`--my` (pointer, from PointerParallaxDirective). Both resolve to
  * 0 when their directive declines to run, so the composition is still correct
@@ -27,10 +33,9 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="hero-backdrop" aria-hidden="true">
-      <div class="hero-backdrop__orb hero-backdrop__orb--brand"></div>
-      <div class="hero-backdrop__orb hero-backdrop__orb--cool"></div>
-      <div class="hero-backdrop__orb hero-backdrop__orb--deep"></div>
-      <div class="hero-backdrop__grid"></div>
+      <div class="hero-backdrop__arc hero-backdrop__arc--inner"></div>
+      <div class="hero-backdrop__arc hero-backdrop__arc--mid"></div>
+      <div class="hero-backdrop__arc hero-backdrop__arc--outer"></div>
       <div class="hero-backdrop__globe"><ng-container #globeHost /></div>
       <div class="hero-backdrop__scrim"></div>
     </div>

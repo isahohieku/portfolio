@@ -46,12 +46,34 @@
   --io-border-width: 0.0625rem;
   --io-border-width-focused: 0.125rem;
 
+  /* --- Layout ------------------------------------------------------------ */
+  /* The fixed nav's height. It has to be a token because <main> reserves the
+     same space below it, and the two drifting apart is a gap or an overlap on
+     every page. Matches the header's own h-16 / sm:h-20. */
+  --io-header-height: 4rem;
+
   /* --- Motion ------------------------------------------------------------ */
   --io-duration-fast: 150ms;
   --io-duration-base: 250ms;
   --io-duration-slow: 500ms;
+  /* Scroll reveals only. 500ms is the right length for a hover or a state
+     change, and too short for an entrance: at that speed content appears to
+     pop into place rather than arrive, which is the whole difference between
+     this page's entrances and netguru's. Kept as its own token so lengthening
+     the entrances does not slow down every button on the site. */
+  --io-duration-reveal: 900ms;
   --io-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --io-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Near-instant departure from rest, a very long settle. This is what makes a
+     long entrance read as calm rather than slow — most of the distance is
+     covered early, and the tail is what the eye reads as weight. */
+  --io-ease-entrance: cubic-bezier(0.22, 1, 0.24, 1);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --io-header-height: 5rem;
+  }
 }
 
 /* ---------------------------------------------------------------------------
@@ -234,6 +256,7 @@
     --io-duration-fast: 1ms;
     --io-duration-base: 1ms;
     --io-duration-slow: 1ms;
+    --io-duration-reveal: 1ms;
   }
 
   *,

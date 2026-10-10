@@ -1,11 +1,25 @@
 import {
   Directive,
   ElementRef,
+  Input,
   afterNextRender,
   DestroyRef,
   inject,
   NgZone,
 } from '@angular/core';
+import { SmoothScrollService } from '../../services/smooth-scroll';
+
+/**
+ * `pin` — the track is taller than the viewport and its child is sticky;
+ * progress runs 0 -> 1 across the distance the child stays pinned.
+ *
+ * `traverse` — the section is roughly one viewport tall and scrolls normally;
+ * progress runs 0 -> 1 as it crosses the viewport, entering at the bottom and
+ * leaving at the top. Pin maths cannot serve this case: its travel is
+ * `height - viewport`, which is zero or negative for a 100svh section, so
+ * progress would sit at 0 and nothing would ever move.
+ */
+export type SceneMode = 'pin' | 'traverse';
 
 /**
  * Drives a pinned scroll scene.
@@ -33,11 +47,26 @@ import {
   standalone: true,
 })
 export class ScrollSceneDirective {
+  /** Bare `appScrollScene` binds '', which means pin — the original behaviour. */
+  @Input() appScrollScene: SceneMode | '' = 'pin';
+
   private readonly element = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
   private readonly zone = inject(NgZone);
+  private readonly smoothScroll = inject(SmoothScrollService);
 
-  private frame = 0;
+  /**
+   * Geometry, measured when it can change rather than every frame.
+   *
+   * Reading getBoundingClientRect per frame was the second half of the
+   * judder: each scene writes --p, which dirties style, so the next scene's
+   * rect read forces a synchronous style and layout pass. Five scenes meant
+   * five flushes inside one frame. Offset and height only move on resize and
+   * reflow, so they are cached and the frame does pure arithmetic.
+   */
+  private top = 0;
+  private height = 0;
+  private viewport = 0;
   private active = false;
 
   constructor() {
@@ -50,35 +79,43 @@ export class ScrollSceneDirective {
     // Reduced motion: leave progress at rest and never listen. The scene
     // still lays out correctly — every transform resolves to its zero state.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      node.style.setProperty('--p', '0');
+      // Each mode's rest value differs. Pin rests at the start of its track;
+      // traverse rests at its midpoint, because 0 there means "still below the
+      // fold" and would leave every scene layer permanently displaced.
+      node.style.setProperty('--p', this.appScrollScene === 'traverse' ? '0.5' : '0');
       return;
     }
 
     // Run outside Angular: this fires on every scroll frame and touches
     // nothing the framework needs to know about.
     this.zone.runOutsideAngular(() => {
-      const onScroll = () => {
-        if (this.frame) {
-          return;
-        }
-        this.frame = requestAnimationFrame(() => {
-          this.frame = 0;
-          this.update(node);
-        });
+      let unsubscribe: (() => void) | undefined;
+
+      const measure = () => {
+        const rect = node.getBoundingClientRect();
+        this.top = rect.top + window.scrollY;
+        this.height = rect.height;
+        this.viewport = window.innerHeight;
+        this.update(node, window.scrollY);
       };
 
-      // Only listen while the track is anywhere near the viewport.
+      // The track's own height changes with a font swap, an image landing or
+      // a breakpoint, and a stale cache would offset the whole scene.
+      const resizeObserver = new ResizeObserver(measure);
+      resizeObserver.observe(node);
+      window.addEventListener('resize', measure, { passive: true });
+
+      // Only subscribe while the track is anywhere near the viewport.
       const observer = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
             this.active = entry.isIntersecting;
-            if (this.active) {
-              this.update(node);
-              window.addEventListener('scroll', onScroll, { passive: true });
-              window.addEventListener('resize', onScroll, { passive: true });
-            } else {
-              window.removeEventListener('scroll', onScroll);
-              window.removeEventListener('resize', onScroll);
+            if (this.active && !unsubscribe) {
+              measure();
+              unsubscribe = this.smoothScroll.onScroll((scrollY) => this.update(node, scrollY));
+            } else if (!this.active && unsubscribe) {
+              unsubscribe();
+              unsubscribe = undefined;
             }
           }
         },
@@ -86,24 +123,34 @@ export class ScrollSceneDirective {
       );
 
       observer.observe(node);
-      this.update(node);
+      measure();
 
       this.destroyRef.onDestroy(() => {
         observer.disconnect();
-        window.removeEventListener('scroll', onScroll);
-        window.removeEventListener('resize', onScroll);
-        if (this.frame) {
-          cancelAnimationFrame(this.frame);
-        }
+        resizeObserver.disconnect();
+        window.removeEventListener('resize', measure);
+        unsubscribe?.();
       });
     });
   }
 
-  private update(node: HTMLElement): void {
-    const rect = node.getBoundingClientRect();
-    // Distance the track can travel while its sticky child stays pinned.
-    const travel = rect.height - window.innerHeight;
-    const progress = travel <= 0 ? 0 : clamp(-rect.top / travel, 0, 1);
+  private update(node: HTMLElement, scrollY: number): void {
+    // Where the track sits relative to the viewport, derived rather than
+    // measured — identical to rect.top, without the layout flush.
+    const top = this.top - scrollY;
+    const viewport = this.viewport;
+    let progress: number;
+
+    if (this.appScrollScene === 'traverse') {
+      // 0 when the section's top sits on the bottom edge of the viewport,
+      // 1 once its bottom has passed the top edge.
+      progress = clamp((viewport - top) / (viewport + this.height), 0, 1);
+    } else {
+      // Distance the track can travel while its sticky child stays pinned.
+      const travel = this.height - viewport;
+      progress = travel <= 0 ? 0 : clamp(-top / travel, 0, 1);
+    }
+
     node.style.setProperty('--p', progress.toFixed(4));
   }
 }

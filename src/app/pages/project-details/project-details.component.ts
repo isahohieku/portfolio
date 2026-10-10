@@ -8,6 +8,7 @@ import { ProjectLogoComponent } from '../../shared/project-logo/project-logo.com
 import { SectionComponent } from '../../shared/ui/section/section.component';
 import { ButtonComponent } from '../../shared/ui/button/button.component';
 import { TagComponent } from '../../shared/ui/tag/tag.component';
+import { RevealDirective } from '../../shared/directives/reveal/reveal.directive';
 
 @Component({
   selector: 'app-project-details',
@@ -20,7 +21,8 @@ import { TagComponent } from '../../shared/ui/tag/tag.component';
     ProjectLogoComponent,
     SectionComponent,
     ButtonComponent,
-    TagComponent
+    TagComponent,
+    RevealDirective
   ],
   templateUrl: './project-details.component.html'
 })
@@ -81,8 +83,6 @@ export class ProjectDetailsComponent implements OnInit {
       const pos = this.project.position;
       this.prevProject = this.projectService.getProjectByPosition(pos > 1 ? pos - 1 : total);
       this.nextProject = this.projectService.getProjectByPosition(pos < total ? pos + 1 : 1);
-
-      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     });
   }
 

@@ -6,18 +6,53 @@
   <title>Isah Ohieku | Software Engineer</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Isah Ohieku is a software engineer with seven years building payments, calling and edtech platforms — Talk360, ApplyPay, Hobeei and SwipeNG.">
+  <meta name="description" content="Isah Ohieku is a software engineer building fintech, payments, calling and edtech platforms — Talk360, ApplyPay, Hobeei and SwipeNG.">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="preload" href="assets/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 
+  <!-- Canonical host. This is the ONE place the domain is declared for the
+       document head; robots.txt and sitemap.xml carry it too. Crawlers reject
+       relative og:image/twitter:image, which is why these are absolute. -->
+  <link rel="canonical" href="https://isahohieku.com/">
+
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://isahohieku.com/">
+  <meta property="og:site_name" content="Isah Ohieku">
   <meta property="og:title" content="Isah Ohieku | Software Engineer">
-  <meta property="og:description" content="Seven years building payments, calling and edtech platforms — Talk360, ApplyPay, Hobeei and SwipeNG.">
-  <meta property="og:image" content="assets/img/og.png">
+  <meta property="og:description" content="Software engineer building fintech, payments, calling and edtech platforms — Talk360, ApplyPay, Hobeei and SwipeNG.">
+  <meta property="og:image" content="https://isahohieku.com/assets/img/og.png">
+  <meta property="og:image:alt" content="Isah Ohieku — software engineer">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Isah Ohieku | Software Engineer">
-  <meta name="twitter:description" content="Seven years building payments, calling and edtech platforms — Talk360, ApplyPay, Hobeei and SwipeNG.">
-  <meta name="twitter:image" content="assets/img/og.png">
+  <meta name="twitter:description" content="Software engineer building fintech, payments, calling and edtech platforms — Talk360, ApplyPay, Hobeei and SwipeNG.">
+  <meta name="twitter:image" content="https://isahohieku.com/assets/img/og.png">
+
+  <!--
+    Person entity. Every field here already appears on the rendered site — the
+    role, the employer, the social profiles in the footer — so the markup makes
+    a crawler's job easier without asserting anything the page does not.
+  -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Isah Ohieku",
+      "url": "https://isahohieku.com/",
+      "jobTitle": "Software Engineer",
+      "email": "mailto:isahohieku@gmail.com",
+      "worksFor": { "@type": "Organization", "name": "Talk360" },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Ahmadu Bello University"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/isah-ohieku",
+        "https://www.github.com/isahohieku",
+        "https://www.dribbble.com/isahohieku",
+        "https://x.com/isahohieku"
+      ]
+    }
+  </script>
 
   <!-- Resolve the theme before first paint so the page never flashes the
        wrong mode. ThemeService adopts whatever this leaves on the element. -->

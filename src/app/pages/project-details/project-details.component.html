@@ -132,9 +132,13 @@
 
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">
           @for (image of project.images; track image.id; let imgIdx = $index) {
+            <!-- Each frame wipes open in turn, the screen inside settling out
+                 of an overscale — the one place on the site with real captures
+                 to reveal, so it is the one place the gesture is literal. -->
             <button
               type="button"
-              class="group relative block aspect-[4/3] w-full overflow-hidden rounded-medium border border-subtle bg-surface text-left transition-shadow duration-base ease-io hover:shadow-raised-variant"
+              class="io-wipe group relative block aspect-[4/3] w-full overflow-hidden rounded-medium border border-subtle bg-surface text-left transition-shadow duration-base ease-io hover:shadow-raised-variant"
+              [appReveal]="imgIdx * 80"
               [attr.aria-label]="'Open ' + image.imageName + ' full screen'"
               (click)="openGallery(imgIdx)">
               <!--

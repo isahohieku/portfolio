@@ -40,10 +40,10 @@ This is now implemented rather than aspirational: the landing page opens with a 
 ## Capabilities and Constraints
 
 - Angular 20 standalone-component SPA; Tailwind CSS 3.4; PrimeNG 19 (Galleria, ScrollTop, Toast, ProgressSpinner); PrimeIcons; three 0.186 (lazy-loaded only). TypeScript 5.6.
-- Routes: `/` (landing), `/about` (experience), `/works` (project listing), `/works/:id` (project detail, accepts a slug or numeric id), `/projects` (redirects to `/works`), and a wildcard 404.
-- **Two data sources, both `providedIn: 'root'`:** `ProjectService` (10 projects) and `ExperienceService` (4 roles plus skill categories and a computed years-of-experience). Experience data used to be a literal inside `AboutComponent`, which put the strongest evidence out of the landing page's reach.
+- Routes: `/` (landing), `/about` (summary, experience, skills, education and certifications), `/works` (project listing), `/works/:id` (project detail, accepts a slug or numeric id), `/projects` (redirects to `/works`), and a wildcard 404.
+- **Two data sources, both `providedIn: 'root'`:** `ProjectService` (10 projects) and `ExperienceService` (4 roles plus a professional summary, eight skill categories, two education entries, six certifications and a computed years-of-experience). Experience data used to be a literal inside `AboutComponent`, which put the strongest evidence out of the landing page's reach.
 - Projects carry a `kind` of `client` or `open-source`. `/works` groups them under separate headings rather than interleaving them: shipped-for-a-client and published-for-anyone are different claims, and a mixed grid invites the reader to assume the weaker one applies throughout.
-- Contact email: `isahohieku@gmail.com`. Résumé served at `assets/resume.pdf`.
+- Contact email: `isahohieku@gmail.com`. Résumé served from the site root at `/Isah Ohieku - Resume.pdf`, sourced from `public/` (which `angular.json` copies to `/`). The old `src/assets/resume.pdf` is now unreferenced.
 - All assets are self-hosted under `src/assets/`. Nothing may be hotlinked to a third-party host: two logos and three skill icons were previously lost this way when the remote URLs died. The typeface is vendored for the same reason.
 
 ### Design system
@@ -77,11 +77,17 @@ Confirmed by the user against release posts and his work record, 2026-09-19:
   - Rate calculator migrated Vue → React with backward compatibility, plus a Next.js validation app for the new marketing site.
   - `data-cy` E2E tags standardised and documented; Jest/Cypress coverage added for analytics events.
   - Full 8-locale support for user-facing flows; onboarding app upgraded to React 19.
-- **Other roles with companies and dates:** Apply Technologies, Senior Frontend Developer, Nov 2020–Jul 2022 · Hobeei, Senior Frontend Developer, Feb 2019–Feb 2021 · SwipeNG, Frontend Developer, Jan 2018–Jan 2019. Roughly 8 years in total, computed from a 2018-01-01 start rather than hardcoded.
+- **Other roles with companies, titles, locations and dates**, reconciled against the résumé on 2026-09-20: Apply Technologies, Senior Frontend Developer, Abuja, Nov 2020–Jul 2022 · Hobeei, **Lead Frontend Engineer (Founding Team)**, Abuja, Feb 2019–Feb 2021 · SwipeNG, Frontend Developer, Lagos, Jan 2018–Jan 2019. Roughly 8 years in total, computed from a 2018-01-01 start rather than hardcoded.
+  - The Hobeei title was corrected from "Senior Frontend Developer" — the résumé records the founding-team lead role.
+  - **Talk360's title diverges by decision.** The résumé says "Senior Frontend Developer"; the site keeps the user-confirmed "Frontend & Mobile Software Engineer", reaffirmed 2026-09-20 when the divergence was put to him.
+  - The résumé spells the second employer "Aply Technologies Limited". The site keeps "Apply Technologies", matching `applypay.ng`, the asset directory `apply-schools-and-applypay` and the product name. **Unresolved:** likely a résumé typo, but unconfirmed.
 - **Domains actually worked in:** payments and fintech (Talk360 payments, ApplyPay, SwipeNG), international calling (Talk360), edtech (Apply Schools, Sapphital), greentech (Hobeei).
+- **Education**, from the résumé: MBA in Business Administration Management, Ahmadu Bello University, Jan 2019–present; B.Eng. in Electrical and Electronics Engineering, Ahmadu Bello University, Jan 2011–Dec 2016. Rendered on `/about` and asserted as `alumniOf` in the `index.html` Person entity.
+- **Six certifications**, from the résumé: AI LLM Engineering Mastery — GenAI, RAG Complete Guide (Coursera, Feb 2026) · Android App Development with Kotlin (Udemy, 2025) · Web Design Accessibility (Udemy, 2025) · GRC eLearning: PCI DSS (2022) · The Fundamentals of Digital Marketing (Google, 2020) · Google Africa Scholarship Mobile Web Specialist (Google, 2018).
+- **Skills inventory**, from the résumé's flat alphabetical list of 60+ entries, regrouped into eight categories for display. Grouping is the only editorial act; nothing was added the résumé does not name.
 - **21 client work screenshots**, self-hosted at `src/assets/projects/<slug>/`.
 - **Logos** self-hosted at `src/assets/projects/logos/` — three, for ten projects. The seven without one render as a plain colour field.
-- **Résumé PDF**, `src/assets/resume.pdf`.
+- **Résumé PDF**, `public/Isah Ohieku - Resume.pdf`, read 2026-09-20. It is the source for the experience, skills, education and certification data below.
 - **Profiles:** LinkedIn, GitHub, Dribbble, Behance, X.
 
 #### Open-source evidence — independently checkable
@@ -98,9 +104,11 @@ Deliberately excluded, and why: `schedule-a-call` is a single commit; `business-
 
 The Talk360 figures the site previously carried (payment errors −45%, mobile onboarding conversion +37%, load 2.5s → <1s, 50% faster processing, 80+ API issues, −35% project time, +20% CSAT) were **removed** on 2026-09-19 because they were absent from the record the user could verify. They must not be reinstated without a source.
 
-**The remaining three roles carry figures of the same vintage and provenance, and have not been through the same audit:** ApplyPay frontend performance +70%, Hobeei performance +30%, production defects −25%, code efficiency +30%, bug count −40%, engagement +50%, and the SwipeNG entry. Treat all of these as unaudited.
+**The résumé restates every one of them.** Reconciled 2026-09-20 and confirmed by the user: a résumé repeating a number is not the independent source this standard asks for, so they stay off the site. The audited Talk360 record in `ExperienceService` is therefore deliberately *not* replaced by the résumé's account of the same role.
 
-The ApplyPay figure was removed from the landing page evidence band on 2026-09-19 and replaced with the npm download count, which is both better sourced and externally checkable. **All of these figures still render on `/about`**, via `ExperienceService`, so the exposure is reduced rather than eliminated. Auditing the three remaining roles the way Talk360 was audited is the outstanding task.
+**The remaining three roles were reconciled against the résumé on 2026-09-20 rather than audited.** Figures the résumé does *not* carry were dropped from `/about` rather than softened: ApplyPay frontend performance **+70%**, Hobeei production defects **−25%**, code efficiency **+30%**, bug count **−40%**, the Forbes-GSE accelerator mention, and "coached junior developers".
+
+Figures the résumé does carry now render on `/about`, quoted rather than paraphrased: Apply Technologies — over twice the planned feature set, time-to-resolution −40% · Hobeei — performance +30% (architecture), +30% UX via PWA/SSR, engagement +50%, revenue +35%, Earth Tech finals, YC Startup School · SwipeNG — zero to 16,000+ users in year one, 43,000+ subsequently, two redesigns. **These are résumé-sourced, not independently audited**, and remain the outstanding audit task. The ApplyPay figure's slot in the landing evidence band is still held by the npm download count, which is better sourced and externally checkable.
 
 ### Verification standard
 

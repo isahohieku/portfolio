@@ -8,10 +8,15 @@ const app = express();
 
 app.use(compression());
 
-app.use(express.static(__dirname + '/dist/portfolio'));
+// Angular's application builder emits the browser bundle into dist/portfolio/
+// browser; serving dist/portfolio itself returned nothing but a directory
+// holding the prerender manifest.
+const browserDist = path.join(__dirname, 'dist', 'portfolio', 'browser');
+
+app.use(express.static(browserDist));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/dist/portfolio/index.html'));
+    res.sendFile(path.join(browserDist, 'index.html'));
 })
 
 app.listen(process.env.PORT || 8080);

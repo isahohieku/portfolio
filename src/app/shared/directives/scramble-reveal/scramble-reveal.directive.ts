@@ -8,7 +8,6 @@ import {
   inject,
   NgZone,
 } from '@angular/core';
-import { AudioService } from '../../services/audio.service';
 
 const GLYPHS = '01XYZ_/<>[*#~%&+=';
 
@@ -25,7 +24,6 @@ export class ScrambleRevealDirective {
   private readonly renderer = inject(Renderer2);
   private readonly destroyRef = inject(DestroyRef);
   private readonly zone = inject(NgZone);
-  private readonly audio = inject(AudioService);
 
   private originalText = '';
   private displaySpan: HTMLElement | null = null;
@@ -104,7 +102,6 @@ export class ScrambleRevealDirective {
       }
 
       this.displaySpan!.textContent = output;
-      this.audio.playScrambleTick();
 
       if (progress < 1) {
         this.animFrameId = requestAnimationFrame(step);

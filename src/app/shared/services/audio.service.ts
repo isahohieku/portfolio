@@ -31,7 +31,7 @@ export class AudioService {
       this.audioCtx = new AudioContextClass();
     }
     if (this.audioCtx.state === 'suspended') {
-      this.audioCtx.resume().catch(() => {});
+      this.audioCtx.resume().catch(() => undefined);
     }
     return this.audioCtx;
   }

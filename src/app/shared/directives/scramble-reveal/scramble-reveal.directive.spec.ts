@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScrambleRevealDirective } from './scramble-reveal.directive';
-import { AudioService } from '../../services/audio.service';
 
 @Component({
   standalone: true,
@@ -17,7 +16,6 @@ describe('ScrambleRevealDirective', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TestHostComponent, ScrambleRevealDirective],
-      providers: [AudioService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);

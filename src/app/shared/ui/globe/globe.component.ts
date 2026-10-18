@@ -8,6 +8,7 @@ import {
   inject,
   NgZone,
 } from '@angular/core';
+import { AudioService } from '../../services/audio.service';
 import {
   AdditiveBlending,
   BufferGeometry,
@@ -77,6 +78,7 @@ export class GlobeComponent {
 
   private readonly destroyRef = inject(DestroyRef);
   private readonly zone = inject(NgZone);
+  private readonly audio = inject(AudioService);
 
   private frame = 0;
   private visible = true;
@@ -130,6 +132,9 @@ export class GlobeComponent {
     const arcs = this.buildArcs(palette.brand);
     world.add(arcs.group);
 
+    const lattice = this.buildLattice(palette.dim);
+    scene.add(lattice.points);
+
     const resize = () => {
       const { clientWidth: w, clientHeight: h } = host;
       if (!w || !h) {
@@ -150,7 +155,7 @@ export class GlobeComponent {
       (entries) => {
         this.visible = entries.some((e) => e.isIntersecting);
         if (this.visible) {
-          this.play(renderer, scene, camera, world, arcs);
+          this.play(renderer, scene, camera, world, arcs, lattice);
         } else {
           this.pause();
         }
@@ -163,15 +168,15 @@ export class GlobeComponent {
       if (document.hidden) {
         this.pause();
       } else {
-        this.play(renderer, scene, camera, world, arcs);
+        this.play(renderer, scene, camera, world, arcs, lattice);
       }
     };
     document.addEventListener('visibilitychange', onVisibility);
 
     const detachDrag = this.attachDrag(canvas);
-    const detachTheme = this.watchTheme(arcs, world);
+    const detachTheme = this.watchTheme(arcs, world, lattice);
 
-    this.play(renderer, scene, camera, world, arcs);
+    this.play(renderer, scene, camera, world, arcs, lattice);
     requestAnimationFrame(() => canvas.classList.add('is-ready'));
 
     this.destroyRef.onDestroy(() => {
@@ -321,6 +326,41 @@ export class GlobeComponent {
     return { group, travellers };
   }
 
+  /** Perspective coordinate lattice receding under the horizon. */
+  private buildLattice(color: Color): { points: Points; initialY: Float32Array } {
+    const size = 10;
+    const divisions = 28;
+    const step = size / divisions;
+    const positions: number[] = [];
+
+    for (let i = 0; i <= divisions; i++) {
+      const z = (i - divisions / 2) * step;
+      for (let j = 0; j <= divisions; j++) {
+        const x = (j - divisions / 2) * step;
+        positions.push(x, -1.35, z);
+      }
+    }
+
+    const geometry = new BufferGeometry();
+    const posAttr = new Float32BufferAttribute(positions, 3);
+    geometry.setAttribute('position', posAttr);
+
+    const initialY = new Float32Array(positions.length / 3);
+    for (let k = 0; k < initialY.length; k++) {
+      initialY[k] = positions[k * 3 + 1];
+    }
+
+    const material = new PointsMaterial({
+      color,
+      size: 0.014,
+      transparent: true,
+      opacity: 0.25,
+    });
+
+    const points = new Points(geometry, material);
+    return { points, initialY };
+  }
+
   private toVector(lat: number, lon: number, r: number): Vector3 {
     const phi = ((90 - lat) * Math.PI) / 180;
     const theta = ((lon + 180) * Math.PI) / 180;
@@ -338,7 +378,8 @@ export class GlobeComponent {
     scene: Scene,
     camera: PerspectiveCamera,
     world: Group,
-    arcs: ReturnType<GlobeComponent['buildArcs']>
+    arcs: ReturnType<GlobeComponent['buildArcs']>,
+    lattice: ReturnType<GlobeComponent['buildLattice']>
   ): void {
     if (this.frame || !this.visible || document.hidden) {
       return;
@@ -360,6 +401,19 @@ export class GlobeComponent {
         attr.setXYZ(0, p.x, p.y, p.z);
         attr.needsUpdate = true;
       }
+
+      // Animate horizon coordinate lattice
+      const latticeAttr = lattice.points.geometry.getAttribute('position');
+      const latticeCount = latticeAttr.count;
+      const time = now * 0.0012;
+      for (let i = 0; i < latticeCount; i++) {
+        const x = latticeAttr.getX(i);
+        const z = latticeAttr.getZ(i);
+        const dist = Math.sqrt(x * x + z * z);
+        const wave = Math.sin(dist * 1.6 - time) * 0.035;
+        latticeAttr.setY(i, lattice.initialY[i] + wave);
+      }
+      latticeAttr.needsUpdate = true;
 
       renderer.render(scene, camera);
       this.frame = requestAnimationFrame(step);
@@ -383,6 +437,8 @@ export class GlobeComponent {
       this.lastX = event.clientX;
       canvas.classList.add('is-dragging');
       canvas.setPointerCapture(event.pointerId);
+      this.audio.playClick();
+      this.audio.playHum(160, 0.12);
     };
 
     const onMove = (event: PointerEvent) => {
@@ -401,6 +457,7 @@ export class GlobeComponent {
       if (canvas.hasPointerCapture(event.pointerId)) {
         canvas.releasePointerCapture(event.pointerId);
       }
+      this.audio.playHum(120, 0.08);
     };
 
     canvas.addEventListener('pointerdown', onDown);
@@ -432,7 +489,8 @@ export class GlobeComponent {
   /** The globe is drawn from token values, so it has to follow the toggle. */
   private watchTheme(
     arcs: ReturnType<GlobeComponent['buildArcs']>,
-    world: Group
+    world: Group,
+    lattice: ReturnType<GlobeComponent['buildLattice']>
   ): () => void {
     const observer = new MutationObserver(() => {
       const palette = this.readPalette();
@@ -446,6 +504,7 @@ export class GlobeComponent {
       for (const t of arcs.travellers) {
         (t.points.material as PointsMaterial).color.copy(palette.brand);
       }
+      (lattice.points.material as PointsMaterial).color.copy(palette.dim);
     });
 
     observer.observe(document.documentElement, {

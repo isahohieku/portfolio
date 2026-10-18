@@ -165,10 +165,93 @@ export class ProjectService {
       ]
     },
     {
+      id: 9621,
+      slug: "kollo",
+      title: "Kollo",
+      position: 5,
+      kind: "client",
+      description: "A savings platform that brings thrift contributions online — rotating and target group savings alongside personal plans. I built the website and waitlist, the admin dashboard, and the admin side of the API.",
+      portfolio_url: "https://kollo.ng/",
+      bgColor: "#5310b7",
+      logo: "assets/projects/logos/kollo.svg",
+      images: [
+        { id: 7068, imageUrl: "assets/projects/kollo/01.png", imageName: "Home page hero, with the app's wallet and rotation-group balance", position: 1 },
+        { id: 7069, imageUrl: "assets/projects/kollo/02.png", imageName: "Waitlist page: the reCAPTCHA-protected sign-up form", position: 2 },
+        { id: 7070, imageUrl: "assets/projects/kollo/03.png", imageName: "The five savings products beside the app's group savings screen", position: 3 },
+        { id: 7071, imageUrl: "assets/projects/kollo/04.png", imageName: "Fee comparison against other banks", position: 4 },
+        { id: 7072, imageUrl: "assets/projects/kollo/05.png", imageName: "FAQ page, with structured concept and result panels", position: 5 },
+        { id: 7073, imageUrl: "assets/projects/kollo/06.png", imageName: "Support contact form", position: 6 },
+        { id: 7074, imageUrl: "assets/projects/kollo/07.png", imageName: "Home page on a phone", position: 7 }
+      ],
+      caseStudy: {
+        context:
+          "Rotating group savings — everyone pays in each month and one member takes the pot in turn — is an old habit that has always run on trust and a notebook. Kollo moves it online, alongside target savings for groups working towards a shared goal and fixed, automated and flexible plans for individuals.",
+        contribution:
+          "I built the public website and its waitlist, the internal admin dashboard, and the admin-facing half of the AdonisJS API: admin routes and middleware, customer flags and suspension, the waitlist service with its reCAPTCHA check, and the transactional email templates. The core savings engine was written by the backend lead.",
+        sections: [
+          {
+            heading: "A waitlist that only counts real people",
+            body: "The pre-launch site is in Next.js: the landing page, FAQ, and the terms, privacy and cookie pages, including the cooperative-membership consent that joining requires. The waitlist and contact forms are protected by reCAPTCHA v3, and the API checks the score on the server before it records an entry, so the list counts people rather than bots."
+          },
+          {
+            heading: "An admin built before the first customer",
+            body: "The dashboard gives the operations team a customer directory with suspension, flags recorded with a type and a severity, a customer activity view, a transactions view with summary statistics and sensitive values masked, waitlist management, and a knowledge base whose articles are written in a Markdown editor with a live preview. A suspended customer is refused at sign-in by the API itself, not just hidden in the interface."
+          },
+          {
+            heading: "Emails that read as one product",
+            body: "The messages customers receive \u2014 welcome and registration, requests to join a group and their approval, requests to swap places in a rotation and their approval, enquiry replies \u2014 share one templated header and footer, and each has a dark-mode variant so it stays legible in whichever mail client opens it."
+          }
+        ],
+        stack: ["Next.js", "React", "TypeScript", "AdonisJS", "PostgreSQL", "Redis", "Tailwind CSS", "TanStack Table"]
+      }
+    },
+    {
+      id: 9622,
+      slug: "nexus360",
+      title: "Nexus360",
+      position: 6,
+      kind: "client",
+      description: "The website for an Abuja technology and procurement consultancy — five service pages, a contact flow, and the email API behind it. I built both the Next.js site and the API.",
+      portfolio_url: "https://nexus360.ng/",
+      bgColor: "#0a2540",
+      logo: "assets/projects/logos/nexus360.png",
+      images: [
+        { id: 7060, imageUrl: "assets/projects/nexus360/01.png", imageName: "Home page hero, pairing the systems and sourcing sides of the business", position: 1 },
+        { id: 7061, imageUrl: "assets/projects/nexus360/02.png", imageName: "Software development service page, opening on the problems it replaces", position: 2 },
+        { id: 7062, imageUrl: "assets/projects/nexus360/03.png", imageName: "Contact page: the enquiry form beside what happens after it is sent", position: 3 },
+        { id: 7063, imageUrl: "assets/projects/nexus360/04.png", imageName: "Home page on a phone", position: 4 },
+        { id: 7064, imageUrl: "assets/projects/nexus360/05.png", imageName: "Procurement service page on a phone", position: 5 },
+        { id: 7065, imageUrl: "assets/projects/nexus360/06.png", imageName: "Software development page: one weekly report, made by hand and through an integration", position: 6 },
+        { id: 7066, imageUrl: "assets/projects/nexus360/07.png", imageName: "Careers page, inviting CVs in place of a list of open roles", position: 7 },
+        { id: 7067, imageUrl: "assets/projects/nexus360/08.png", imageName: "Enquiry form on a phone, with optional fields marked", position: 8 }
+      ],
+      caseStudy: {
+        context:
+          "Nexus360 is a consultancy in Abuja that does two things most firms keep apart: software, IT strategy and process automation on one side, and procurement, supplier management, inspection and delivery on the other. The site has to explain both to businesses, government agencies and institutions, and turn a visit into an enquiry.",
+        contribution:
+          "I built the whole of it: the Next.js marketing site, its deployment pipeline, and the separate Next.js API that handles the contact form's email.",
+        sections: [
+          {
+            heading: "One template, five services",
+            body: "Each service page opens on the problems the service replaces rather than a list of capabilities, and all five share one ServicePage component, so a new service is content rather than a new layout. The site is a static export, built by GitHub Actions and deployed to cPanel hosting."
+          },
+          {
+            heading: "An enquiry that is never lost",
+            body: "The contact form sets out what happens after it is sent — a reply, a short call, a written scope — beside the form itself. If the request fails or times out, nothing the visitor typed is cleared: the error offers to email the enquiry instead or copy it to the clipboard."
+          },
+          {
+            heading: "A small API, hardened",
+            body: "Enquiries go to a dedicated API that sends two emails through Resend from React templates: a notification to the team and an acknowledgement to the sender. Input is validated and sanitised, requests are rate-limited per client and checked against an allowed-origin list, and the validation and sanitisation are covered by Vitest tests run in CI."
+          }
+        ],
+        stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Radix UI", "Framer Motion", "Resend", "Vitest", "GitHub Actions"]
+      }
+    },
+    {
       id: 9618,
       slug: "desrio",
       title: "Desrio",
-      position: 5,
+      position: 7,
       kind: "client",
       description: "Desrio helps teams collaborate, ideate and reduce distractions during work hours.",
       portfolio_url: "https://www.desrio.com/",
@@ -180,7 +263,7 @@ export class ProjectService {
       id: 9619,
       slug: "swipeng",
       title: "SwipeNG",
-      position: 6,
+      position: 8,
       kind: "client",
       description: "Swipe is a fintech solution aimed at providing financial flexibility and convenience for customers.",
       portfolio_url: "https://swipe.ng/",
@@ -192,7 +275,7 @@ export class ProjectService {
       id: 9620,
       slug: "sapphital",
       title: "Sapphital",
-      position: 7,
+      position: 9,
       kind: "client",
       description: "An Edtech",
       portfolio_url: "https://sapphital.com/",
@@ -204,7 +287,7 @@ export class ProjectService {
       id: 9701,
       slug: "ngx-horizontal-scroll-menu",
       title: "ngx-horizontal-scroll-menu",
-      position: 8,
+      position: 10,
       kind: "open-source",
       description: "An Angular library for horizontal scrolling menus, published to npm and maintained across six major Angular versions since 2020.",
       portfolio_url: "https://github.com/isahohieku/ngx-horizontal-menu-scroll",
@@ -244,7 +327,7 @@ export class ProjectService {
       id: 9702,
       slug: "contacts-manager-api",
       title: "Contact Manager API",
-      position: 9,
+      position: 11,
       kind: "open-source",
       description: "A production-shaped REST API in NestJS and PostgreSQL, with role-based access, Redis caching, S3 uploads and 94% test coverage.",
       portfolio_url: "https://github.com/isahohieku/contacts-manager",
@@ -282,7 +365,7 @@ export class ProjectService {
       id: 9703,
       slug: "advance-chatbot",
       title: "Advanced Chatbot with Memory",
-      position: 10,
+      position: 12,
       kind: "open-source",
       description: "A full-stack AI platform with persistent conversational memory \u2014 FastAPI, LangChain and a ChromaDB vector store behind a Next.js client.",
       portfolio_url: "https://github.com/isahohieku/advance-chatbot",

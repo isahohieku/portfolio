@@ -169,8 +169,14 @@
         </div>
       </app-section>
 
+      <!--
+        A fixed frame rather than one sized to each capture: these galleries
+        mix landscape desktop shots with portrait phone ones, and a frame that
+        follows the image jumps width on every slide. Thumbnails already mark
+        position, so the indicator dots are off.
+      -->
       <p-galleria
-        [value]="getGalleryImages(project)"
+        [value]="galleryImages"
         [responsiveOptions]="[
           { breakpoint: '1024px', numVisible: 5 },
           { breakpoint: '768px', numVisible: 3 },
@@ -182,7 +188,8 @@
         [showItemNavigators]="true"
         [showThumbnails]="true"
         [showItemNavigatorsOnHover]="true"
-        [showIndicators]="true"
+        [showIndicators]="false"
+        [containerStyle]="{ width: 'min(92vw, 72rem)' }"
         [(activeIndex)]="activeIndex"
         [(visible)]="galleryOpen">
         <ng-template pTemplate="item" let-item>
@@ -192,7 +199,7 @@
             width="1600"
             height="1200"
             decoding="async"
-            class="h-auto max-h-[85vh] w-full object-contain" />
+            class="block h-[min(72vh,45rem)] w-full bg-black object-contain" />
         </ng-template>
 
         <ng-template pTemplate="thumbnail" let-item>

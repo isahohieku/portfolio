@@ -20,6 +20,15 @@
   --p-focus-ring-color: var(--io-color-border-focused);
   --p-focus-ring-shadow: none;
 
+  /* --- Overlay mask (shared) -------------------------------------------- */
+  /* Painted by .p-overlay-mask behind the fullscreen galleria. Left undefined
+     it is transparent, and the viewer floats over the live page. Near-black in
+     both themes: the screenshots are the subject, and a light scrim washes out
+     the light-mode captures. */
+  --p-mask-background: rgba(0, 0, 0, 0.88);
+  --p-mask-color: #f9f9f9;
+  --p-mask-transition-duration: var(--io-duration-base);
+
   /* --- Toast ------------------------------------------------------------ */
   --p-toast-width: 25rem;
   --p-toast-border-radius: var(--io-radius-medium);

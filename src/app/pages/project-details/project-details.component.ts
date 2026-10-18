@@ -10,6 +10,13 @@ import { ButtonComponent } from '../../shared/ui/button/button.component';
 import { TagComponent } from '../../shared/ui/tag/tag.component';
 import { RevealDirective } from '../../shared/directives/reveal/reveal.directive';
 
+interface GalleryImage {
+  previewImageSrc: string;
+  thumbnailImageSrc: string;
+  alt: string;
+  title: string;
+}
+
 @Component({
   selector: 'app-project-details',
   standalone: true,
@@ -42,6 +49,14 @@ export class ProjectDetailsComponent implements OnInit {
   activeIndex = 0;
 
   /**
+   * Built once per project, not per change-detection pass. Bound as a method
+   * call, it handed p-galleria a new array on every check, and hovering a
+   * thumbnail fires enough events that the strip was torn down and re-rendered
+   * continuously, so it flickered.
+   */
+  galleryImages: GalleryImage[] = [];
+
+  /**
    * Drives the fullscreen gallery. p-galleria has no show() method - it is controlled
    * purely by its `visible` input - so the previous `galleria?.show()` call could never
    * open it, and `[visible]="false"` pinned it shut. The gallery is the only place the
@@ -69,6 +84,8 @@ export class ProjectDetailsComponent implements OnInit {
       // and /works/9613 both resolve.
       this.project = this.projectService.getProject(params.get('id'));
 
+      this.galleryImages = this.project ? this.buildGalleryImages(this.project) : [];
+
       if (!this.project) {
         this.notFound = true;
         this.prevProject = this.nextProject = undefined;
@@ -87,8 +104,8 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
 
-  getGalleryImages(project: ProjectData) {
-    if (!project || !project.images) return [];
+  private buildGalleryImages(project: ProjectData): GalleryImage[] {
+    if (!project.images) return [];
     return project.images.map(img => ({
       previewImageSrc: img.imageUrl,
       thumbnailImageSrc: img.imageUrl,

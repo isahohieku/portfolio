@@ -63,7 +63,8 @@ export class RevealDirective {
       { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.1 }
     );
 
-    observer.observe(node);
+    const target = node.classList.contains('io-wipe') && node.parentElement ? node.parentElement : node;
+    observer.observe(target);
     this.destroyRef.onDestroy(() => observer.disconnect());
   }
 }

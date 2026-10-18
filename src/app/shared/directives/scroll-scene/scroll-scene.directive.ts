@@ -17,9 +17,11 @@ import { SmoothScrollService } from '../../services/smooth-scroll';
  * progress runs 0 -> 1 as it crosses the viewport, entering at the bottom and
  * leaving at the top. Pin maths cannot serve this case: its travel is
  * `height - viewport`, which is zero or negative for a 100svh section, so
- * progress would sit at 0 and nothing would ever move.
+ * `continuous` — progress runs 0 -> 1 smoothly from top = 0 until the
+ * section's bottom edge leaves the top of the viewport. Motion remains
+ * continuous without stopping after pin travel.
  */
-export type SceneMode = 'pin' | 'traverse';
+export type SceneMode = 'pin' | 'traverse' | 'continuous';
 
 /**
  * Drives a pinned scroll scene.
@@ -145,6 +147,9 @@ export class ScrollSceneDirective {
       // 0 when the section's top sits on the bottom edge of the viewport,
       // 1 once its bottom has passed the top edge.
       progress = clamp((viewport - top) / (viewport + this.height), 0, 1);
+    } else if (this.appScrollScene === 'continuous') {
+      // Progress runs 0 -> 1 continuously from scroll 0 until the section's bottom edge leaves the viewport.
+      progress = this.height <= 0 ? 0 : clamp(-top / this.height, 0, 1);
     } else {
       // Distance the track can travel while its sticky child stays pinned.
       const travel = this.height - viewport;

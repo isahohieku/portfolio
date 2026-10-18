@@ -225,35 +225,62 @@
        tall, so height-relative rings land in the same place on a phone and a
        desktop. Width-relative ones flew off the top of wide screens. */
     mask-image: linear-gradient(to right, transparent 2%, #000 22%, #000 78%, transparent 98%);
-    /* Both axes need the -50%: `top`/`left` place the ring's corner, and the
-       centre is what has to sit below the fold. Without the Y half the whole
-       circle starts at 105% and is clipped away by the scene's overflow. */
     transform: translate3d(
       calc(-50% + var(--mx) * var(--arc-drift)),
       calc(-50% + var(--my) * 8px + var(--p) * var(--arc-rise)),
       0
-    );
+    ) rotate(calc(var(--p) * var(--arc-rotate, 0deg)));
     will-change: transform;
+  }
+
+  @keyframes arc-spin-cw {
+    from {
+      rotate: 0deg;
+    }
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  @keyframes arc-spin-ccw {
+    from {
+      rotate: 0deg;
+    }
+    to {
+      rotate: -360deg;
+    }
   }
 
   .hero-backdrop__arc--inner {
     --arc-size: 115svh;
     --arc-drift: 14px;
-    --arc-rise: -10vh;
+    --arc-rise: -22vh;
+    --arc-rotate: 36deg;
     border-color: var(--io-color-border-brand-moderate);
+    animation: arc-spin-cw 80s linear infinite;
   }
 
   .hero-backdrop__arc--mid {
     --arc-size: 160svh;
     --arc-drift: 22px;
-    --arc-rise: -16vh;
+    --arc-rise: -34vh;
+    --arc-rotate: -28deg;
+    animation: arc-spin-ccw 105s linear infinite;
   }
 
   .hero-backdrop__arc--outer {
     --arc-size: 220svh;
     --arc-drift: 30px;
-    --arc-rise: -22vh;
+    --arc-rise: -46vh;
+    --arc-rotate: 42deg;
     border-color: var(--io-color-border-neutral-moderate);
+    animation: arc-spin-cw 130s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-backdrop__arc {
+      animation: none !important;
+    }
   }
 
 

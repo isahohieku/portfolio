@@ -63,11 +63,11 @@ export class SpringLettersDirective {
       this.renderer.setStyle(wordSpan, 'display', 'inline-block');
       this.renderer.setStyle(wordSpan, 'white-space', 'nowrap');
 
-      for (let i = 0; i < word.length; i++) {
+      for (const char of word) {
         const charSpan = this.renderer.createElement('span');
         this.renderer.setStyle(charSpan, 'display', 'inline-block');
         this.renderer.setStyle(charSpan, 'will-change', 'transform');
-        this.renderer.setProperty(charSpan, 'textContent', word[i]);
+        this.renderer.setProperty(charSpan, 'textContent', char);
         this.renderer.appendChild(wordSpan, charSpan);
 
         this.letters.push({
@@ -134,8 +134,6 @@ export class SpringLettersDirective {
   }
 
   private loop(): void {
-    let hasMotion = false;
-
     for (const l of this.letters) {
       if (this.isHovered) {
         const dx = l.cx + l.x - this.mouseX;
@@ -158,7 +156,6 @@ export class SpringLettersDirective {
       l.y += l.vy;
 
       if (Math.abs(l.x) > 0.05 || Math.abs(l.y) > 0.05 || Math.abs(l.vx) > 0.05) {
-        hasMotion = true;
         l.el.style.transform = `translate3d(${l.x.toFixed(2)}px, ${l.y.toFixed(2)}px, 0)`;
       } else if (l.x !== 0 || l.y !== 0) {
         l.x = 0;

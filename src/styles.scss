@@ -399,6 +399,10 @@
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
+    /* overflow:hidden moves an inline-block's baseline to its bottom edge,
+       which lifted every word and grew each line box by roughly a quarter.
+       Top alignment takes the word out of baseline alignment altogether. */
+    vertical-align: top;
     /* Descender room inside the clip, pulled back off the layout so the line
        box is exactly what it was before the split. */
     padding-bottom: 0.16em;

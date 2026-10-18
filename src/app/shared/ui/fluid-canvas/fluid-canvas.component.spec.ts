@@ -15,6 +15,10 @@ describe('FluidCanvasComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
   it('creates canvas with aria-hidden="true"', () => {
     const canvas = fixture.nativeElement.querySelector('canvas');
     expect(canvas).not.toBeNull();

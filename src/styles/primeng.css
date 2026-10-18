@@ -3,13 +3,14 @@
  *
  * PrimeNG 19 emits `var(--p-*)` references in styled mode whether or not a
  * preset is registered; with no preset those variables are simply undefined,
- * which is why the toast, galleria and spinner rendered unstyled. The preset
+ * which is why the toast and spinner rendered unstyled. The preset
  * packages (@primeng/themes) are not installable into this tree, so the
- * variables the four components we actually use are defined here directly,
+ * variables the three components we actually use are defined here directly,
  * against the --io-* role tokens. They therefore follow light/dark with
  * everything else.
  *
- * Components in use: p-toast, p-progressSpinner, p-galleria, p-scrolltop.
+ * Components in use: p-toast, p-progressSpinner, p-scrolltop. The screenshot
+ * viewer used to be p-galleria; it is a native <dialog> now (styles.scss).
  * ------------------------------------------------------------------------- */
 
 :root {
@@ -19,15 +20,6 @@
   --p-focus-ring-offset: 2px;
   --p-focus-ring-color: var(--io-color-border-focused);
   --p-focus-ring-shadow: none;
-
-  /* --- Overlay mask (shared) -------------------------------------------- */
-  /* Painted by .p-overlay-mask behind the fullscreen galleria. Left undefined
-     it is transparent, and the viewer floats over the live page. Near-black in
-     both themes: the screenshots are the subject, and a light scrim washes out
-     the light-mode captures. */
-  --p-mask-background: rgba(0, 0, 0, 0.88);
-  --p-mask-color: #f9f9f9;
-  --p-mask-transition-duration: var(--io-duration-base);
 
   /* --- Toast ------------------------------------------------------------ */
   --p-toast-width: 25rem;
@@ -101,78 +93,6 @@
   --p-toast-contrast-close-button-hover-background: var(--io-color-background-inverted-minimal);
   --p-toast-contrast-close-button-focus-ring-color: var(--io-color-border-focused);
   --p-toast-contrast-close-button-focus-ring-shadow: none;
-
-  /* --- Galleria (case-study screenshots) -------------------------------- */
-  --p-galleria-border-width: 0;
-  --p-galleria-border-color: var(--io-color-border-neutral-subtle);
-  --p-galleria-border-radius: var(--io-radius-medium);
-  --p-galleria-transition-duration: var(--io-duration-base);
-
-  --p-galleria-caption-background: rgba(0, 0, 0, 0.72);
-  --p-galleria-caption-color: #f9f9f9;
-  --p-galleria-caption-padding: var(--io-space-400);
-
-  --p-galleria-nav-button-background: rgba(0, 0, 0, 0.5);
-  --p-galleria-nav-button-hover-background: rgba(0, 0, 0, 0.7);
-  --p-galleria-nav-button-color: #f9f9f9;
-  --p-galleria-nav-button-hover-color: #ffffff;
-  --p-galleria-nav-button-size: 3rem;
-  --p-galleria-nav-button-gutter: var(--io-space-200);
-  --p-galleria-nav-button-prev-border-radius: var(--io-radius-full);
-  --p-galleria-nav-button-next-border-radius: var(--io-radius-full);
-  --p-galleria-nav-button-focus-ring-width: var(--io-border-width-focused);
-  --p-galleria-nav-button-focus-ring-style: solid;
-  --p-galleria-nav-button-focus-ring-color: var(--io-color-border-focused);
-  --p-galleria-nav-button-focus-ring-offset: 2px;
-  --p-galleria-nav-button-focus-ring-shadow: none;
-  --p-galleria-nav-icon-size: 1.25rem;
-
-  --p-galleria-close-button-background: rgba(0, 0, 0, 0.5);
-  --p-galleria-close-button-hover-background: rgba(0, 0, 0, 0.7);
-  --p-galleria-close-button-color: #f9f9f9;
-  --p-galleria-close-button-hover-color: #ffffff;
-  --p-galleria-close-button-size: 3rem;
-  --p-galleria-close-button-gutter: var(--io-space-200);
-  --p-galleria-close-button-border-radius: var(--io-radius-full);
-  --p-galleria-close-button-icon-size: 1.25rem;
-  --p-galleria-close-button-focus-ring-width: var(--io-border-width-focused);
-  --p-galleria-close-button-focus-ring-style: solid;
-  --p-galleria-close-button-focus-ring-color: var(--io-color-border-focused);
-  --p-galleria-close-button-focus-ring-offset: 2px;
-  --p-galleria-close-button-focus-ring-shadow: none;
-
-  --p-galleria-thumbnails-content-background: var(--io-color-background-neutral-minimal);
-  --p-galleria-thumbnails-content-padding: var(--io-space-300);
-  --p-galleria-thumbnail-nav-button-size: 2.5rem;
-  --p-galleria-thumbnail-nav-button-border-radius: var(--io-radius-full);
-  --p-galleria-thumbnail-nav-button-color: var(--io-color-text-neutral-variant);
-  --p-galleria-thumbnail-nav-button-hover-color: var(--io-color-text-neutral);
-  --p-galleria-thumbnail-nav-button-hover-background: var(--io-color-background-inverted-minimal);
-  --p-galleria-thumbnail-nav-button-gutter: var(--io-space-100);
-  --p-galleria-thumbnail-nav-button-icon-size: 1rem;
-  --p-galleria-thumbnail-nav-button-focus-ring-width: var(--io-border-width-focused);
-  --p-galleria-thumbnail-nav-button-focus-ring-style: solid;
-  --p-galleria-thumbnail-nav-button-focus-ring-color: var(--io-color-border-focused);
-  --p-galleria-thumbnail-nav-button-focus-ring-offset: 2px;
-  --p-galleria-thumbnail-nav-button-focus-ring-shadow: none;
-
-  --p-galleria-indicator-button-width: 0.75rem;
-  --p-galleria-indicator-button-height: 0.75rem;
-  --p-galleria-indicator-button-border-radius: var(--io-radius-full);
-  --p-galleria-indicator-button-background: var(--io-color-background-neutral-moderate);
-  --p-galleria-indicator-button-hover-background: var(--io-color-background-neutral-bold);
-  --p-galleria-indicator-button-active-background: var(--io-color-background-brand-bold);
-  --p-galleria-indicator-list-gap: var(--io-space-200);
-  --p-galleria-indicator-list-padding: var(--io-space-300);
-  --p-galleria-indicator-button-focus-ring-width: var(--io-border-width-focused);
-  --p-galleria-indicator-button-focus-ring-style: solid;
-  --p-galleria-indicator-button-focus-ring-color: var(--io-color-border-focused);
-  --p-galleria-indicator-button-focus-ring-offset: 2px;
-  --p-galleria-indicator-button-focus-ring-shadow: none;
-  --p-galleria-inset-indicator-list-background: rgba(0, 0, 0, 0.5);
-  --p-galleria-inset-indicator-button-background: rgba(255, 255, 255, 0.4);
-  --p-galleria-inset-indicator-button-hover-background: rgba(255, 255, 255, 0.6);
-  --p-galleria-inset-indicator-button-active-background: var(--io-color-background-brand-bold);
 }
 
 /* --- Components with no theme keys of their own -------------------------- */

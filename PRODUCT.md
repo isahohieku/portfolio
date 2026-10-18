@@ -39,7 +39,7 @@ This is now implemented rather than aspirational: the landing page opens with a 
 
 ## Capabilities and Constraints
 
-- Angular 20 standalone-component SPA; Tailwind CSS 3.4; PrimeNG 19 (Galleria, ScrollTop, Toast, ProgressSpinner); PrimeIcons; three 0.186 (lazy-loaded only). TypeScript 5.6.
+- Angular 20 standalone-component SPA; Tailwind CSS 3.4; PrimeNG 19 (ScrollTop, Toast, ProgressSpinner); PrimeIcons; three 0.186 (lazy-loaded only). TypeScript 5.6.
 - Routes: `/` (landing), `/about` (summary, experience, skills, education and certifications), `/works` (project listing), `/works/:id` (project detail, accepts a slug or numeric id), `/projects` (redirects to `/works`), and a wildcard 404.
 - **Two data sources, both `providedIn: 'root'`:** `ProjectService` (12 projects) and `ExperienceService` (4 roles plus a professional summary, eight skill categories, two education entries, six certifications and a computed years-of-experience). Experience data used to be a literal inside `AboutComponent`, which put the strongest evidence out of the landing page's reach.
 - Projects carry a `kind` of `client` or `open-source`. `/works` groups them under separate headings rather than interleaving them: shipped-for-a-client and published-for-anyone are different claims, and a mixed grid invites the reader to assume the weaker one applies throughout.
@@ -55,7 +55,7 @@ Added 2026-09-19. Derived from spaceship.com's published `--sds-*` token system,
 - **Typeface:** Hanken Grotesk, variable 300–800, self-hosted as two woff2 files. One family at many weights; no uppercase letter-spacing anywhere.
 - **Shape:** Spaceship's radius scale (0.25rem → 4rem, buttons at full pill) and their inset-hairline elevation recipes.
 - **Primitives** in `src/app/shared/ui/`: `app-button`, `app-card`, `app-section`, `app-tag`. CTAs must use `app-button` rather than hand-written utility strings.
-- **PrimeNG** is themed by defining its `--p-*` variables against the tokens in `src/styles/primeng.css`. Only four PrimeNG components are used, so a preset package would cost more than it saves.
+- **PrimeNG** is themed by defining its `--p-*` variables against the tokens in `src/styles/primeng.css`. Only three PrimeNG components are used, so a preset package would cost more than it saves. The screenshot viewer was p-galleria until 2026-10-18; it is now a native `<dialog>` styled in `styles.scss`, because Galleria could not return focus on close, name its arrows, or hold its thumbnail strip still on hover.
 
 ## Brand Commitments
 

@@ -134,6 +134,18 @@ export class SmoothScrollService {
     this.lenis?.scrollTo(target, { immediate });
   }
 
+  /**
+   * Holds the page still under a modal. Lenis takes wheel input on the window,
+   * so without this a wheel over an open dialog scrolls the page behind it.
+   */
+  pause(): void {
+    this.lenis?.stop();
+  }
+
+  resume(): void {
+    this.lenis?.start();
+  }
+
   private stop(): void {
     if (this.frame) {
       cancelAnimationFrame(this.frame);

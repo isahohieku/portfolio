@@ -68,6 +68,14 @@
      long entrance read as calm rather than slow — most of the distance is
      covered early, and the tail is what the eye reads as weight. */
   --io-ease-entrance: cubic-bezier(0.22, 1, 0.24, 1);
+
+  /* The screenshot viewer's room. Mode-independent on purpose: the captures
+     are the subject, and a light scrim washes out the light-mode ones. */
+  --io-color-background-scrim: rgb(8 8 8 / 0.94);
+  --io-color-background-scrim-control: rgb(255 255 255 / 0.1);
+  --io-color-background-scrim-control-hovered: rgb(255 255 255 / 0.18);
+  --io-color-text-on-scrim: #f4f4f4;
+  --io-color-text-on-scrim-variant: #b4b4b4;
 }
 
 @media (min-width: 640px) {

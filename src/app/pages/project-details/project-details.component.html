@@ -12,244 +12,390 @@
   </div>
 }
 
-@if (project && !notFound) {
-  <article class="flex min-h-screen flex-col">
-    <!-- Hero. The project's own colour becomes a wash rather than a flat fill. -->
-    <header
-      class="relative flex min-h-[46svh] items-center justify-center overflow-hidden border-b border-subtle px-5 py-20 sm:min-h-[56svh]"
-      [ngStyle]="{
-        'background-image':
-          'radial-gradient(ellipse 70% 70% at 50% 40%, ' + project.bgColor + '33, transparent 70%)'
-      }">
-      <div class="relative z-10 flex max-w-3xl flex-col items-center gap-6 text-center">
-        @if (project.logo) {
-          <app-project-logo
-            [src]="project.logo"
-            [title]="project.title"
-            [showWordmark]="false"
-            imgClass="h-14 w-auto object-contain sm:h-20" />
-        }
-        <!-- Single h1 per page: the title is the heading whether or not a logo renders. -->
-        <h1 class="io-heading-lg text-heading">{{ project.title }}</h1>
+<!--
+  One screenshot, framed on the project's own colour. The colour is the
+  client's, so the mat reads as their product rather than as this site's
+  decoration, and portrait phone captures sit on it as objects instead of
+  being cropped to fill a box. Every frame opens the viewer. Until the image
+  arrives the mat carries a placeholder, so a slow connection shows frames
+  loading rather than empty colour.
+-->
+<ng-template #shot let-image let-caption="caption" let-eager="eager">
+  <figure class="flex flex-col gap-3">
+    <button
+      type="button"
+      class="io-wipe group relative block aspect-[16/10] w-full overflow-hidden rounded-large p-3 text-left shadow-raised sm:p-5"
+      [style.background-color]="project?.bgColor"
+      [appReveal]="0"
+      data-cursor="View"
+      [attr.aria-label]="'Open full screen: ' + image.imageName"
+      (click)="openViewer(image)">
+      @if (!loaded.has(image.id)) {
+        <span class="io-shot-placeholder absolute inset-3 rounded-small sm:inset-5" aria-hidden="true"></span>
+      }
+      <!-- alt is empty because the button's label already names the screen. -->
+      <img
+        [src]="image.imageUrl"
+        [attr.srcset]="srcset(image)"
+        sizes="(min-width: 1024px) 720px, 100vw"
+        alt=""
+        [attr.loading]="eager ? 'eager' : 'lazy'"
+        [attr.fetchpriority]="eager ? 'high' : null"
+        decoding="async"
+        width="1600"
+        height="1000"
+        (load)="loaded.add(image.id)"
+        (error)="loaded.add(image.id)"
+        class="relative h-full w-full rounded-small object-contain transition-[transform,opacity] duration-slow ease-io-out group-hover:scale-[1.02]"
+        [class.opacity-0]="!loaded.has(image.id)" />
+      <!-- Always visible, not revealed on hover: on a phone there is no hover,
+           and the frame has to say it opens. -->
+      <span
+        class="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-surface-inverted text-inverted shadow-raised sm:bottom-6 sm:right-6"
+        aria-hidden="true">
+        <i class="pi pi-expand text-sm"></i>
+      </span>
+    </button>
+    @if (caption) {
+      <figcaption class="io-body-sm max-w-[60ch] text-muted" aria-hidden="true">{{ image.imageName }}</figcaption>
+    }
+  </figure>
+</ng-template>
 
-        <!-- Open-source projects carry several destinations (repository,
-             package page, demo); client work carries at most one. -->
-        @if (project.links?.length) {
-          <div class="flex flex-wrap justify-center gap-3">
-            @for (link of project.links; track link.href; let first = $first) {
-              <app-button
-                [href]="link.href"
-                [external]="true"
-                [variant]="first ? 'primary' : 'secondary'">
-                {{ link.label }}
-              </app-button>
+@if (project && !notFound) {
+  @let study = project.caseStudy;
+  @let outcomesLead = project.kind === 'open-source' && !!study?.outcomes?.length;
+  @let hasAside = !!leadImage || outcomesLead;
+
+  <article class="flex min-h-screen flex-col">
+    <!--
+      The first viewport is most of the visit, so it carries the evidence:
+      what the project is, what Isah's part was, and either the strongest
+      screen or, for open source, the figures anyone can check.
+    -->
+    <header class="border-b border-subtle">
+      <div
+        class="mx-auto grid w-full max-w-content grid-cols-1 gap-10 px-5 pb-12 pt-28 sm:px-8 sm:pb-16 sm:pt-36 lg:grid-cols-12 lg:items-center lg:gap-16">
+        <div
+          class="flex flex-col gap-6"
+          [class]="hasAside ? 'lg:col-span-5' : 'lg:col-span-8'">
+          @if (project.logo) {
+            <!-- On the project's colour: the reversed marks (Kollo's is white)
+                 vanish on a light page otherwise. -->
+            <div
+              class="flex h-14 w-14 items-center justify-center rounded-medium p-2.5"
+              [style.background-color]="project.bgColor">
+              <app-project-logo
+                [src]="project.logo"
+                [title]="project.title"
+                [showWordmark]="false"
+                imgClass="max-h-full w-auto object-contain" />
+            </div>
+          }
+
+          <div class="flex flex-col gap-4">
+            <!-- Single h1 per page: the title is the heading whether or not a logo renders. -->
+            <h1 class="io-heading-lg text-heading [text-wrap:balance]">{{ project.title }}</h1>
+            @if (project.description) {
+              <p class="io-body-lg max-w-[52ch] text-muted">{{ project.description }}</p>
             }
           </div>
-        } @else if (project.portfolio_url) {
-          <app-button
-            [href]="project.portfolio_url"
-            [external]="true"
-            variant="secondary">
-            Visit the live site
-          </app-button>
+
+          <!-- What a recruiter scans for first: whose work it was, Isah's part
+               in it, and when. -->
+          <dl class="io-body-md flex flex-wrap gap-x-8 gap-y-4">
+            @if (project.role) {
+              <div class="flex basis-full flex-col gap-0.5">
+                <dt class="io-body-sm text-subtle">My part</dt>
+                <dd class="font-semibold text-heading">{{ project.role }}</dd>
+              </div>
+            }
+            <div class="flex flex-col gap-0.5">
+              <dt class="io-body-sm text-subtle">Type</dt>
+              <dd class="font-medium text-heading">{{ kindLabel }}</dd>
+            </div>
+            @if (project.period) {
+              <div class="flex flex-col gap-0.5">
+                <dt class="io-body-sm text-subtle">Period</dt>
+                <dd class="font-medium tabular-nums text-heading">{{ project.period }}</dd>
+              </div>
+            }
+            @if (project.license) {
+              <div class="flex flex-col gap-0.5">
+                <dt class="io-body-sm text-subtle">Licence</dt>
+                <dd class="font-medium text-heading">{{ project.license }}</dd>
+              </div>
+            }
+          </dl>
+
+          <!-- Open-source projects carry several destinations (repository,
+               package page, demo); client work carries at most one. -->
+          @if (project.links?.length) {
+            <div class="flex flex-wrap gap-3">
+              @for (link of project.links; track link.href; let first = $first) {
+                <app-button
+                  [href]="link.href"
+                  [external]="true"
+                  [variant]="first ? 'primary' : 'secondary'">
+                  {{ link.label }}
+                </app-button>
+              }
+            </div>
+          } @else if (project.siteOffline) {
+            <!-- Said rather than linked: the host is gone, and a button to it
+                 would land the visitor on an error page. -->
+            <p class="io-body-sm text-muted">The site is no longer online.</p>
+          } @else if (project.portfolio_url) {
+            <div class="flex flex-wrap gap-3">
+              <app-button
+                [href]="project.portfolio_url"
+                [external]="true"
+                variant="secondary"
+                icon="pi pi-arrow-up-right">
+                Visit the live site
+              </app-button>
+            </div>
+          }
+        </div>
+
+        @if (outcomesLead) {
+          <div class="lg:col-span-7">
+            <div class="rounded-large border border-subtle bg-surface-minimal p-6 shadow-raised sm:p-8">
+              <h2 class="io-label mb-4 text-subtle">Outcomes</h2>
+              <ul class="flex list-none flex-col divide-y divide-subtle pl-0">
+                @for (outcome of study?.outcomes; track outcome) {
+                  <li class="io-body-lg py-4 text-heading first:pt-0 last:pb-0">{{ outcome }}</li>
+                }
+              </ul>
+            </div>
+          </div>
+        } @else if (leadImage) {
+          <div class="lg:col-span-7">
+            <ng-container
+              [ngTemplateOutlet]="shot"
+              [ngTemplateOutletContext]="{ $implicit: leadImage, caption: true, eager: true }" />
+          </div>
         }
       </div>
     </header>
 
     <!--
-      Case study when one exists, otherwise the one-line description. Each
-      block renders only if it has real material behind it: most projects have
-      no recorded outcome, and an empty "Results" heading would either look
-      unfinished or invite something invented to fill it.
+      The story, with each claim beside the screen that shows it. Blocks render
+      only with real material behind them: most projects have no recorded
+      outcome, and an empty heading would either look unfinished or invite
+      something invented to fill it.
     -->
-    @if (project.caseStudy; as study) {
-      <app-section labelledBy="overview-heading">
+    @if (study) {
+      <app-section labelledBy="work-heading">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-16">
           <div class="lg:col-span-4">
-            <h2 id="overview-heading" class="io-label text-brand-text">The work</h2>
+            <h2 id="work-heading" class="io-heading-md text-heading">The work</h2>
           </div>
+          <div class="flex flex-col gap-5 lg:col-span-8">
+            <p class="io-body-lg max-w-[65ch] text-body">{{ study.context }}</p>
+            <p class="io-body-md max-w-[65ch] text-body">{{ study.contribution }}</p>
+            @if (study.contributionPoints?.length) {
+              <ul class="flex max-w-[65ch] list-none flex-col gap-2 pl-0">
+                @for (point of study.contributionPoints; track point) {
+                  <li class="io-body-md relative pl-6 text-body">
+                    <span class="absolute left-0 top-[0.7em] h-1.5 w-1.5 rounded-full bg-brand" aria-hidden="true"></span>
+                    {{ point }}
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        </div>
 
-          <div class="flex flex-col gap-10 lg:col-span-8">
-            <div class="flex flex-col gap-4">
-              <p class="io-body-lg max-w-prose text-body">{{ study.context }}</p>
-              <p class="io-body-md max-w-prose text-muted">{{ study.contribution }}</p>
+        @for (section of story; track section.heading; let odd = $odd) {
+          @if (section.image) {
+            <div class="mt-16 grid grid-cols-1 gap-8 sm:mt-24 lg:grid-cols-12 lg:items-center lg:gap-16">
+              <div class="flex flex-col gap-3 lg:col-span-5" [class]="odd ? 'lg:order-2' : ''">
+                <h3 class="io-heading-md text-heading [text-wrap:balance]">{{ section.heading }}</h3>
+                <p class="io-body-md max-w-[65ch] text-muted">{{ section.body }}</p>
+              </div>
+              <div class="lg:col-span-7">
+                <ng-container
+                  [ngTemplateOutlet]="shot"
+                  [ngTemplateOutletContext]="{ $implicit: section.image, caption: true }" />
+              </div>
             </div>
-
-            @for (section of study.sections; track section.heading) {
-              <div class="flex flex-col gap-3">
-                <h3 class="io-heading-sm text-heading">{{ section.heading }}</h3>
-                <p class="io-body-md max-w-prose text-muted">{{ section.body }}</p>
+          } @else {
+            <div class="mt-12 grid grid-cols-1 sm:mt-16 lg:grid-cols-12 lg:gap-16">
+              <div class="flex flex-col gap-3 lg:col-span-8 lg:col-start-5">
+                <h3 class="io-heading-md text-heading [text-wrap:balance]">{{ section.heading }}</h3>
+                <p class="io-body-md max-w-[65ch] text-muted">{{ section.body }}</p>
               </div>
-            }
+            </div>
+          }
+        }
 
-            @if (study.outcomes?.length) {
-              <div class="flex flex-col gap-3">
-                <h3 class="io-heading-sm text-heading">Outcomes</h3>
-                <ul class="flex list-none flex-col gap-3 pl-0">
-                  @for (outcome of study.outcomes; track outcome) {
-                    <li class="relative pl-7 io-body-md text-body">
-                      <i class="pi pi-check absolute left-0 top-1 text-xs text-success-text" aria-hidden="true"></i>
-                      {{ outcome }}
-                    </li>
-                  }
-                </ul>
-              </div>
-            }
-
-            @if (study.stack?.length) {
-              <div class="flex flex-col gap-3">
-                <h3 class="io-label text-subtle">Built with</h3>
-                <div class="flex flex-wrap gap-2">
-                  @for (tool of study.stack; track tool) {
-                    <app-tag>{{ tool }}</app-tag>
-                  }
+        @if ((study.outcomes?.length && !outcomesLead) || study.stack?.length) {
+          <div class="mt-16 grid grid-cols-1 sm:mt-24 lg:grid-cols-12 lg:gap-16">
+            <div class="flex flex-col gap-10 lg:col-span-8 lg:col-start-5">
+              @if (study.outcomes?.length && !outcomesLead) {
+                <div class="flex flex-col gap-3">
+                  <h3 class="io-heading-sm text-heading">Outcomes</h3>
+                  <ul class="flex list-none flex-col gap-3 pl-0">
+                    @for (outcome of study.outcomes; track outcome) {
+                      <li class="io-body-md relative pl-7 text-body">
+                        <i class="pi pi-check absolute left-0 top-1 text-xs text-success-text" aria-hidden="true"></i>
+                        {{ outcome }}
+                      </li>
+                    }
+                  </ul>
                 </div>
-              </div>
-            }
+              }
+
+              @if (study.stack?.length) {
+                <div class="flex flex-col gap-3">
+                  <h3 class="io-label text-subtle">Built with</h3>
+                  <div class="flex flex-wrap gap-2">
+                    @for (tool of study.stack; track tool) {
+                      <app-tag>{{ tool }}</app-tag>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
           </div>
-        </div>
-      </app-section>
-    } @else if (project.description) {
-      <app-section labelledBy="overview-heading">
-        <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-16">
-          <div class="lg:col-span-4">
-            <h2 id="overview-heading" class="io-label text-brand-text">About the work</h2>
-          </div>
-          <div class="lg:col-span-8">
-            <p class="io-body-lg max-w-prose text-muted">{{ project.description }}</p>
-          </div>
-        </div>
+        }
       </app-section>
     }
 
-    <!-- Gallery. Screenshots live here and nowhere else on the site. -->
-    @if (project.images.length > 0) {
+    <!-- Screens no claim points at. Screenshots live on these pages and nowhere else on the site. -->
+    @if (moreImages.length) {
       <app-section
         spacing="tight"
-        labelledBy="gallery-heading"
+        labelledBy="screens-heading"
         surface="border-t border-subtle bg-surface-minimal">
-        <h2 id="gallery-heading" class="io-label mb-8 text-subtle">Screens</h2>
-
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">
-          @for (image of project.images; track image.id; let imgIdx = $index) {
-            <!-- Each frame wipes open in turn, the screen inside settling out
-                 of an overscale — the one place on the site with real captures
-                 to reveal, so it is the one place the gesture is literal. -->
-            <button
-              type="button"
-              class="io-wipe group relative block aspect-[4/3] w-full overflow-hidden rounded-medium border border-subtle bg-surface text-left transition-shadow duration-base ease-io hover:shadow-raised-variant"
-              [appReveal]="imgIdx * 80"
-              [attr.aria-label]="'Open ' + image.imageName + ' full screen'"
-              (click)="openGallery(imgIdx)">
-              <!--
-                object-contain, not object-cover: these galleries mix
-                landscape back-office captures with portrait phone screens,
-                and cropping the phone ones to a 4:3 box cut off the header
-                and the confirm button — the two parts that say what the
-                screen is.
-              -->
-              <img
-                [src]="image.imageUrl"
-                [alt]="image.imageName"
-                loading="lazy"
-                decoding="async"
-                width="1600"
-                height="1200"
-                class="h-full w-full bg-surface-subtle object-contain transition-transform duration-slow ease-io-out group-hover:scale-[1.03]" />
-
-              <span
-                class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-base ease-io group-hover:opacity-100">
-                <span
-                  class="flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-black/50 backdrop-blur-sm">
-                  <i class="pi pi-expand text-lg text-white" aria-hidden="true"></i>
-                </span>
-              </span>
-            </button>
+        <h2 id="screens-heading" class="io-heading-sm mb-8 text-heading">More screens</h2>
+        <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-12">
+          @for (image of moreImages; track image.id) {
+            <ng-container
+              [ngTemplateOutlet]="shot"
+              [ngTemplateOutletContext]="{ $implicit: image, caption: true }" />
           }
         </div>
       </app-section>
-
-      <!--
-        A fixed frame rather than one sized to each capture: these galleries
-        mix landscape desktop shots with portrait phone ones, and a frame that
-        follows the image jumps width on every slide. Thumbnails already mark
-        position, so the indicator dots are off.
-      -->
-      <p-galleria
-        [value]="galleryImages"
-        [responsiveOptions]="[
-          { breakpoint: '1024px', numVisible: 5 },
-          { breakpoint: '768px', numVisible: 3 },
-          { breakpoint: '560px', numVisible: 1 }
-        ]"
-        [numVisible]="5"
-        [circular]="true"
-        [fullScreen]="true"
-        [showItemNavigators]="true"
-        [showThumbnails]="true"
-        [showItemNavigatorsOnHover]="true"
-        [showIndicators]="false"
-        [containerStyle]="{ width: 'min(92vw, 72rem)' }"
-        [(activeIndex)]="activeIndex"
-        [(visible)]="galleryOpen">
-        <ng-template pTemplate="item" let-item>
-          <img
-            [src]="item.previewImageSrc"
-            [alt]="item.alt"
-            width="1600"
-            height="1200"
-            decoding="async"
-            class="block h-[min(72vh,45rem)] w-full bg-black object-contain" />
-        </ng-template>
-
-        <ng-template pTemplate="thumbnail" let-item>
-          <img
-            [src]="item.thumbnailImageSrc"
-            alt=""
-            width="96"
-            height="64"
-            loading="lazy"
-            decoding="async"
-            class="h-14 w-20 rounded-2x-small object-cover opacity-60 transition-opacity duration-base ease-io hover:opacity-100 sm:h-16 sm:w-24" />
-        </ng-template>
-      </p-galleria>
     }
 
-    <!-- Previous / next -->
-    <nav
-      class="mt-auto flex flex-col border-t border-subtle sm:flex-row"
-      aria-label="Other projects">
-      @if (prevProject) {
-        <a
-          [routerLink]="['/works', prevProject.slug]"
-          class="group flex flex-1 flex-col items-start justify-center gap-2 border-b border-subtle p-8 text-left transition-colors duration-base ease-io hover:bg-surface-minimal sm:border-b-0 sm:border-r sm:p-12">
-          <span class="io-label text-subtle transition-colors duration-base group-hover:text-brand-text">
-            Previous
-          </span>
-          <span
-            class="io-heading-sm text-heading transition-transform duration-base ease-io group-hover:translate-x-1">
-            {{ prevProject.title }}
-          </span>
-        </a>
-      } @else {
-        <div class="hidden flex-1 border-r border-subtle sm:block"></div>
+    <!--
+      The page ends on an invitation, not on navigation: a reader persuaded by
+      the work should not have to go looking for how to say so.
+    -->
+    <app-section labelledBy="contact-heading" surface="border-t border-subtle">
+      <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end lg:gap-16">
+        <div class="flex flex-col gap-4 lg:col-span-7">
+          <!-- Without a write-up, "something like this" points at nothing, so a
+               thin page says what it lacks and offers the story in person. -->
+          @if (study) {
+            <h2 id="contact-heading" class="io-heading-lg text-heading [text-wrap:balance]">
+              Building something like this, or hiring for it?
+            </h2>
+            <p class="io-body-lg max-w-[48ch] text-muted">
+              Tell me what you&rsquo;re working on, or take the r&eacute;sum&eacute; with you.
+            </p>
+          } @else {
+            <h2 id="contact-heading" class="io-heading-lg text-heading [text-wrap:balance]">
+              Want the story behind {{ project.title }}?
+            </h2>
+            <p class="io-body-lg max-w-[48ch] text-muted">
+              There&rsquo;s no write-up of this one here yet. Ask me about it, or take the r&eacute;sum&eacute; with you.
+            </p>
+          }
+        </div>
+        <div class="flex flex-wrap gap-3 lg:col-span-5 lg:justify-end">
+          <app-button href="mailto:isahohieku@gmail.com" icon="pi pi-envelope">Email me</app-button>
+          <app-button
+            href="/Isah%20Ohieku%20-%20Resume.pdf"
+            download="Isah Ohieku - Resume.pdf"
+            variant="secondary"
+            icon="pi pi-download">
+            Download r&eacute;sum&eacute;
+          </app-button>
+        </div>
+      </div>
+    </app-section>
+
+    @if (prevProject && nextProject) {
+      <nav class="mt-auto border-t border-subtle" [attr.aria-label]="'Other ' + siblingNoun + 's'">
+        <div class="mx-auto grid w-full max-w-content grid-cols-1 px-5 sm:grid-cols-2 sm:px-8">
+          <a
+            [routerLink]="['/works', prevProject.slug]"
+            class="group flex flex-col items-start gap-2 border-b border-subtle py-8 transition-colors duration-base ease-io sm:border-b-0 sm:border-r sm:py-12 sm:pr-8">
+            <span class="io-label flex items-center gap-2 text-subtle transition-colors duration-base group-hover:text-brand-text">
+              <i class="pi pi-arrow-left text-xs" aria-hidden="true"></i>
+              Previous {{ siblingNoun }}
+            </span>
+            <span class="io-heading-sm text-heading transition-transform duration-base ease-io group-hover:-translate-x-1">
+              {{ prevProject.title }}
+            </span>
+          </a>
+          <a
+            [routerLink]="['/works', nextProject.slug]"
+            class="group flex flex-col items-start gap-2 py-8 transition-colors duration-base ease-io sm:items-end sm:py-12 sm:pl-8 sm:text-right">
+            <span class="io-label flex items-center gap-2 text-subtle transition-colors duration-base group-hover:text-brand-text">
+              Next {{ siblingNoun }}
+              <i class="pi pi-arrow-right text-xs" aria-hidden="true"></i>
+            </span>
+            <span class="io-heading-sm text-heading transition-transform duration-base ease-io group-hover:translate-x-1">
+              {{ nextProject.title }}
+            </span>
+          </a>
+        </div>
+      </nav>
+    }
+  </article>
+
+  <!--
+    Full-screen viewer. A fixed stage, not one sized to each capture: these
+    galleries mix landscape desktop shots with portrait phone ones, and a frame
+    that follows the image jumps on every step. The caption is shown, because
+    the captions say what each screen proves.
+  -->
+  <dialog
+    #viewer
+    class="viewer"
+    tabindex="-1"
+    aria-labelledby="viewer-title"
+    (close)="onViewerClosed()"
+    (click)="onViewerClick($event)"
+    (keydown)="onViewerKey($event)"
+    (touchstart)="onTouchStart($event)"
+    (touchend)="onTouchEnd($event)">
+    @if (viewerImage; as image) {
+      <div class="viewer__top">
+        <h2 id="viewer-title" class="io-label">{{ project.title }} screens</h2>
+        <p class="io-label viewer__count" aria-hidden="true">
+          {{ viewerIndex + 1 }} / {{ viewerOrder.length }}
+        </p>
+        <!-- One announcement per step, naming the screen as well as the count. -->
+        <p class="sr-only" aria-live="polite">
+          Screen {{ viewerIndex + 1 }} of {{ viewerOrder.length }}: {{ image.imageName }}
+        </p>
+        <button type="button" class="viewer__button" aria-label="Close" (click)="closeViewer()">
+          <i class="pi pi-times" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      @if (viewerOrder.length > 1) {
+        <button type="button" class="viewer__button viewer__prev" aria-label="Previous screen" (click)="step(-1)">
+          <i class="pi pi-arrow-left" aria-hidden="true"></i>
+        </button>
       }
 
-      @if (nextProject) {
-        <a
-          [routerLink]="['/works', nextProject.slug]"
-          class="group flex flex-1 flex-col items-end justify-center gap-2 p-8 text-right transition-colors duration-base ease-io hover:bg-surface-minimal sm:p-12">
-          <span class="io-label text-subtle transition-colors duration-base group-hover:text-brand-text">
-            Next
-          </span>
-          <span
-            class="io-heading-sm text-heading transition-transform duration-base ease-io group-hover:-translate-x-1">
-            {{ nextProject.title }}
-          </span>
-        </a>
-      } @else {
-        <div class="hidden flex-1 sm:block"></div>
+      <div class="viewer__stage">
+        <img [src]="image.imageUrl" [alt]="image.imageName" decoding="async" />
+      </div>
+
+      @if (viewerOrder.length > 1) {
+        <button type="button" class="viewer__button viewer__next" aria-label="Next screen" (click)="step(1)">
+          <i class="pi pi-arrow-right" aria-hidden="true"></i>
+        </button>
       }
-    </nav>
-  </article>
+
+      <p class="io-body-md viewer__caption" aria-hidden="true">{{ image.imageName }}</p>
+    }
+  </dialog>
 }

@@ -1,9 +1,8 @@
 // Works page.
 //
 // The ::ng-deep block that used to live here styled a p-dialog that no longer
-// exists and a p-galleria that renders on the project-details page, not this
-// one — it matched nothing. Galleria theming now lives in
-// src/styles/primeng.css, against the design tokens.
+// exists and a p-galleria that rendered on the project-details page, not this
+// one — it matched nothing.
 //
 // All that remains is the staggered entrance for the grid; the cards
 // themselves are the shared app-project-card.

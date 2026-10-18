@@ -1,42 +1,24 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  ViewContainerRef,
-  ViewChild,
-  afterNextRender,
-  inject,
-  NgZone,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { FluidCanvasComponent } from '../fluid-canvas/fluid-canvas.component';
 
 /**
  * The atmospheric layer behind the hero.
  *
+ * Hosts the organic fluid canvas and hairline concentric arcs.
  * Every layer is decorative and `aria-hidden`; the hero reads identically
- * with all of it removed, which is the point — this is the baseline that
- * stays on low-capability devices and under reduced motion, and what the
- * WebGL globe degrades to.
- *
- * Three concentric hairline rings replaced a field of blurred accent orbs
- * and a ruled grid: the orbs were a floating coloured haze with no edge, and
- * they were also what the mobile audience got *instead* of the globe, since
- * canRenderGlobe() rejects most phones. The rings share the globe's centre,
- * so the fallback states the same idea the globe does.
- *
- * Layers drift on two inputs: `--p` (scroll progress, from ScrollSceneDirective)
- * and `--mx`/`--my` (pointer, from PointerParallaxDirective). Both resolve to
- * 0 when their directive declines to run, so the composition is still correct
- * when nothing is animating.
+ * with all of it removed.
  */
 @Component({
   selector: 'app-hero-backdrop',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FluidCanvasComponent],
   template: `
     <div class="hero-backdrop" aria-hidden="true">
       <div class="hero-backdrop__arc hero-backdrop__arc--inner"></div>
       <div class="hero-backdrop__arc hero-backdrop__arc--mid"></div>
       <div class="hero-backdrop__arc hero-backdrop__arc--outer"></div>
-      <div class="hero-backdrop__globe"><ng-container #globeHost /></div>
+      <app-fluid-canvas />
       <div class="hero-backdrop__scrim"></div>
     </div>
   `,
@@ -52,87 +34,4 @@ import {
     `,
   ],
 })
-export class HeroBackdropComponent {
-  @ViewChild('globeHost', { read: ViewContainerRef }) private globeHost?: ViewContainerRef;
-
-  private readonly zone = inject(NgZone);
-
-  constructor() {
-    afterNextRender(() => this.maybeLoadGlobe());
-  }
-
-  /**
-   * Loads the WebGL globe only when the device can afford it, and only after
-   * the hero is already on screen and interactive. three is ~150 kB gzipped —
-   * more than the rest of the app's JavaScript — so it is a dynamic import,
-   * which keeps it in its own chunk and out of the initial bundle entirely.
-   */
-  private async maybeLoadGlobe(): Promise<void> {
-    if (!this.globeHost || !canRenderGlobe()) {
-      return;
-    }
-
-    // Yield past first paint so the headline is never waiting on this.
-    await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 400)));
-
-    try {
-      const { GlobeComponent } = await import('../globe/globe.component');
-      this.zone.run(() => this.globeHost?.createComponent(GlobeComponent));
-    } catch {
-      // A failed chunk fetch leaves the CSS backdrop in place, which is a
-      // finished composition on its own. Nothing to report to the visitor.
-    }
-  }
-}
-
-/**
- * Deliberately conservative. PRODUCT.md makes mobile the primary case, and
- * the site's own case study is about cutting a 120s main-thread block on
- * mid-range Android — shipping a heavy WebGL scene to that same device would
- * argue against the engineer the page is describing.
- */
-function canRenderGlobe(): boolean {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return false;
-  }
-
-  const connection = (
-    navigator as Navigator & {
-      connection?: { saveData?: boolean; effectiveType?: string };
-      deviceMemory?: number;
-    }
-  ).connection;
-
-  if (connection?.saveData) {
-    return false;
-  }
-
-  if (connection?.effectiveType && !/4g/.test(connection.effectiveType)) {
-    return false;
-  }
-
-  const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
-  if (memory !== undefined && memory < 4) {
-    return false;
-  }
-
-  if (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency < 4) {
-    return false;
-  }
-
-  // The viewport has to be large enough for the globe to be worth 150 kB.
-  if (window.innerWidth < 768) {
-    return false;
-  }
-
-  return supportsWebGL();
-}
-
-function supportsWebGL(): boolean {
-  try {
-    const canvas = document.createElement('canvas');
-    return !!(canvas.getContext('webgl2') || canvas.getContext('webgl'));
-  } catch {
-    return false;
-  }
-}
+export class HeroBackdropComponent {}

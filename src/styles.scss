@@ -126,6 +126,18 @@
     font-weight: 700;
   }
 
+  /* A figure in the evidence band. It never wraps — "120s → <100ms" broken
+     across two lines reads as two claims — so instead of following the
+     viewport it shrinks with its own tile (cqi), capped at io-heading-md.
+     The longest figure is about 8em wide, hence 11cqi. Needs an inline-size
+     container on the tile. */
+  .io-metric-value {
+    font-size: min(clamp(1.375rem, 1.25rem + 0.6vw, 2rem), 11cqi);
+    line-height: 1.1875;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
   .io-heading-sm {
     font-size: 1.25rem;
     line-height: 1.3;
@@ -244,19 +256,6 @@
     border-color: var(--io-color-border-neutral-moderate);
   }
 
-  /* Sits to the right of the headline on wide screens and behind it on
-     narrower ones, where the scrim keeps the text legible over it. */
-  .hero-backdrop__globe {
-    position: absolute;
-    inset: 0;
-    left: 28%;
-    opacity: 0.85;
-    transform: translate3d(
-      calc(var(--mx) * -12px),
-      calc(var(--my) * -10px + var(--p) * -18vh),
-      0
-    );
-  }
 
   /* Keeps the verified AA contrast of the headline intact no matter what
      drifts underneath it. The globe is the one layer that accepts a pointer,

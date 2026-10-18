@@ -13,6 +13,7 @@ import { CountUpDirective } from '../../shared/directives/count-up/count-up.dire
 import { MagneticDirective } from '../../shared/directives/magnetic/magnetic.directive';
 import { HeroHudComponent } from '../../shared/ui/hero-hud/hero-hud.component';
 import { ScrambleRevealDirective } from '../../shared/directives/scramble-reveal/scramble-reveal.directive';
+import { SpringLettersDirective } from '../../shared/directives/spring-letters/spring-letters.directive';
 import { ProjectService } from '../../services/project.service';
 import { ExperienceService } from '../../services/experience.service';
 
@@ -45,6 +46,7 @@ interface Metric {
     MagneticDirective,
     HeroHudComponent,
     ScrambleRevealDirective,
+    SpringLettersDirective,
   ],
 })
 export class LandingComponent {

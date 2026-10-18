@@ -265,11 +265,18 @@
     pointer-events: none;
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      to bottom,
-      transparent,
-      var(--io-color-background-neutral-base) 92%
-    );
+    background-image:
+      radial-gradient(
+        var(--io-color-border-neutral-subtle) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        transparent,
+        var(--io-color-background-neutral-base) 92%
+      );
+    background-size: 28px 28px, 100% 100%;
+    opacity: 0.85;
   }
 
   /* --- Section scenes ---------------------------------------------------- */
@@ -441,6 +448,24 @@
     --drift: 5%;
   }
 
+  /* Stands in for a screenshot that has not arrived. A translucent lift on
+     the client's own plate, so it reads as "loading" on any of their colours
+     instead of as an empty mat. Pulses only where motion is welcome. */
+  .io-shot-placeholder {
+    background: var(--io-color-background-scrim-control);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .io-shot-placeholder {
+      animation: io-shot-pulse 1.4s var(--io-ease-entrance) infinite alternate;
+    }
+  }
+
+  @keyframes io-shot-pulse {
+    from { opacity: 0.45; }
+    to { opacity: 1; }
+  }
+
   /* --- Scroll reveal ---------------------------------------------------- */
   /* Applied by [appReveal]. The reduced-motion block in tokens.css collapses
      the transition, and the directive skips the starting state entirely, so
@@ -554,6 +579,162 @@ app-footer {
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
   ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Screenshot viewer.
+ *
+ * A native <dialog> opened with showModal(), so it sits in the top layer above
+ * the fixed header and the browser owns focus, Escape and the inert page. The
+ * dialog is the whole viewport: a click that lands on it rather than on a
+ * control or the image is a click on the room, and closes it.
+ *
+ * The stage is a fixed box, not one sized to the capture. Desktop shots and
+ * phone shots alternate in every gallery; a frame that followed each image
+ * would change width on every step.
+ * ------------------------------------------------------------------------- */
+
+html:has(dialog.viewer[open]) {
+  overflow: hidden;
+}
+
+.viewer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--io-space-400) var(--io-space-400) var(--io-space-500);
+  border: 0;
+  background: transparent;
+  color: var(--io-color-text-on-scrim);
+  overscroll-behavior: contain;
+}
+
+.viewer::backdrop {
+  background: var(--io-color-background-scrim);
+}
+
+.viewer[open] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  grid-template-areas:
+    'top top'
+    'stage stage'
+    'caption caption'
+    'prev next';
+  gap: var(--io-space-400);
+  animation: io-viewer-in 280ms var(--io-ease-out) both;
+}
+
+@media (min-width: 768px) {
+  .viewer {
+    padding: var(--io-space-500) var(--io-space-600) var(--io-space-600);
+  }
+
+  .viewer[open] {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'top top top'
+      'prev stage next'
+      'caption caption caption';
+    column-gap: var(--io-space-500);
+  }
+}
+
+.viewer__top {
+  grid-area: top;
+  display: flex;
+  align-items: center;
+  gap: var(--io-space-400);
+}
+
+.viewer__top h2 {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.viewer__count {
+  color: var(--io-color-text-on-scrim-variant);
+  font-variant-numeric: tabular-nums;
+}
+
+.viewer__stage {
+  grid-area: stage;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.viewer__stage img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--io-radius-small);
+}
+
+.viewer__caption {
+  grid-area: caption;
+  justify-self: center;
+  max-width: 60ch;
+  text-align: center;
+  color: var(--io-color-text-on-scrim-variant);
+  text-wrap: balance;
+}
+
+.viewer__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  border-radius: var(--io-radius-full);
+  background: var(--io-color-background-scrim-control);
+  color: var(--io-color-text-on-scrim);
+  transition: background-color var(--io-duration-base) var(--io-ease);
+}
+
+.viewer__button:hover {
+  background: var(--io-color-background-scrim-control-hovered);
+}
+
+.viewer__button:focus-visible {
+  outline: var(--io-border-width-focused) solid var(--io-color-border-focused);
+  outline-offset: 2px;
+}
+
+.viewer__prev {
+  grid-area: prev;
+  justify-self: start;
+  align-self: center;
+}
+
+.viewer__next {
+  grid-area: next;
+  justify-self: end;
+  align-self: center;
+}
+
+@keyframes io-viewer-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewer[open] {
     animation: none;
   }
 }

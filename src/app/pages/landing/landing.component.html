@@ -39,6 +39,10 @@
       class="pointer-events-none relative z-10 mx-auto w-full max-w-content px-5 py-16 sm:px-8"
       [style.transform]="'translateY(calc(var(--p) * -5vh))'">
       <div class="pointer-events-auto flex max-w-5xl flex-col gap-6 animate-io-rise">
+        <div>
+          <app-hero-hud />
+        </div>
+
         <h1 class="io-display text-pretty text-heading" [appSplitReveal]="14">
           {{ years }} years building payment, calling and edtech platforms.
         </h1>
@@ -74,7 +78,13 @@
         <ul class="mt-8 flex flex-col gap-4 border-t border-subtle pt-6 sm:flex-row sm:gap-12">
           @for (metric of heroMetrics; track metric.label) {
             <li class="flex flex-col gap-1">
-              <span class="io-heading-sm text-brand-text" appCountUp>{{ metric.value }}</span>
+              <span
+                class="io-heading-sm text-brand-text cursor-default"
+                appCountUp
+                [appScrambleReveal]="550"
+                [scrambleOnHover]="true">
+                {{ metric.value }}
+              </span>
               <span class="io-body-sm text-muted">
                 {{ metric.label }} &middot; {{ metric.company }}
               </span>

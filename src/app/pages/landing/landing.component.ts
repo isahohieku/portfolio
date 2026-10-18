@@ -11,6 +11,8 @@ import { SplitRevealDirective } from '../../shared/directives/split-reveal/split
 import { LineRevealDirective } from '../../shared/directives/line-reveal/line-reveal.directive';
 import { CountUpDirective } from '../../shared/directives/count-up/count-up.directive';
 import { MagneticDirective } from '../../shared/directives/magnetic/magnetic.directive';
+import { HeroHudComponent } from '../../shared/ui/hero-hud/hero-hud.component';
+import { ScrambleRevealDirective } from '../../shared/directives/scramble-reveal/scramble-reveal.directive';
 import { ProjectService } from '../../services/project.service';
 import { ExperienceService } from '../../services/experience.service';
 
@@ -41,6 +43,8 @@ interface Metric {
     LineRevealDirective,
     CountUpDirective,
     MagneticDirective,
+    HeroHudComponent,
+    ScrambleRevealDirective,
   ],
 })
 export class LandingComponent {

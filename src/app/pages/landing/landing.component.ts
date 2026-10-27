@@ -10,8 +10,7 @@ import { HeroBackdropComponent } from '../../shared/ui/hero-backdrop/hero-backdr
 import { SplitRevealDirective } from '../../shared/directives/split-reveal/split-reveal.directive';
 import { LineRevealDirective } from '../../shared/directives/line-reveal/line-reveal.directive';
 import { CountUpDirective } from '../../shared/directives/count-up/count-up.directive';
-import { MagneticDirective } from '../../shared/directives/magnetic/magnetic.directive';
-import { ScrambleRevealDirective } from '../../shared/directives/scramble-reveal/scramble-reveal.directive';
+import { PackageRecordComponent } from '../../shared/package-record/package-record.component';
 import { SpringLettersDirective } from '../../shared/directives/spring-letters/spring-letters.directive';
 import { ProjectService } from '../../services/project.service';
 import { ExperienceService } from '../../services/experience.service';
@@ -42,8 +41,7 @@ interface Metric {
     SplitRevealDirective,
     LineRevealDirective,
     CountUpDirective,
-    MagneticDirective,
-    ScrambleRevealDirective,
+    PackageRecordComponent,
     SpringLettersDirective,
   ],
 })
@@ -67,7 +65,6 @@ export class LandingComponent {
    */
   readonly featuredClient = this.featured.filter((project) => project.kind === 'client');
   readonly featuredPackages = this.featured.filter((project) => project.kind === 'open-source');
-  readonly totalCount = this.projectService.getProjects().length;
   readonly roles = this.experienceService.experiences;
   readonly years = this.experienceService.yearsOfExperience;
 
@@ -114,12 +111,6 @@ export class LandingComponent {
     // batch as the Talk360 numbers removed in 222f6a0.
     { value: '5,479', label: 'npm downloads in a year', company: 'ngx-horizontal-scroll-menu' },
   ];
-
-  /**
-   * The two that go above the fold: the most dramatic, and the only one a
-   * stranger can verify without trusting him. The rest stay in the band.
-   */
-  readonly heroMetrics: Metric[] = [this.metrics[0], this.metrics[3]];
 
   readonly copied = signal(false);
   private copyTimer: ReturnType<typeof setTimeout> | undefined;

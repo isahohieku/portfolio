@@ -20,11 +20,16 @@
   hero itself. The opacity fade is gone with it: it made a fully clickable,
   fully focusable CTA look disabled.
 -->
+<!-- min-h rather than h: on a phone the portrait stacks under the CTAs, and
+     a fixed-height track would let the taller scene spill over the evidence
+     band instead of growing to hold it. -->
 <header
-  class="scene-track h-[112svh] sm:h-[116svh]"
+  class="scene-track min-h-[112svh] sm:min-h-[116svh]"
   appScrollScene="continuous"
   appPointerParallax>
-  <div class="scene">
+  <!-- Content starts near the top (pt-24 at most) instead of centring in the
+       viewport, where it floated ~300px below the header at 1440x900. -->
+  <div class="scene !items-start">
     <app-hero-backdrop />
 
     <!--
@@ -36,22 +41,34 @@
       headline still works and the empty right side reaches the globe.
     -->
     <div
-      class="pointer-events-none relative z-10 mx-auto w-full max-w-content px-5 py-16 sm:px-8"
+      class="pointer-events-none relative z-10 mx-auto w-full max-w-content px-5 pb-16 pt-16 sm:px-8 sm:pt-24"
       [style.transform]="'translateY(calc(var(--p) * -5vh))'">
-      <div class="pointer-events-auto flex max-w-5xl flex-col gap-6 animate-io-rise">
-        <h1 class="io-display text-pretty text-heading cursor-default select-none" appSpringLetters>
+      <!--
+        Asymmetric split from lg: the claim on the left, the person making it
+        on the right. Below lg the portrait follows the CTAs in a landscape
+        crop, so the first viewport on a phone still opens on the sentence.
+      -->
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-16">
+      <div class="pointer-events-auto flex flex-col gap-6 animate-io-rise lg:col-span-8">
+        <!-- io-display-hero is sized against the text column, not the full
+             content width, so the sentence holds to two lines beside the
+             portrait. -->
+        <h1 class="io-display-hero text-pretty text-heading" appSpringLetters>
           {{ years }} years building payment, calling and edtech platforms.
         </h1>
 
         <p class="io-body-lg max-w-prose text-muted">
-          I&rsquo;m Isah Ohieku, a software engineer in Amsterdam (CET) &mdash;
-          currently on the
-          global calling and top-up platform at Talk360, used across Africa and
-          beyond.
+          I&rsquo;m Isah Ohieku, a software engineer on the global calling and
+          top-up platform at Talk360.
         </p>
 
+        <!--
+          The two receipts that used to sit under these buttons are gone from
+          the hero: the evidence band directly below states all four, with
+          their sources, so the hero no longer repeats half of it.
+        -->
         <div class="mt-2 flex flex-wrap gap-3">
-          <app-button routerLink="/works" size="lg" appMagnetic data-cursor="Browse">
+          <app-button routerLink="/works" size="lg">
             See the work
           </app-button>
           <app-button
@@ -59,35 +76,32 @@
             [download]="true"
             variant="secondary"
             size="lg"
-            icon="pi pi-download"
-            appMagnetic
-            data-cursor="Download">
+            icon="pi pi-download">
             Download r&eacute;sum&eacute;
           </app-button>
         </div>
+      </div>
 
-        <!--
-          Two receipts above the fold. Deliberately not the big-number tile
-          template: the figure leads at heading size and its source rides on
-          the same line, because the argument this page makes is that every
-          number here has somewhere it came from.
-        -->
-        <ul class="mt-8 flex flex-col gap-4 border-t border-subtle pt-6 sm:flex-row sm:gap-12">
-          @for (metric of heroMetrics; track metric.label) {
-            <li class="flex flex-col gap-1">
-              <span
-                class="io-heading-sm text-brand-text cursor-default"
-                appCountUp
-                [appScrambleReveal]="550"
-                [scrambleOnHover]="true">
-                {{ metric.value }}
-              </span>
-              <span class="io-body-sm text-muted">
-                {{ metric.label }} &middot; {{ metric.company }}
-              </span>
-            </li>
-          }
-        </ul>
+      <!--
+        The LCP element on most screens, so it loads eagerly at high priority
+        with its box reserved by width/height. The crop is 4:5; the phone
+        frame shows a 4:3 window onto it, positioned on the face.
+      -->
+      <div class="animate-io-rise lg:col-span-4">
+        <img
+          src="assets/img/hero/isah-800.jpg"
+          srcset="
+            assets/img/hero/isah-480.jpg 480w,
+            assets/img/hero/isah-800.jpg 800w,
+            assets/img/hero/isah-960.jpg 960w"
+          sizes="(min-width: 1280px) 360px, (min-width: 1024px) 28vw, calc(100vw - 2.5rem)"
+          width="800"
+          height="1000"
+          alt="Portrait of Isah Ohieku"
+          fetchpriority="high"
+          decoding="async"
+          class="aspect-[4/3] w-full rounded-x-large border border-subtle object-cover object-[50%_14%] shadow-raised sm:aspect-[16/10] lg:aspect-[4/5]" />
+      </div>
       </div>
     </div>
   </div>
@@ -112,8 +126,7 @@
   spacing="tight"
   labelledBy="evidence-heading"
   surface="bg-surface-subtle"
-  [scene]="true"
-  appPointerParallax>
+  [scene]="true">
   <div class="flex max-w-prose flex-col gap-3">
     <h2 id="evidence-heading" class="io-heading-lg text-heading" appSplitReveal>Verified outcomes</h2>
     <p class="io-body-md max-w-[66ch] text-muted" appLineReveal [lineRevealDelay]="180">
@@ -143,12 +156,11 @@
 <!-- Selected work -->
 <app-section
   labelledBy="work-heading"
-  [scene]="true"
-  appPointerParallax>
+  [scene]="true">
   <div class="flex flex-col gap-3">
     <h2 id="work-heading" class="io-heading-lg text-heading" appSplitReveal>Selected work</h2>
     <p class="io-body-lg max-w-prose text-muted" appLineReveal [lineRevealDelay]="180">
-      Payments, international calling, education and greentech &mdash; shipped for
+      Payments, international calling, education and greentech. Shipped for
       teams in Nigeria, the Netherlands and beyond.
     </p>
   </div>
@@ -174,64 +186,14 @@
       }
     </div>
 
-    <!--
-      The package record. Every value here is read from the project's own
-      plateFacts, which exist only where the facts are sourced — so a package
-      with nothing on file renders its name and stops, rather than inviting a
-      number to fill the row.
-    -->
     @for (pkg of featuredPackages; track pkg.id) {
-      <a
-        [routerLink]="['/works', pkg.slug]"
-        [attr.data-cursor]="'Read'"
-        [appReveal]="220"
-        class="group flex flex-col gap-5 overflow-hidden rounded-x-large border border-subtle bg-surface-minimal p-6 shadow-raised transition-colors duration-base ease-io hover:border-brand-moderate sm:p-8 lg:flex-row lg:items-center lg:gap-10">
-        <div class="flex min-w-0 flex-1 flex-col gap-3">
-          <div class="flex items-center gap-3">
-            <!-- The project's colour, kept as a mark rather than a field. -->
-            <span
-              class="h-2.5 w-2.5 shrink-0 rounded-full"
-              [style.backgroundColor]="pkg.bgColor"
-              aria-hidden="true"></span>
-            <code class="truncate font-mono io-body-sm text-heading">
-              {{ pkg.plateFacts?.[0] ?? pkg.title }}
-            </code>
-          </div>
-
-          @if (pkg.description) {
-            <p class="io-body-sm max-w-prose text-muted">{{ pkg.description }}</p>
-          }
-        </div>
-
-        <!--
-          A list, not a definition list: these facts are self-describing values
-          ("5,479 downloads", "MIT"), not term/definition pairs, and a <dl> of
-          bare <dd>s is invalid markup besides. The first fact leads at heading
-          size and the rest ride alongside it, which is the same figure-then-
-          source hierarchy the evidence band uses.
-        -->
-        @if ((pkg.plateFacts?.length ?? 0) > 1) {
-          <ul class="flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-subtle pt-5 pl-0 lg:shrink-0 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
-            @for (fact of pkg.plateFacts?.slice(1) ?? []; track fact; let first = $first) {
-              <li [class]="first ? 'io-heading-sm text-brand-text' : 'io-body-sm text-muted'">
-                {{ fact }}
-              </li>
-            }
-          </ul>
-        }
-
-        <span
-          class="inline-flex shrink-0 items-center gap-2 io-label text-brand-text transition-transform duration-base ease-io group-hover:translate-x-1">
-          Read the case study
-          <i class="pi pi-arrow-right text-xs" aria-hidden="true"></i>
-        </span>
-      </a>
+      <app-package-record [project]="pkg" [appReveal]="220" />
     }
   </div>
 
   <div class="mt-10">
-    <app-button routerLink="/works" variant="secondary" appMagnetic data-cursor="Browse">
-      See all {{ totalCount }} projects
+    <app-button routerLink="/works" variant="secondary">
+      See the work
     </app-button>
   </div>
 </app-section>
@@ -241,15 +203,14 @@
   spacing="tight"
   labelledBy="experience-heading"
   surface="bg-surface-minimal"
-  [scene]="true"
-  appPointerParallax>
+  [scene]="true">
   <div class="flex flex-col gap-3">
     <h2 id="experience-heading" class="io-heading-lg text-heading" appSplitReveal>
       Where I&rsquo;ve worked
     </h2>
   </div>
 
-  <ul class="mt-8 flex flex-col divide-y divide-subtle border-y border-subtle">
+  <ul class="mt-8 flex flex-col divide-y divide-subtle">
     @for (role of roles; track role.id; let i = $index) {
       <li
         class="flex flex-col gap-1 py-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
@@ -264,7 +225,7 @@
   </ul>
 
   <div class="mt-8">
-    <app-button routerLink="/about" variant="secondary" appMagnetic data-cursor="Read">
+    <app-button routerLink="/about" variant="secondary">
       Read the full history
     </app-button>
   </div>
@@ -283,7 +244,6 @@
 <app-section
   labelledBy="contact-heading"
   [scene]="true"
-  appPointerParallax
   appReveal>
   <app-card tone="brand">
     <div class="flex flex-col gap-10 py-4 sm:py-8 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
@@ -301,9 +261,7 @@
           <app-button
             [href]="'mailto:' + email"
             size="lg"
-            icon="pi pi-envelope"
-            appMagnetic
-            data-cursor="Email">
+            icon="pi pi-envelope">
             {{ email }}
           </app-button>
           <app-button
@@ -311,8 +269,6 @@
             size="lg"
             [icon]="copied() ? 'pi pi-check' : 'pi pi-copy'"
             [ariaLabel]="copied() ? 'Email address copied' : 'Copy email address'"
-            [attr.data-cursor]="copied() ? 'Copied' : 'Copy'"
-            appMagnetic
             (click)="copyEmail()">
             {{ copied() ? 'Copied' : 'Copy address' }}
           </app-button>
@@ -338,8 +294,7 @@
               [href]="linkedIn"
               target="_blank"
               rel="noopener noreferrer"
-              class="link-mask io-body-md text-brand-text"
-              data-cursor="Open">
+              class="link-mask io-body-md text-brand-text">
               LinkedIn
             </a>
           </dd>

@@ -1,10 +1,10 @@
 <!-- Hero -->
 <header class="io-hero-wash">
-  <div class="mx-auto flex w-full max-w-content flex-col gap-5 px-5 py-20 sm:px-8 sm:py-28">
+  <div class="mx-auto flex w-full max-w-content flex-col gap-5 px-5 pb-20 pt-16 sm:px-8 sm:pb-28 sm:pt-24">
     <h1 class="io-display text-heading">Work</h1>
     <p class="io-body-lg max-w-prose text-muted">
-      Projects I&rsquo;ve built or contributed to &mdash; fintech, edtech,
-      greentech and communications &mdash; plus the libraries and services
+      Projects I&rsquo;ve built or contributed to across fintech, edtech,
+      greentech and communications, plus the libraries and services
       I maintain in the open.
     </p>
   </div>
@@ -23,10 +23,18 @@
     </p>
   </div>
 
+  <!--
+    A lead card and then an asymmetric rhythm rather than rows of peers. The
+    spans come from clientSpans(), which fills every row exactly, so the grid
+    never ends on an orphaned tile whatever the project count.
+  -->
   <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
     @for (project of clientWork; track project.id; let i = $index) {
-      <div class="project-card-wrapper h-full" [style.animation-delay]="i * 80 + 'ms'">
-        <app-project-card [project]="project" />
+      <div
+        class="project-card-wrapper h-full"
+        [class]="clientSpans[i]"
+        [style.animation-delay]="i * 80 + 'ms'">
+        <app-project-card [project]="project" [lead]="i === 0" />
       </div>
     }
   </div>
@@ -43,10 +51,12 @@
     </p>
   </div>
 
-  <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  <!-- Packages are records, not brand plates: one per row, facts beside
+       the description, the same treatment the landing teaser uses. -->
+  <div class="mt-8 flex flex-col gap-6">
     @for (project of openSource; track project.id; let i = $index) {
-      <div class="project-card-wrapper h-full" [style.animation-delay]="i * 80 + 'ms'">
-        <app-project-card [project]="project" />
+      <div class="project-card-wrapper" [style.animation-delay]="i * 80 + 'ms'">
+        <app-package-record [project]="project" />
       </div>
     }
   </div>

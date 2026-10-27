@@ -8,7 +8,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LoadingService } from './shared/services/loading';
 import { SmoothScrollService } from './shared/services/smooth-scroll';
 import { RouteScrollService } from './shared/services/route-scroll';
-import { CursorComponent } from './shared/ui/cursor/cursor.component';
+import { CanonicalService } from './shared/services/canonical';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -30,7 +30,6 @@ import { CommonModule } from '@angular/common';
     </div>
     }
 
-    <app-cursor />
     <app-header />
     <main id="main" tabindex="-1">
       <router-outlet />
@@ -47,7 +46,6 @@ import { CommonModule } from '@angular/common';
     FooterComponent,
     ToastModule,
     ProgressSpinnerModule,
-    CursorComponent,
   ],
   providers: [MessageService]
 })
@@ -56,10 +54,12 @@ export class AppComponent {
 
   private readonly smoothScroll = inject(SmoothScrollService);
   private readonly routeScroll = inject(RouteScrollService);
+  private readonly canonical = inject(CanonicalService);
 
   constructor() {
     // Declines to start on touch and under reduced motion; see the service.
     this.smoothScroll.start();
     this.routeScroll.start();
+    this.canonical.start();
   }
 }

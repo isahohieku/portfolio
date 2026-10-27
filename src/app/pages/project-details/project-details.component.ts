@@ -16,6 +16,7 @@ import { ButtonComponent } from '../../shared/ui/button/button.component';
 import { TagComponent } from '../../shared/ui/tag/tag.component';
 import { RevealDirective } from '../../shared/directives/reveal/reveal.directive';
 import { SmoothScrollService } from '../../shared/services/smooth-scroll';
+import { CanonicalService } from '../../shared/services/canonical';
 
 interface StorySection {
   heading: string;
@@ -43,6 +44,7 @@ export class ProjectDetailsComponent implements OnInit {
   private projectService = inject(ProjectService);
   private titleService = inject(Title);
   private smoothScroll = inject(SmoothScrollService);
+  private canonical = inject(CanonicalService);
 
   @ViewChild('viewer') private viewer?: ElementRef<HTMLDialogElement>;
 
@@ -105,11 +107,14 @@ export class ProjectDetailsComponent implements OnInit {
         this.moreImages = [];
         this.viewerOrder = [];
         this.titleService.setTitle('Project not found | Isah Ohieku');
+        this.canonical.noindex();
         return;
       }
 
       this.notFound = false;
       this.titleService.setTitle(`${this.project.title} | Isah Ohieku`);
+      // /works/9613 and /works/<slug> are one page; the slug is its address.
+      this.canonical.set(`/works/${this.project.slug}`);
       this.place(this.project);
       this.findSiblings(this.project.kind);
     });

@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ButtonComponent } from '../../shared/ui/button/button.component';
+import { CanonicalService } from '../../shared/services/canonical';
 
 /**
  * A real 404.
@@ -19,5 +20,6 @@ import { ButtonComponent } from '../../shared/ui/button/button.component';
 export class NotFoundComponent {
   constructor() {
     inject(Title).setTitle('Page not found | Isah Ohieku');
+    inject(CanonicalService).noindex();
   }
 }

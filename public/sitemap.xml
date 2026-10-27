@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Static, because the route table is static: four real routes, one redirect
-  (/projects -> /works) which is deliberately absent, and a catch-all 404.
-  Project detail pages are not listed individually — they are reachable from
-  /works and their titles are set per project at runtime, which a crawler that
-  executes JS will follow and one that does not would not benefit from here.
+  Static, because the route table is static: the three top-level routes and
+  one entry per case study, at its slug (the address CanonicalService names).
+  The /projects redirect and the 404 are deliberately absent. Regenerate the
+  project entries when ProjectService gains or loses a project.
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -21,5 +20,65 @@
     <loc>https://isahohieku.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/hobeei-freecycle-application</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/apply-schools-and-applypay</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/talk360-payment-platform</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/talk360-calling-app</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/kollo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/nexus360</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/desrio</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/swipeng</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/sapphital</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/ngx-horizontal-scroll-menu</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/contacts-manager-api</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/advance-chatbot</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>

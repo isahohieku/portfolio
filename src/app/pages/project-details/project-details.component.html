@@ -27,7 +27,6 @@
       class="io-wipe group relative block aspect-[16/10] w-full overflow-hidden rounded-large p-3 text-left shadow-raised sm:p-5"
       [style.background-color]="project?.bgColor"
       [appReveal]="0"
-      data-cursor="View"
       [attr.aria-label]="'Open full screen: ' + image.imageName"
       (click)="openViewer(image)">
       @if (!loaded.has(image.id)) {
@@ -75,7 +74,7 @@
     -->
     <header class="border-b border-subtle">
       <div
-        class="mx-auto grid w-full max-w-content grid-cols-1 gap-10 px-5 pb-12 pt-28 sm:px-8 sm:pb-16 sm:pt-36 lg:grid-cols-12 lg:items-center lg:gap-16">
+        class="mx-auto grid w-full max-w-content grid-cols-1 gap-10 px-5 pb-12 pt-16 sm:px-8 sm:pb-16 sm:pt-24 lg:grid-cols-12 lg:items-center lg:gap-16">
         <div
           class="flex flex-col gap-6"
           [class]="hasAside ? 'lg:col-span-5' : 'lg:col-span-8'">
@@ -83,13 +82,13 @@
             <!-- On the project's colour: the reversed marks (Kollo's is white)
                  vanish on a light page otherwise. -->
             <div
-              class="flex h-14 w-14 items-center justify-center rounded-medium p-2.5"
+              class="flex h-14 min-w-14 w-fit items-center justify-center rounded-medium px-4 py-2.5"
               [style.background-color]="project.bgColor">
               <app-project-logo
                 [src]="project.logo"
                 [title]="project.title"
                 [showWordmark]="false"
-                imgClass="max-h-full w-auto object-contain" />
+                imgClass="h-7 w-auto object-contain" />
             </div>
           }
 

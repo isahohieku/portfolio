@@ -80,7 +80,7 @@
 
 @media (min-width: 640px) {
   :root {
-    --io-header-height: 5rem;
+    --io-header-height: 4.5rem;
   }
 }
 

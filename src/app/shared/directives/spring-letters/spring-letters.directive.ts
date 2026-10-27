@@ -93,10 +93,13 @@ export class SpringLettersDirective {
     this.renderer.setProperty(host, 'textContent', '');
     this.renderer.appendChild(host, wrapper);
 
-    const reducedMotion =
+    // A touch has no pointer to dodge, so a coarse pointer gets the letters
+    // set and still, the same as reduced motion.
+    const still =
       typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reducedMotion) return;
+      (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        !window.matchMedia('(pointer: fine)').matches);
+    if (still) return;
 
     const onPointerMove = (e: MouseEvent) => {
       this.mouseX = e.clientX;

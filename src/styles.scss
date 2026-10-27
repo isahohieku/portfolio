@@ -113,6 +113,17 @@
     font-weight: 700;
   }
 
+  /* The landing hero's sentence. Same face, weight and leading as
+     io-display, sized against the eight-column text track beside the
+     portrait so "N years building payment, calling and edtech platforms."
+     holds to two lines from lg up. */
+  .io-display-hero {
+    font-size: clamp(2.25rem, 1rem + 2.4vw, 3rem);
+    line-height: 1.0667;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+  }
+
   .io-heading-lg {
     font-size: clamp(1.75rem, 1.4rem + 1.75vw, 3rem);
     line-height: 1.15;
@@ -530,7 +541,7 @@
  * Route transitions.
  *
  * withViewTransitions() snapshots the page before the outlet swaps and
- * cross-fades old against new. The chrome — header, footer, cursor — gets its
+ * cross-fades old against new. The chrome (header and footer) gets its
  * own view-transition-name so it is lifted out of the root snapshot and holds
  * still while the page underneath changes; without that the whole viewport
  * fades and the header appears to blink.
@@ -554,9 +565,7 @@ app-header {
    element makes it a containing block, and naming the host would capture the
    drawer with it — a fixed inset-0 scrim would collapse to the height of the
    header strip. The bar is not an ancestor of the drawer, so naming it lifts
-   the chrome out of the root snapshot and leaves the drawer alone.
-   The cursor is left unnamed for that same containing-block reason: it is
-   position: fixed and must stay anchored to the viewport. */
+   the chrome out of the root snapshot and leaves the drawer alone. */
 app-header > header {
   view-transition-name: io-header;
 }

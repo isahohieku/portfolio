@@ -39,8 +39,7 @@ export class SmoothScrollService {
    * driving subscribers from here puts both on the same frame.
    */
   private readonly subscribers = new Set<(scrollY: number) => void>();
-  private nativeFrame = 0;
-  private nativeListening = false;
+  private smoothing = false;
 
   start(): void {
     if (this.lenis || typeof window === 'undefined') {
@@ -49,30 +48,31 @@ export class SmoothScrollService {
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const coarse = window.matchMedia('(pointer: coarse)').matches;
-    if (reduced || coarse) {
-      // No Lenis, but subscribers still need a tick: the native scroller runs
-      // this scene work one frame late, which is the best available there.
-      this.listenNatively();
-      return;
-    }
+    this.smoothing = !reduced && !coarse;
 
     this.zone.runOutsideAngular(() => {
+      // On touch and under reduced motion Lenis still runs, but only as the
+      // scroll source: with smoothWheel off it leaves the native scroller in
+      // charge and reports its position, so subscribers get one tick per
+      // scroll without the app binding a window scroll listener of its own.
       this.lenis = new Lenis({
         // Long enough to read as easing, short enough that a decisive flick
         // still lands where the visitor meant it to.
         duration: 1.05,
         // Exponential ease-out: fast departure, long settle.
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
+        smoothWheel: this.smoothing,
       });
 
       this.lenis.on('scroll', () => this.emit(window.scrollY));
 
-      const raf = (time: number) => {
-        this.lenis?.raf(time);
+      if (this.smoothing) {
+        const raf = (time: number) => {
+          this.lenis?.raf(time);
+          this.frame = requestAnimationFrame(raf);
+        };
         this.frame = requestAnimationFrame(raf);
-      };
-      this.frame = requestAnimationFrame(raf);
+      }
     });
 
     this.destroyRef.onDestroy(() => this.stop());
@@ -81,14 +81,11 @@ export class SmoothScrollService {
   /**
    * Subscribe to scroll, ticked in the same frame the position changes.
    * Returns an unsubscribe. The callback is handed the current offset so it
-   * never has to read `scrollY` itself — a read after a style write forces
-   * the layout flush this is trying to avoid.
+   * never has to read `scrollY` itself, since a read after a style write
+   * forces the layout flush this is trying to avoid.
    */
   onScroll(fn: (scrollY: number) => void): () => void {
     this.subscribers.add(fn);
-    if (!this.lenis) {
-      this.listenNatively();
-    }
     return () => this.subscribers.delete(fn);
   }
 
@@ -98,52 +95,33 @@ export class SmoothScrollService {
     }
   }
 
-  private listenNatively(): void {
-    if (this.nativeListening || typeof window === 'undefined') {
-      return;
-    }
-    this.nativeListening = true;
-
-    this.zone.runOutsideAngular(() => {
-      const onScroll = () => {
-        if (this.nativeFrame) {
-          return;
-        }
-        this.nativeFrame = requestAnimationFrame(() => {
-          this.nativeFrame = 0;
-          this.emit(window.scrollY);
-        });
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      this.destroyRef.onDestroy(() => {
-        window.removeEventListener('scroll', onScroll);
-        if (this.nativeFrame) {
-          cancelAnimationFrame(this.nativeFrame);
-        }
-      });
-    });
-  }
-
   /** False on touch and under reduced motion, where the native scroller wins. */
   get isRunning(): boolean {
-    return !!this.lenis;
+    return this.smoothing;
   }
 
   /** Used by in-page jumps so the skip link and anchors stay in step. */
   scrollTo(target: string | HTMLElement | number, immediate = false): void {
-    this.lenis?.scrollTo(target, { immediate });
+    if (this.smoothing) {
+      this.lenis?.scrollTo(target, { immediate });
+    }
   }
 
   /**
    * Holds the page still under a modal. Lenis takes wheel input on the window,
    * so without this a wheel over an open dialog scrolls the page behind it.
+   * Not needed, and not wanted, where the native scroller is in charge.
    */
   pause(): void {
-    this.lenis?.stop();
+    if (this.smoothing) {
+      this.lenis?.stop();
+    }
   }
 
   resume(): void {
-    this.lenis?.start();
+    if (this.smoothing) {
+      this.lenis?.start();
+    }
   }
 
   private stop(): void {

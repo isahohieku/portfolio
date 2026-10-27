@@ -61,13 +61,13 @@ export class ExperienceService {
       companyLink: 'https://talk360.com/',
       role: 'Frontend & Mobile Software Engineer',
       location: 'Amsterdam, Netherlands (Remote)',
-      duration: 'May 2022 – Present',
+      duration: 'May 2022 - Present',
       overview:
         'A global calling and top-up platform. I work across onboarding, the Shop360 marketplace, the webshop, the embedded web dialler and the payment platform, on web and Android/WebView. Features are owned end to end: technical design, performance, internationalisation, analytics instrumentation, testing and release.',
       accomplishments: [
         'Diagnosed and fixed a hydration bottleneck in onboarding, cutting a main-thread block of up to ~120s to under 100ms',
         'Shipped the redesigned country-selection and segmentation release that carried 1,100+ new sign-ups shortly after launch',
-        'Built self-service receipt automation in Marketplace v1.12.0 — PDF request, poll and preview over the native host bridge — projected to cut manual support receipt requests from ~65 to ~5 a month',
+        'Built self-service receipt automation in Marketplace v1.12.0 (PDF request, poll and preview over the native host bridge), projected to cut manual support receipt requests from ~65 to ~5 a month',
         'Owned the rate calculator end to end, migrating it from Vue to React with backward compatibility and building a Next.js validation app for the new marketing site',
         'Standardised and documented data-cy E2E tags as one source of truth for QA and Engineering, and added Jest/Cypress coverage for analytics events to stop silent tracking regressions',
         'Delivered full 8-locale support for user-facing flows, and led the onboarding app’s upgrade to React 19',
@@ -99,12 +99,12 @@ export class ExperienceService {
       companyLink: 'https://applypay.ng/',
       role: 'Senior Frontend Developer',
       location: 'Abuja, Nigeria',
-      duration: 'Nov 2020 – Jul 2022',
+      duration: 'Nov 2020 - Jul 2022',
       overview:
-        'Frontend for ApplyPay and Apply Schools — a payments product and an education platform sharing one engineering team. The work ran past feature delivery into the tooling around it: client onboarding automation, CI/CD, and the AWS infrastructure the products ran on.',
+        'Frontend for ApplyPay and Apply Schools: a payments product and an education platform sharing one engineering team. The work ran past feature delivery into the tooling around it: client onboarding automation, CI/CD, and the AWS infrastructure the products ran on.',
       accomplishments: [
         'Delivered over twice the initially planned feature set, expanding platform functionality and user value',
-        'Built and automated support tooling — dashboards, diagnostics, alerting and health checks — accelerating client onboarding and cutting time-to-resolution by 40%',
+        'Built and automated support tooling (dashboards, diagnostics, alerting and health checks), accelerating client onboarding and cutting time-to-resolution by 40%',
         'Mentored a team of three engineers to improve CI/CD practices and code quality standards across all projects',
         'Standardised coding practices across projects, measurably improving code quality and development efficiency',
         'Managed AWS cloud infrastructure: deployments, horizontal scaling, security audits and enterprise readiness'
@@ -132,7 +132,7 @@ export class ExperienceService {
       companyLink: 'https://www.hobeei.com/',
       role: 'Lead Frontend Engineer (Founding Team)',
       location: 'Abuja, Nigeria',
-      duration: 'Feb 2019 – Feb 2021',
+      duration: 'Feb 2019 - Feb 2021',
       overview:
         'A greentech donation platform for recycling unwanted and preowned items, built from inception as part of the founding team. Beyond the frontend I represented the company externally, at YC Startup School and the Earth Tech competition.',
       accomplishments: [
@@ -160,11 +160,11 @@ export class ExperienceService {
       companyLink: 'https://swipe.ng/',
       role: 'Frontend Developer',
       location: 'Lagos, Nigeria',
-      duration: 'Jan 2018 – Jan 2019',
+      duration: 'Jan 2018 - Jan 2019',
       overview:
         'An early-stage fintech. I planned and architected the frontend from inception and led the frontend team through delivery, establishing the foundation the product scaled on.',
       accomplishments: [
-        'Architected the frontend from inception — account creation, virtual card management, an admin portal for interest rates and users, and third-party payment gateway integrations, with robust error handling and user support features',
+        'Architected the frontend from inception: account creation, virtual card management, an admin portal for interest rates and users, and third-party payment gateway integrations, with robust error handling and user support features',
         'Scaled the user base from zero to 16,000+ in the first year, with platform growth reaching 43,000+ users subsequently',
         'Led two product redesigns focused on usability, accessibility and performance'
       ],
@@ -275,20 +275,20 @@ export class ExperienceService {
       institution: 'Ahmadu Bello University',
       qualification: 'MBA',
       field: 'Business Administration Management',
-      duration: 'Jan 2019 – Present'
+      duration: 'Jan 2019 - Present'
     },
     {
       id: 'abu-beng',
       institution: 'Ahmadu Bello University',
       qualification: 'B.Eng.',
       field: 'Electrical and Electronics Engineering',
-      duration: 'Jan 2011 – Dec 2016'
+      duration: 'Jan 2011 - Dec 2016'
     }
   ];
 
   readonly certifications: Certification[] = [
     {
-      name: 'AI LLM Engineering Mastery — GenAI, RAG Complete Guide',
+      name: 'AI LLM Engineering Mastery - GenAI, RAG Complete Guide',
       issuer: 'Coursera',
       awarded: 'Feb 2026'
     },
@@ -297,7 +297,7 @@ export class ExperienceService {
     { name: 'GRC eLearning: PCI DSS', issuer: 'GRC eLearning', awarded: '2022' },
     { name: 'The Fundamentals of Digital Marketing', issuer: 'Google', awarded: '2020' },
     {
-      name: 'Google Africa Scholarship — Mobile Web Specialist',
+      name: 'Google Africa Scholarship - Mobile Web Specialist',
       issuer: 'Google',
       awarded: '2018'
     }

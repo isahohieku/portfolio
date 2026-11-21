@@ -38,7 +38,7 @@
                   rel="noopener noreferrer"
                   class="flex h-11 w-11 items-center justify-center rounded-full text-muted transition-colors duration-base ease-io hover:bg-surface-subtle hover:text-heading"
                   [attr.aria-label]="link.label">
-                  <i [class]="link.icon" aria-hidden="true"></i>
+                  <app-icon [name]="link.icon" />
                 </a>
               </li>
             }
@@ -51,7 +51,7 @@
           href="/Isah%20Ohieku%20-%20Resume.pdf"
           download="Isah Ohieku - Resume.pdf"
           variant="secondary"
-          icon="pi pi-download">
+          icon="download">
           Download r&eacute;sum&eacute;
         </app-button>
       </div>

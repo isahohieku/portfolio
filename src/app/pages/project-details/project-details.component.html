@@ -52,7 +52,7 @@
       <span
         class="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-surface-inverted text-inverted shadow-raised sm:bottom-6 sm:right-6"
         aria-hidden="true">
-        <i class="pi pi-expand text-sm"></i>
+        <app-icon name="expand" class="text-sm" />
       </span>
     </button>
     @if (caption) {
@@ -152,7 +152,7 @@
                 [href]="project.portfolio_url"
                 [external]="true"
                 variant="secondary"
-                icon="pi pi-arrow-up-right">
+                icon="arrow-up-right">
                 Visit the live site
               </app-button>
             </div>
@@ -240,7 +240,7 @@
                   <ul class="flex list-none flex-col gap-3 pl-0">
                     @for (outcome of study.outcomes; track outcome) {
                       <li class="io-body-md relative pl-7 text-body">
-                        <i class="pi pi-check absolute left-0 top-1 text-xs text-success-text" aria-hidden="true"></i>
+                        <app-icon name="check" class="absolute left-0 top-1 text-xs text-success-text" />
                         {{ outcome }}
                       </li>
                     }
@@ -307,12 +307,12 @@
           }
         </div>
         <div class="flex flex-wrap gap-3 lg:col-span-5 lg:justify-end">
-          <app-button href="mailto:isahohieku@gmail.com" icon="pi pi-envelope">Email me</app-button>
+          <app-button href="mailto:isahohieku@gmail.com" icon="envelope">Email me</app-button>
           <app-button
             href="/Isah%20Ohieku%20-%20Resume.pdf"
             download="Isah Ohieku - Resume.pdf"
             variant="secondary"
-            icon="pi pi-download">
+            icon="download">
             Download r&eacute;sum&eacute;
           </app-button>
         </div>
@@ -326,7 +326,7 @@
             [routerLink]="['/works', prevProject.slug]"
             class="group flex flex-col items-start gap-2 border-b border-subtle py-8 transition-colors duration-base ease-io sm:border-b-0 sm:border-r sm:py-12 sm:pr-8">
             <span class="io-label flex items-center gap-2 text-subtle transition-colors duration-base group-hover:text-brand-text">
-              <i class="pi pi-arrow-left text-xs" aria-hidden="true"></i>
+              <app-icon name="arrow-left" class="text-xs" />
               Previous {{ siblingNoun }}
             </span>
             <span class="io-heading-sm text-heading transition-transform duration-base ease-io group-hover:-translate-x-1">
@@ -338,7 +338,7 @@
             class="group flex flex-col items-start gap-2 py-8 transition-colors duration-base ease-io sm:items-end sm:py-12 sm:pl-8 sm:text-right">
             <span class="io-label flex items-center gap-2 text-subtle transition-colors duration-base group-hover:text-brand-text">
               Next {{ siblingNoun }}
-              <i class="pi pi-arrow-right text-xs" aria-hidden="true"></i>
+              <app-icon name="arrow-right" class="text-xs" />
             </span>
             <span class="io-heading-sm text-heading transition-transform duration-base ease-io group-hover:translate-x-1">
               {{ nextProject.title }}
@@ -376,13 +376,13 @@
           Screen {{ viewerIndex + 1 }} of {{ viewerOrder.length }}: {{ image.imageName }}
         </p>
         <button type="button" class="viewer__button" aria-label="Close" (click)="closeViewer()">
-          <i class="pi pi-times" aria-hidden="true"></i>
+          <app-icon name="times" />
         </button>
       </div>
 
       @if (viewerOrder.length > 1) {
         <button type="button" class="viewer__button viewer__prev" aria-label="Previous screen" (click)="step(-1)">
-          <i class="pi pi-arrow-left" aria-hidden="true"></i>
+          <app-icon name="arrow-left" />
         </button>
       }
 
@@ -392,7 +392,7 @@
 
       @if (viewerOrder.length > 1) {
         <button type="button" class="viewer__button viewer__next" aria-label="Next screen" (click)="step(1)">
-          <i class="pi pi-arrow-right" aria-hidden="true"></i>
+          <app-icon name="arrow-right" />
         </button>
       }
 

@@ -1,5 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { TagComponent } from '../ui/tag/tag.component';
+import { IconComponent } from '../ui/icon/icon.component';
 
 export interface Technology {
   name: string;
@@ -32,7 +33,7 @@ export interface ExperienceData {
   selector: 'app-experience-item',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TagComponent],
+  imports: [IconComponent, TagComponent],
   templateUrl: './experience-item.html'
 })
 export class ExperienceItem {

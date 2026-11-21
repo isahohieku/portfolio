@@ -6,6 +6,7 @@ import { TagComponent } from '../ui/tag/tag.component';
 import { ProjectData } from '../../services/project.service';
 import { RevealDirective } from '../directives/reveal/reveal.directive';
 import { ScrollDriftDirective } from '../directives/scroll-drift/scroll-drift.directive';
+import { IconComponent } from '../ui/icon/icon.component';
 
 @Component({
   selector: 'app-project-card',
@@ -13,6 +14,7 @@ import { ScrollDriftDirective } from '../directives/scroll-drift/scroll-drift.di
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    IconComponent,
     NgStyle,
     RouterLink,
     ProjectLogoComponent,

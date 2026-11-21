@@ -28,7 +28,7 @@
           rel="noopener noreferrer"
           class="group inline-flex w-fit items-center gap-1.5 io-body-md text-brand-text">
           <span class="underline decoration-1 underline-offset-4 group-hover:no-underline">{{ experience.company }}</span>
-          <i class="pi pi-arrow-up-right text-[0.7rem]" aria-hidden="true"></i>
+          <app-icon name="arrow-up-right" class="text-[0.7rem]" />
           <span class="sr-only">(opens in a new tab)</span>
         </a>
       } @else {
@@ -40,9 +40,7 @@
       <ul class="flex list-none flex-col gap-3 pl-0">
         @for (accomplishment of experience.accomplishments; track accomplishment) {
           <li class="relative pl-7 io-body-md text-body">
-            <i
-              class="pi pi-check absolute left-0 top-1 text-xs text-success-text"
-              aria-hidden="true"></i>
+            <app-icon name="check" class="absolute left-0 top-1 text-xs text-success-text" />
             {{ accomplishment }}
           </li>
         }

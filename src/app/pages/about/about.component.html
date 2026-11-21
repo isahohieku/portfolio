@@ -15,7 +15,7 @@
     -->
     <p class="io-body-md max-w-prose text-body">{{ summary }}</p>
     <div class="mt-2 flex flex-wrap gap-3">
-      <app-button href="/Isah%20Ohieku%20-%20Resume.pdf" [download]="true" icon="pi pi-download">
+      <app-button href="/Isah%20Ohieku%20-%20Resume.pdf" [download]="true" icon="download">
         Download r&eacute;sum&eacute;
       </app-button>
       <app-button routerLink="/works" variant="secondary">See the work</app-button>
@@ -109,7 +109,7 @@
                 rel="noopener noreferrer"
                 class="group inline-flex w-fit items-center gap-1.5 io-body-sm text-brand-text">
                 <span class="underline decoration-1 underline-offset-4 group-hover:no-underline">Verify certificate</span>
-                <i class="pi pi-arrow-up-right text-[0.7rem]" aria-hidden="true"></i>
+                <app-icon name="arrow-up-right" class="text-[0.7rem]" />
                 <span class="sr-only">(opens in a new tab)</span>
               </a>
             }
@@ -120,4 +120,4 @@
   </div>
 </app-section>
 
-<p-scrolltop />
+<app-scroll-top />

@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../shared/ui/button/button.component';
+import { IconComponent } from '../../shared/ui/icon/icon.component';
 
 interface SocialLink {
   label: string;
@@ -13,7 +14,7 @@ interface SocialLink {
   templateUrl: './footer.component.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, ButtonComponent],
+  imports: [IconComponent, RouterLink, ButtonComponent],
 })
 export class FooterComponent {
   readonly year = new Date().getFullYear();
@@ -23,11 +24,11 @@ export class FooterComponent {
     {
       label: 'LinkedIn',
       href: 'https://www.linkedin.com/in/isah-ohieku',
-      icon: 'pi pi-linkedin',
+      icon: 'linkedin',
     },
-    { label: 'GitHub', href: 'https://www.github.com/isahohieku', icon: 'pi pi-github' },
-    { label: 'Dribbble', href: 'https://www.dribbble.com/isahohieku', icon: 'pi pi-palette' },
-    { label: 'Behance', href: 'https://www.behance.net/isahohiekufa98', icon: 'pi pi-image' },
-    { label: 'X', href: 'https://x.com/isahohieku', icon: 'pi pi-twitter' },
+    { label: 'GitHub', href: 'https://www.github.com/isahohieku', icon: 'github' },
+    { label: 'Dribbble', href: 'https://www.dribbble.com/isahohieku', icon: 'palette' },
+    { label: 'Behance', href: 'https://www.behance.net/isahohiekufa98', icon: 'image' },
+    { label: 'X', href: 'https://x.com/isahohieku', icon: 'x' },
   ];
 }

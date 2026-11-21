@@ -1,6 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { IconComponent } from '../icon/icon.component';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 export type ButtonSize = 'sm' | 'md' | 'lg';
@@ -20,7 +21,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
   selector: 'app-button',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, NgTemplateOutlet],
+  imports: [IconComponent, RouterLink, NgTemplateOutlet],
   template: `
     @if (routerLink) {
       <a [routerLink]="routerLink" [fragment]="fragment" [class]="classes" [attr.aria-label]="ariaLabel">
@@ -48,7 +49,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 
     <ng-template #content>
       @if (icon) {
-        <i [class]="icon" aria-hidden="true"></i>
+        <app-icon [name]="icon" />
       }
       <ng-content></ng-content>
     </ng-template>

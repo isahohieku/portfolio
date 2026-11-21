@@ -1,16 +1,17 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { ScrollTopModule } from 'primeng/scrolltop';
 import { ExperienceItem } from '../../shared/experience-item/experience-item';
 import { SectionComponent } from '../../shared/ui/section/section.component';
 import { ButtonComponent } from '../../shared/ui/button/button.component';
 import { TagComponent } from '../../shared/ui/tag/tag.component';
 import { ExperienceService } from '../../services/experience.service';
+import { IconComponent } from '../../shared/ui/icon/icon.component';
+import { ScrollTopComponent } from '../../shared/ui/scroll-top/scroll-top.component';
 
 @Component({
   selector: 'app-about',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ExperienceItem, ScrollTopModule, SectionComponent, ButtonComponent, TagComponent],
+  imports: [IconComponent, ExperienceItem, SectionComponent, ButtonComponent, TagComponent, ScrollTopComponent],
   templateUrl: './about.component.html',
 })
 export class AboutComponent {

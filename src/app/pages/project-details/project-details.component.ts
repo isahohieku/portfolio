@@ -18,6 +18,7 @@ import { TagComponent } from '../../shared/ui/tag/tag.component';
 import { RevealDirective } from '../../shared/directives/reveal/reveal.directive';
 import { SmoothScrollService } from '../../shared/services/smooth-scroll';
 import { CanonicalService } from '../../shared/services/canonical';
+import { IconComponent } from '../../shared/ui/icon/icon.component';
 
 interface StorySection {
   heading: string;
@@ -30,6 +31,7 @@ interface StorySection {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Default,
   imports: [
+    IconComponent,
     NgTemplateOutlet,
     RouterModule,
     ProjectLogoComponent,

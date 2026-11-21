@@ -1,6 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProjectData } from '../../services/project.service';
+import { IconComponent } from '../ui/icon/icon.component';
 
 /**
  * A published package rendered as the record it is.
@@ -16,7 +17,7 @@ import { ProjectData } from '../../services/project.service';
   selector: 'app-package-record',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [IconComponent, RouterLink],
   host: { class: 'block' },
   template: `
     <a
@@ -51,7 +52,7 @@ import { ProjectData } from '../../services/project.service';
       <span
         class="inline-flex shrink-0 items-center gap-2 io-label text-brand-text transition-transform duration-base ease-io group-hover:translate-x-1">
         {{ project.caseStudy ? 'Read the case study' : 'View project' }}
-        <i class="pi pi-arrow-right text-xs" aria-hidden="true"></i>
+        <app-icon name="arrow-right" class="text-xs" />
       </span>
     </a>
   `,

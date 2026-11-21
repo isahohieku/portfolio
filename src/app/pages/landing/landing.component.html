@@ -119,7 +119,7 @@
             <app-button routerLink="/works" size="lg">
               See the work
             </app-button>
-            <app-button routerLink="/" fragment="contact" variant="secondary" size="lg" icon="pi pi-envelope">
+            <app-button routerLink="/" fragment="contact" variant="secondary" size="lg" icon="envelope">
               Get in touch
             </app-button>
           </div>
@@ -405,13 +405,13 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-3">
-          <app-button [href]="'mailto:' + email" size="lg" icon="pi pi-envelope">
+          <app-button [href]="'mailto:' + email" size="lg" icon="envelope">
             Email me
           </app-button>
           <!-- The address is shown as text rather than as the button label,
                so the action reads the same as on the case-study pages. -->
           <span class="io-body-md px-1 text-body">{{ email }}</span>
-          <app-button variant="secondary" size="lg" [icon]="copied() ? 'pi pi-check' : 'pi pi-copy'"
+          <app-button variant="secondary" size="lg" [icon]="copied() ? 'check' : 'copy'"
             [ariaLabel]="copied() ? 'Email address copied' : 'Copy email address'" (click)="copyEmail()">
             {{ copied() ? 'Copied' : 'Copy address' }}
           </app-button>

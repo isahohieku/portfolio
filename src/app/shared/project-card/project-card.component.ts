@@ -121,8 +121,9 @@ export class ProjectCardComponent {
 
   /**
    * The card only promises a case study where one exists. A written writeup
-   * counts, and so does a gallery — but three of the seven projects have
-   * neither, and those say "View project" instead.
+   * counts, and so does a gallery; a project with neither says "View project"
+   * instead. Every published project has a writeup today, so the fallback
+   * only matters for an entry added without one.
    */
   get hasCaseStudy(): boolean {
     return !!this.project.caseStudy || this.project.images.length > 0;

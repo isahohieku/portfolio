@@ -179,8 +179,8 @@
     font-weight: 700;
   }
 
-  /* A figure in the evidence band. It never wraps — "120s → <100ms" broken
-     across two lines reads as two claims — so instead of following the
+  /* A figure in the evidence band. It never wraps — a before → after figure
+     broken across two lines reads as two claims — so instead of following the
      viewport it shrinks with its own tile (cqi), capped at io-heading-md.
      The longest figure is about 8em wide, hence 11cqi. Needs an inline-size
      container on the tile. */

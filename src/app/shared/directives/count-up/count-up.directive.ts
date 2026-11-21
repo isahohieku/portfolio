@@ -4,8 +4,8 @@ import { ElementRef, Directive, Input, afterNextRender, DestroyRef, inject, NgZo
  * Counts the numerals in a figure up to their final value when it scrolls in.
  *
  * It animates the numbers inside whatever string it is given rather than
- * taking a number as input, so `120s → <100ms` and `65 → 5` animate both of
- * their figures and keep every character around them — the arrow, the unit,
+ * taking a number as input, so a figure like `65 → 5` animates both of
+ * its numbers and keep every character around them — the arrow, the unit,
  * the less-than sign and the thousands separator all survive, which matters
  * on a page whose argument is that the figures are quoted exactly.
  *

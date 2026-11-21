@@ -23,6 +23,23 @@ const appRoute = /^\/(about|works(\/[^/]+)?)?\/?$/;
 
 app.get('/projects', (req, res) => res.redirect(301, '/works'));
 
+// Archived projects, by slug and by numeric id. They were public and in the
+// sitemap, so they redirect rather than falling through to a 200 not-found.
+// Keep in step with netlify.toml.
+const archived = {
+    'talk360-payment-platform': '/works/talk360-shared-commerce-foundation',
+    '9616': '/works/talk360-shared-commerce-foundation',
+    'desrio': '/works',
+    '9618': '/works',
+    'sapphital': '/works',
+    '9620': '/works',
+};
+
+app.get('/works/:id', (req, res, next) => {
+    const target = archived[req.params.id.toLowerCase()];
+    return target ? res.redirect(301, target) : next();
+});
+
 app.get('*', (req, res) => {
     res.status(appRoute.test(req.path) ? 200 : 404).sendFile(path.join(browserDist, 'index.html'));
 })

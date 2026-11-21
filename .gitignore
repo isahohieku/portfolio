@@ -54,3 +54,7 @@ Thumbs.db
 /.private/
 
 .impeccable
+
+# Internal evidence ledger: records withdrawn and unverified claims, so it
+# must not be public. Kept locally only.
+/PRODUCT.md

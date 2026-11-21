@@ -21,6 +21,41 @@
   to = "/works"
   status = 301
 
+# Archived projects. Their pages were public and in the sitemap, so they may
+# be indexed; without these, /works/* below served the not-found page with a
+# 200. Each is listed by slug and by numeric id, since the route accepts both.
+# These must stay above /works/*: the first matching rule wins.
+
+[[redirects]]
+  from = "/works/talk360-payment-platform"
+  to = "/works/talk360-shared-commerce-foundation"
+  status = 301
+
+[[redirects]]
+  from = "/works/9616"
+  to = "/works/talk360-shared-commerce-foundation"
+  status = 301
+
+[[redirects]]
+  from = "/works/desrio"
+  to = "/works"
+  status = 301
+
+[[redirects]]
+  from = "/works/9618"
+  to = "/works"
+  status = 301
+
+[[redirects]]
+  from = "/works/sapphital"
+  to = "/works"
+  status = 301
+
+[[redirects]]
+  from = "/works/9620"
+  to = "/works"
+  status = 301
+
 [[redirects]]
   from = "/about"
   to = "/index.html"

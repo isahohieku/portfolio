@@ -102,7 +102,7 @@
           <p class="io-body-lg max-w-prose text-muted">
             I&rsquo;m Isah Ohieku, a software engineer. I build the foundations products scale on &mdash;
             shared design systems, platform packages and multi-tenant architecture.
-            Currently at Talk360, where that work reaches 8.9M+ registered users.
+            Currently at Talk360, the international calling and top-up app.
           </p>
 
           <!--
@@ -125,10 +125,10 @@
             Three receipts, back in the first viewport. The evidence band was
             supposed to be the first thing a skimmer saw, but it starts below
             the fold on every screen, so a visit that never scrolls left with
-            one number. These are the band's own figures, kept quiet on purpose:
-            body-weight values on a hairline, not yellow display numbers, so they
-            read as facts under the sentence and the band below keeps its job
-            of sourcing them.
+            one number. Kept quiet on purpose: body-weight values on a
+            hairline, not yellow display numbers, so they read as facts under
+            the sentence. The band below does not repeat them; it carries the
+            figures behind them, and its sourcing sentence covers both.
           -->
           <dl class="mt-4 grid max-w-[34rem] grid-cols-3 gap-4 border-t border-subtle pt-5 sm:gap-8">
             @for (receipt of heroReceipts; track receipt.label) {
@@ -182,35 +182,13 @@
   <div class="flex max-w-prose flex-col gap-3">
     <h2 id="evidence-heading" class="io-heading-lg text-heading" appSplitReveal>Talk360, in numbers</h2>
     <p class="io-body-md max-w-[66ch] text-muted" appLineReveal [lineRevealDelay]="180">
-      Every figure here comes from a release record, read in September 2026, or
-      from Talk360 directly, confirmed in November 2026.
+      These figures, and the ones above, come from a release record, read in
+      September 2026, or from Talk360 directly, confirmed in November 2026.
     </p>
   </div>
 
   <div
-    class="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-card border border-subtle bg-surface-moderate sm:grid-cols-2 lg:grid-cols-4">
-    <!--
-      The design system's three numbers, read as one claim rather than three.
-      It leads the band — two columns at sm and lg both — because engineering
-      leverage across a product line is the strongest evidence here, and a
-      recruiter skimming the first viewport should see it before anything
-      else.
-    -->
-    <div class="flex flex-col gap-5 bg-surface-subtle p-6 sm:col-span-2 sm:p-8" appReveal>
-      <div class="grid grid-cols-3 gap-4 sm:gap-6">
-        @for (stat of designSystemStats; track stat.label) {
-        <!-- Not a container, unlike the tiles below: these columns are a
-             third of the tile, and 11cqi of one is about 10px on a phone.
-             The values are two or three characters, so they cannot overflow. -->
-        <div class="flex flex-col gap-1">
-          <span class="io-metric-value text-brand-text" [appCountUp]="1300">{{ stat.value }}</span>
-          <span class="io-body-sm text-body">{{ stat.label }}</span>
-        </div>
-        }
-      </div>
-      <span class="io-label text-subtle">Talk360 design system &middot; enforced in CI</span>
-    </div>
-
+    class="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-card border border-subtle bg-surface-moderate sm:grid-cols-2">
     @for (metric of metrics; track metric.label; let i = $index) {
     <div class="flex flex-col gap-1 bg-surface-subtle p-6 [container-type:inline-size] sm:p-8" [appReveal]="i * 90">
       <span class="io-metric-value text-brand-text" [appCountUp]="1300">{{ metric.value }}</span>
@@ -298,8 +276,8 @@
   <div class="flex flex-col gap-3">
     <h2 id="work-heading" class="io-heading-lg text-heading" appSplitReveal>Selected work</h2>
     <p class="io-body-lg max-w-prose text-muted" appLineReveal [lineRevealDelay]="180">
-      Payments, international calling, education and greentech. Shipped for
-      teams in Nigeria, the Netherlands and beyond.
+      Payments, international calling, education and greentech. Built for
+      Talk360 in Amsterdam and for teams across Nigeria.
     </p>
   </div>
 

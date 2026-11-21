@@ -98,7 +98,7 @@ export class LandingComponent {
    * screen reader and a crawler see.
    */
   readonly reachWords =
-    'From Abuja, Nigeria, building the products people use to call, top up and pay across borders.'.split(' ');
+    'From Abuja, Nigeria, building the products people use to call and top up across borders.'.split(' ');
 
   /** Stored, not rendered: the stage's globe reads it on its own frame. */
   readonly onReachProgress = (progress: number) => {
@@ -126,28 +126,14 @@ export class LandingComponent {
   ];
 
   /**
-   * The design system's three numbers, read together rather than as three
-   * unrelated tiles: component count, migrated screens and token-consuming
-   * apps are one claim — engineering leverage across the product line — not
-   * three. They share one source line underneath rather than each repeating
-   * "Talk360".
+   * The hero's three figures: leverage, reach and one product result. The
+   * evidence band below does not repeat them; it carries the figures behind
+   * them instead, and its sourcing sentence covers both.
    *
-   * 14+ migrated screens is narrower than the 4-app reach: two products have
+   * "4 apps" is wider than the 14+ migrated screens in the band: two products
    * migrated to the shared component library, while the other two consume
-   * the design tokens without the component migration. The label says
-   * "design tokens" rather than "migrated" for that reason — the two are
-   * different claims. The packages are private, so none is named.
-   */
-  readonly designSystemStats: StatBlock[] = [
-    { value: '23', label: 'Shared UI components' },
-    { value: '14+', label: 'Screens migrated across two products' },
-    { value: '4', label: 'Apps on shared design tokens' },
-  ];
-
-  /**
-   * The hero's three figures: leverage, reach and one product result, each
-   * restated from the band below rather than introduced here, so the hero
-   * never carries a number the band does not source.
+   * the design tokens without it. The label says "design tokens" for that
+   * reason. The packages are private, so none is named.
    */
   readonly heroReceipts: StatBlock[] = [
     { value: '23', label: 'Shared UI components, enforced in CI' },
@@ -156,27 +142,31 @@ export class LandingComponent {
   ];
 
   /**
-   * Quoted from the accomplishments recorded against each role in
-   * ExperienceService. These are the strongest assets on the site and used to
-   * sit only on /about — the page a recruiter is least likely to open.
+   * The figures behind the hero's, one per claim, and none of them a repeat:
+   * the hero already shows 23 components, 4 apps and 2k+ sign-ups. Until
+   * 2026-11-21 this band restated all of them, so one scroll showed the same
+   * numbers two or three times and "Talk360, in numbers" was mostly the
+   * design system again.
    *
-   * Hydration, the receipts automation and the npm download count moved out
-   * of this band rather than being dropped: the first two are still quoted in
-   * full on /about, and the npm figure already sits on the open-source
-   * package's own record further down this page. The evidence band now holds
-   * only what a visitor should see before anything else — leverage, scale,
-   * and one concrete product result — not everything that is true.
+   * Only Isah's own results belong here. Talk360's user counts were removed
+   * the same day: they are internal company data, never cleared for
+   * publication, and company-wide reach is not his result. See PRODUCT.md
+   * before adding any company-level figure.
    */
   readonly metrics: Metric[] = [
     {
-      value: '8.9M+',
-      label: 'Registered users',
-      company: 'Talk360',
-      qualifier: '4.9M+ paying',
+      value: '14+',
+      label: 'Screens migrated onto the shared component library, across two products',
+      company: 'Talk360 design system',
+      qualifier: 'enforced in CI',
     },
-    // Confirmed by Isah 2026-11-15. "Through", not "driven by": the figure is
-    // the flow's daily volume, not a lift attributed to the redesign.
-    { value: '2k+', label: 'Daily sign-ups through the sign-up flow I redesigned', company: 'Talk360' },
+    // The lift the redesign caused (confirmed 2026-11-21). The hero's 2k+ is
+    // the flow's daily volume today, not a lift, and must not be worded as one.
+    {
+      value: '1,100+',
+      label: 'Daily sign-ups at launch of the flow I redesigned, up from ~500',
+      company: 'Talk360',
+    },
   ];
 
   readonly copied = signal(false);

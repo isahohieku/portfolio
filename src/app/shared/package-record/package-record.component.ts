@@ -32,7 +32,7 @@ import { ProjectData } from '../../services/project.service';
 
       <!--
         A list, not a definition list: these facts are self-describing values
-        ("5,479 downloads", "MIT"), not term/definition pairs. The first fact
+        ("6k+ downloads a year", "MIT"), not term/definition pairs. The first fact
         leads at heading size on a line of its own, and the rest wrap on the
         line below it, the same figure-then-source hierarchy the evidence band
         uses. Letting them share the lead's line put "MIT" beside a download

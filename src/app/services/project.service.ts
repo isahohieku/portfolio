@@ -144,7 +144,7 @@ export class ProjectService {
       kind: "client",
       role: "Lead Frontend Engineer, founding team at Hobeei",
       period: "Feb 2019 - Feb 2021",
-      description: "A Greentech donation platform that enables people to recycle their unwanted and preowned items. Built with modern web technologies to promote sustainability and community sharing.",
+      description: "A freecycle marketplace in Nigeria: people gave away items they no longer needed, and others bid for them live with a virtual currency. I led the frontend from the first commit, building the customer app and the admin console.",
       portfolio_url: "https://www.hobeei.com/",
       siteOffline: true,
       bgColor: "#1f4d3a",
@@ -161,7 +161,7 @@ export class ProjectService {
       // 467 commits are Isah's — so it is described as the backend team's.
       caseStudy: {
         context:
-          "Hobeei was a freecycle marketplace in Nigeria: people gave away items they no longer needed, and others bid for them with Buzzes, a virtual currency earned by uploading items, inviting friends or buying it outright. Hopps capped how many items one person could bid on at a time.",
+          "Hobeei was a freecycle marketplace in Nigeria: people gave away items they no longer needed, and others bid for them with Buzzes, a virtual currency earned by uploading items, inviting friends or buying it outright. Hopps capped how many items one person could bid on at a time. While I led the frontend, user engagement on the platform grew by over 50% and revenue by 35%.",
         contribution:
           "I led the frontend from the first commit to the last, writing 1,137 of its 1,323 commits over two years, as part of the founding team. The backend team built the API; the customer app, the admin console and everything that ran in the browser were mine.",
         contributionPoints: [
@@ -187,8 +187,7 @@ export class ProjectService {
           }
         ],
         outcomes: [
-          "Performance and user experience improved by 30% through the PWA and SSR work",
-          "User engagement up over 50% and revenue up 35% after real-time bidding, product tours, chat, social sharing and payment integrations shipped"
+          "Lighthouse performance score raised by 30% through the PWA and SSR work"
         ],
         stack: ["Angular", "Angular Universal", "Angular Service Worker", "RxJS", "Socket.IO", "Paystack", "Cloudinary", "OneSignal", "Chart.js", "LogRocket"]
       }
@@ -199,9 +198,9 @@ export class ProjectService {
       title: "Apply Schools and Applypay",
       position: 2,
       kind: "client",
-      role: "Senior Frontend Developer at Apply Technologies",
+      role: "Senior Frontend Developer at Aply Technologies",
       period: "Nov 2020 - Jul 2022",
-      description: "Educational technology platform providing comprehensive solutions for schools and payment processing. Features include student management, fee collection, and administrative tools.",
+      description: "A school-administration platform and a school-fees payment product, run by one engineering team: classes, students and parents' invoices on one side, payment integration on the other. I worked across both.",
       portfolio_url: "https://applypay.ng/",
       bgColor: "#538fb7",
       logo: "/assets/img/applypay.svg",
@@ -212,28 +211,19 @@ export class ProjectService {
       caseStudy: {
         context:
           "ApplyPay and Apply Schools shared one engineering team: a payments product and a school-administration platform, built from the same codebase and tooling. ApplyPay's work was mostly integration and payment infrastructure rather than its own screens, which is why the admin screen below is Apply Schools — the product with a public interface to show.",
+        // The full list of what Isah did at Aply is on /about. This page
+        // carries only what it alone can show: the admin product, and the one
+        // measured outcome. It used to restate the /about list word for word.
         contribution:
-          "I worked across both products, past feature delivery into the tooling and infrastructure around them.",
-        contributionPoints: [
-          "Delivered over twice the initially planned feature set, expanding platform functionality and user value",
-          "Built and automated support tooling — dashboards, diagnostics, alerting and health checks — that cut support time-to-resolution by 40%",
-          "Mentored a team of three engineers on CI/CD practices and code quality standards",
-          "Standardised coding practices across every project at the company",
-          "Managed AWS infrastructure: deployments, horizontal scaling, security audits and enterprise readiness"
-        ],
+          "I worked across both products: the Apply Schools admin below, and the support tooling, CI/CD and AWS infrastructure both of them ran on.",
         sections: [
           {
             heading: "Running a school from the admin side",
-            body: "Classes, filterable by session and status; a class's teacher, dates and roster; adding a student in three steps; a parent's view through to their children's invoices. Built for the people running a school day to day, not just the students using it.",
+            body: "Classes, filterable by session and status; a class's teacher and dates; adding a student in three steps; a parent's view through to their children's invoices. Built for the people running a school day to day, not just the students using it.",
             image: 2
-          },
-          {
-            heading: "The tooling behind both products",
-            body: "Past the product features: automated dashboards, diagnostics and alerting that cut support time-to-resolution, coding standards applied across every project rather than just this one, and the AWS infrastructure — deployments, horizontal scaling, security audits — both products ran on."
           }
         ],
         outcomes: [
-          "Shipped over twice the initially planned feature set",
           "Support time-to-resolution cut by 40% through automated dashboards, diagnostics and alerting"
         ],
         stack: ["React.js", "Next.js", "Redux.js", "TypeScript", "AWS S3", "Docker", "CircleCI"]
@@ -316,8 +306,10 @@ export class ProjectService {
             image: 2
           },
           {
+            // No transactions or other financial-operations pages: they run
+            // on mock data, and PRODUCT.md forbids describing them as shipped.
             heading: "An admin built before the first customer",
-            body: "The dashboard gives the operations team a customer directory with suspension, flags recorded with a type and a severity, a customer activity view, a transactions view with summary statistics and sensitive values masked, waitlist management, and a knowledge base whose articles are written in a Markdown editor with a live preview. A suspended customer is refused at sign-in by the API itself, not just hidden in the interface."
+            body: "The dashboard gives the operations team a customer directory with suspension, flags recorded with a type and a severity, a customer activity view, waitlist management, and a knowledge base whose articles are written in a Markdown editor with a live preview. A suspended customer is refused at sign-in by the API itself, not just hidden in the interface."
           },
           {
             heading: "Emails that read as one product",
@@ -376,6 +368,9 @@ export class ProjectService {
       description: "Desrio helps teams collaborate, ideate and reduce distractions during work hours.",
       portfolio_url: "https://www.desrio.com/",
       siteOffline: true,
+      // Archived 2026-11-21: the site is offline and no role or dates are on
+      // record, so the card had nothing to stand on.
+      archived: true,
       bgColor: "#49b7ac",
       logo: "assets/projects/logos/desrio.png",
       images: []
@@ -388,11 +383,27 @@ export class ProjectService {
       kind: "client",
       role: "Frontend Developer at SwipeNG",
       period: "Jan 2018 - Jan 2019",
-      description: "Swipe is a fintech solution aimed at providing financial flexibility and convenience for customers.",
+      description: "An early-stage fintech's customer app and admin portal: account creation, virtual cards and payment gateways. I architected the frontend from inception and led the frontend team.",
       portfolio_url: "https://swipe.ng/",
       bgColor: "#8948fc",
       logo: "assets/projects/logos/swipeng.webp",
-      images: []
+      images: [],
+      // Restates the SwipeNG record in ExperienceService and nothing beyond
+      // it. The user growth is the company's, so it sits in the context as
+      // what the platform did, not under Outcomes as if it were Isah's result.
+      caseStudy: {
+        context:
+          "SwipeNG was an early-stage fintech in Lagos, offering customer accounts and virtual cards, with an admin side for managing interest rates and users. The platform grew from zero to 16,000+ users in its first year, and later to 43,000+.",
+        contribution:
+          "I planned and architected the frontend from inception and led the frontend team through delivery, from January 2018 to January 2019.",
+        contributionPoints: [
+          "Account creation and virtual card applications and management",
+          "An admin portal for managing interest rates and users",
+          "Third-party payment gateway integrations, with error handling and user support features",
+          "Two product redesigns focused on usability, accessibility and performance"
+        ],
+        stack: ["Angular", "Angular Material", "NgRx", "TypeScript", "SCSS", "Docker"]
+      }
     },
     {
       id: 9620,
@@ -402,6 +413,9 @@ export class ProjectService {
       kind: "client",
       description: "An Edtech",
       portfolio_url: "https://sapphital.com/",
+      // Archived 2026-11-21: no role, dates or account of the work are on
+      // record. Restore it once those exist.
+      archived: true,
       bgColor: "#13abab",
       logo: "assets/projects/logos/sapphital.png",
       images: []
@@ -414,12 +428,12 @@ export class ProjectService {
       kind: "open-source",
       role: "Author and maintainer since March 2020",
       license: "MIT",
-      description: "An Angular library for horizontal scrolling menus, published to npm and maintained across six major Angular versions since 2020.",
+      description: "An Angular library for horizontal scrolling menus, published to npm since 2020, rebuilt for standalone components in 2025, and supporting Angular 19 to 22.",
       portfolio_url: "https://github.com/isahohieku/ngx-horizontal-menu-scroll",
       bgColor: "#c2410c",
       logo: null,
       images: [],
-      plateFacts: ["ngx-horizontal-scroll-menu", "5,479 downloads", "MIT", "v2.2.0"],
+      plateFacts: ["ngx-horizontal-scroll-menu", "6k+ downloads a year", "MIT", "v2.3.0"],
       links: [
         { label: "View on GitHub", href: "https://github.com/isahohieku/ngx-horizontal-menu-scroll" },
         { label: "npm package", href: "https://www.npmjs.com/package/ngx-horizontal-scroll-menu" },
@@ -436,13 +450,13 @@ export class ProjectService {
             body: "It takes any array of objects as items, detects links or defers to a click handler, and exposes scroll distance and speed, optional arrow controls, custom arrow icons, and class hooks for background and text so it inherits the host application\u2019s styling instead of imposing its own. Touch and keyboard navigation are supported."
           },
           {
-            heading: "The work is the maintenance",
-            body: "Publishing a library is a weekend; keeping it installable is the actual commitment. Fourteen releases carried it from Angular 9 to Angular 19, including the move to standalone components, and it still exports an NgModule alongside the standalone component, because a library that forces a consumer to migrate on your schedule is a library they remove."
+            heading: "Migrating without stranding anyone",
+            body: "It first shipped for Angular 9 in March 2020. The 2.x line, released in August 2025, rebuilt it for Angular 19 and standalone components, and 2.3.0, in November 2026, extended support through Angular 22. It still exports an NgModule alongside the standalone component, because a library that forces a consumer to migrate on your schedule is a library they remove."
           }
         ],
         outcomes: [
-          "5,479 npm downloads in the twelve months to September 2026, and 339 in the last month",
-          "14 published releases, currently 2.2.0",
+          "6k+ npm downloads in the twelve months to November 2026, and 485 in the last month",
+          "15 published releases, currently 2.3.0",
           "8 stars and 2 forks"
         ],
         stack: ["Angular", "TypeScript", "npm"]
@@ -461,7 +475,7 @@ export class ProjectService {
       bgColor: "#475569",
       logo: null,
       images: [],
-      plateFacts: ["contacts-manager", "94.56% covered", "281 commits", "MIT"],
+      plateFacts: ["contacts-manager", "94.56% covered", "282 commits", "MIT"],
       links: [
         { label: "View on GitHub", href: "https://github.com/isahohieku/contacts-manager" }
       ],
@@ -469,7 +483,7 @@ export class ProjectService {
         context:
           "A contacts backend is a deceptively ordinary brief (CRUD over people), which is exactly why it is a good place to do the unglamorous parts properly: authorisation, caching, file handling, pagination, and the test coverage that lets any of it be changed later.",
         contribution:
-          "Written end to end, and the most heavily developed repository I own at 281 commits.",
+          "Written end to end, and the most heavily developed repository I own at 282 commits.",
         sections: [
           {
             heading: "What it handles",
@@ -482,7 +496,7 @@ export class ProjectService {
         ],
         outcomes: [
           "94.56% test coverage across 2,299 lines in 139 files, reported by Codecov",
-          "281 commits, with continuous integration passing on main"
+          "282 commits, with continuous integration passing on main"
         ],
         stack: ["NestJS", "TypeScript", "PostgreSQL", "Redis", "AWS S3", "Docker"]
       }
@@ -751,14 +765,13 @@ export class ProjectService {
   /**
    * The landing page teaser, named rather than positional.
    *
-   * `slice(0, count)` returned whatever sorted first, which meant the teaser
-   * opened on Hobeei — a company whose site is decommissioned, with no logo
-   * asset, so the first artefact of "delivered work" a visitor saw was an
-   * empty colour plate. It also omitted ngx-horizontal-scroll-menu, the only
-   * project on the site a stranger can verify without taking his word for it.
+   * `slice(0, count)` returned whatever sorted first, so the teaser's
+   * contents changed whenever positions did, and it once left out
+   * ngx-horizontal-scroll-menu, whose npm figures a stranger can check
+   * without taking his word for it.
    *
-   * talk360-calling-app leads client work rather than talk360-payment-platform:
-   * the hero now opens on calling, not payment, and the teaser agrees with it.
+   * talk360-calling-app leads because the hero opens on calling and the
+   * teaser agrees with it.
    *
    * Positional fill keeps the row full if a slug is ever renamed.
    */
@@ -803,10 +816,5 @@ export class ProjectService {
 
   getProjectByPosition(position: number): ProjectData | undefined {
     return this.projects.find(p => p.position === position);
-  }
-
-  /** True when the project has enough material for a case study rather than just an outbound link. */
-  hasCaseStudy(project: ProjectData | undefined): boolean {
-    return !!project && project.images.length > 0;
   }
 }

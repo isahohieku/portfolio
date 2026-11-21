@@ -18,24 +18,17 @@ export interface Certification {
   name: string;
   issuer: string;
   awarded: string;
+  /** The issuer's public verification page, where one exists. */
+  credentialUrl?: string;
 }
 
 /**
  * Career history — the site's strongest evidence, and previously a literal
  * inside AboutComponent, which meant the landing page could not reach it.
  *
- * Every figure here is quoted from the résumé PDF served at the site root
- * (`public/Isah Ohieku - Resume.pdf`, read 2026-09-20); nothing is derived or
- * rounded up for display. Figures that earlier drafts carried but the current
- * résumé does not — ApplyPay's +70%, Hobeei's −25% defects, +30% code
- * efficiency, −40% bug count and the Forbes-GSE mention — were dropped rather
- * than softened, per PRODUCT.md's verification standard.
- *
- * The audited Talk360 record is deliberately NOT replaced by the résumé's
- * account of the same role: the résumé restates the percentage claims removed
- * on 2026-09-19 (payment errors −45%, processing +50%, 80+ API issues, −35%
- * project time, +20% CSAT), and a résumé restating a number is not the
- * independent source that standard asks for.
+ * Nothing here is derived or rounded up for display. This record is the
+ * source, and the PDF at `public/Isah Ohieku - Resume.pdf` is generated from
+ * `resume/resume.html`, which restates it. Change a line here, then there.
  */
 @Injectable({ providedIn: 'root' })
 export class ExperienceService {
@@ -44,7 +37,8 @@ export class ExperienceService {
   /**
    * The résumé's professional summary, trimmed of its self-assessments
    * ("strong", "comfortable") and of the years figure, which is computed below
-   * so it cannot go stale — the résumé itself still says "7+".
+   * so it cannot go stale. The PDF has to state a fixed "8+"; update it when
+   * the computed figure moves past it.
    */
   readonly summary =
     'Software engineer building and improving web and mobile products across fintech, ' +
@@ -67,8 +61,7 @@ export class ExperienceService {
       scopeLine:
         'Drove a shared design system, a commerce platform and the Embedded architecture across Talk360\'s web apps, alongside feature delivery and incident response.',
       accomplishments: [
-        'Diagnosed and fixed a hydration bottleneck in onboarding, cutting a main-thread block of up to ~120s to under 100ms',
-        'Shipped the redesigned country-selection and segmentation release that carried 1,100+ new sign-ups shortly after launch',
+        'Shipped the redesigned country-selection and segmentation release, which more than doubled daily sign-ups from about 500 to 1,100+; the flow now carries 2k+ a day',
         'Built self-service receipt automation in Marketplace v1.12.0 (PDF request, poll and preview over the native host bridge), projected to cut manual support receipt requests from ~65 to ~5 a month',
         'Owned the rate calculator end to end, migrating it from Vue to React with backward compatibility and building a Next.js validation app for the new marketing site',
         'Standardised and documented data-cy E2E tags as one source of truth for QA and Engineering, and added Jest/Cypress coverage for analytics events to stop silent tracking regressions',
@@ -97,7 +90,7 @@ export class ExperienceService {
     },
     {
       id: 'aply',
-      company: 'Apply Technologies',
+      company: 'Aply Technologies',
       companyLink: 'https://applypay.ng/',
       role: 'Senior Frontend Developer',
       location: 'Abuja, Nigeria',
@@ -107,11 +100,11 @@ export class ExperienceService {
       scopeLine:
         'Mentored a team of three engineers and standardised CI/CD and coding practices across every project at the company.',
       accomplishments: [
-        'Delivered over twice the initially planned feature set, expanding platform functionality and user value',
+        'Delivered over twice the initially planned feature set',
         'Built and automated support tooling (dashboards, diagnostics, alerting and health checks), accelerating client onboarding and cutting time-to-resolution by 40%',
         'Mentored a team of three engineers to improve CI/CD practices and code quality standards across all projects',
-        'Standardised coding practices across projects, measurably improving code quality and development efficiency',
-        'Managed AWS cloud infrastructure: deployments, horizontal scaling, security audits and enterprise readiness'
+        'Standardised coding practices across projects',
+        'Managed the AWS infrastructure both products ran on: deployments, horizontal scaling and security audits'
       ],
       technologies: [
         { name: 'JavaScript', icon: 'assets/skills/javascript.png' },
@@ -138,15 +131,16 @@ export class ExperienceService {
       location: 'Abuja, Nigeria',
       duration: 'Feb 2019 - Feb 2021',
       overview:
-        'A greentech donation platform for recycling unwanted and preowned items, built from inception as part of the founding team. Beyond the frontend I represented the company externally, at YC Startup School and the Earth Tech competition.',
+        'A greentech freecycle marketplace, where people gave away unwanted and preowned items and others bid for them with a virtual currency, built from inception as part of the founding team. Beyond the frontend I represented the company externally, at YC Startup School and the Earth Tech competition.',
       scopeLine:
-        'Architected the product’s frontend from inception as part of the founding team, the structure it scaled on through a 30% performance gain.',
+        'Architected the product’s frontend from inception as part of the founding team, and led it from the first commit to the last.',
       accomplishments: [
-        'Architected the entire frontend from inception, a scalable and maintainable structure that improved performance by 30%',
-        'Built real-time bidding, product tours, chat, social sharing and payment gateway integrations, boosting user engagement by over 50% and driving revenue growth by 35%',
-        'Improved application performance and user experience by 30% through PWA and SSR implementation',
+        'Architected the entire frontend from inception, a scalable and maintainable structure',
+        'Built real-time bidding, product tours, chat, social sharing and payment gateway integrations',
+        'Over the same period, user engagement on the platform grew by over 50% and revenue by 35%',
+        'Raised the Lighthouse performance score by 30% through PWA and SSR implementation',
         'Helped carry the company to the finals of the Earth Tech competition',
-        'Represented the company at YC Startup School, raising funds and building brand awareness and connections',
+        'Represented the company at YC Startup School',
         'Held the experience consistent across browsers through cross-browser compatibility testing'
       ],
       technologies: [
@@ -170,10 +164,10 @@ export class ExperienceService {
       overview:
         'An early-stage fintech. I planned and architected the frontend from inception and led the frontend team through delivery, establishing the foundation the product scaled on.',
       scopeLine:
-        'Architected the frontend from inception and led two product redesigns as the platform scaled from zero to 16,000+ users.',
+        'Architected the frontend from inception and led two product redesigns in the platform’s first year.',
       accomplishments: [
         'Architected the frontend from inception: account creation, virtual card management, an admin portal for interest rates and users, and third-party payment gateway integrations, with robust error handling and user support features',
-        'Scaled the user base from zero to 16,000+ in the first year, with platform growth reaching 43,000+ users subsequently',
+        'The platform grew from zero to 16,000+ users in its first year, and later to 43,000+',
         'Led two product redesigns focused on usability, accessibility and performance'
       ],
       technologies: [
@@ -217,11 +211,8 @@ export class ExperienceService {
       skills: [
         'Node.js',
         'NestJS',
-        'Express',
         'Django',
-        'Ruby on Rails',
         'Python',
-        'Java',
         'GraphQL',
         'RESTful APIs',
         'PostgreSQL',
@@ -270,7 +261,6 @@ export class ExperienceService {
         'Payment platform development and integration',
         'Web performance optimisation',
         'Accessibility (WCAG)',
-        'User research feedback loops',
         'Agile/Scrum',
         'JIRA'
       ]
@@ -283,7 +273,7 @@ export class ExperienceService {
       institution: 'Ahmadu Bello University',
       qualification: 'MBA',
       field: 'Business Administration Management',
-      duration: 'Jan 2019 - Present'
+      duration: 'Jan 2019 - paused'
     },
     {
       id: 'abu-beng',
@@ -294,20 +284,30 @@ export class ExperienceService {
     }
   ];
 
+  /**
+   * Only certifications that back something else on the site: the AI
+   * projects, the mobile half of the Talk360 title, and the WCAG skill.
+   * Digital marketing, a PCI DSS e-learning module and a 2018 scholarship
+   * were cut on 2026-11-21 as noise on a senior profile.
+   */
   readonly certifications: Certification[] = [
     {
-      name: 'AI LLM Engineering Mastery - GenAI, RAG Complete Guide',
-      issuer: 'Coursera',
-      awarded: 'Feb 2026'
+      name: 'AI & LLM Engineering Mastery – GenAI, RAG Complete Guide',
+      issuer: 'Packt, via Coursera',
+      awarded: 'Feb 2026',
+      credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/certificate/PABG99TPWPAB'
     },
-    { name: 'Android App Development with Kotlin', issuer: 'Udemy', awarded: '2025' },
-    { name: 'Web Design Accessibility', issuer: 'Udemy', awarded: '2025' },
-    { name: 'GRC eLearning: PCI DSS', issuer: 'GRC eLearning', awarded: '2022' },
-    { name: 'The Fundamentals of Digital Marketing', issuer: 'Google', awarded: '2020' },
     {
-      name: 'Google Africa Scholarship - Mobile Web Specialist',
-      issuer: 'Google',
-      awarded: '2018'
+      name: 'Android App Development with Kotlin',
+      issuer: 'Udemy',
+      awarded: '2025',
+      credentialUrl: 'https://www.udemy.com/certificate/UC-09343453-239c-4612-8d61-b903cfbf5c10/'
+    },
+    {
+      name: 'Web Design Accessibility',
+      issuer: 'Udemy',
+      awarded: '2025',
+      credentialUrl: 'https://www.udemy.com/certificate/UC-19d2469b-d461-4d5e-9fe2-f88cdd5fc4d0/'
     }
   ];
 

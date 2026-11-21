@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!--
+  Source of public/Isah Ohieku - Resume.pdf. Every line is restated from
+  ExperienceService and the Talk360 impact case studies, so the PDF and the
+  site tell one story; change the site first, then this file. Regenerate with:
+
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+    --no-pdf-header-footer --print-to-pdf="public/Isah Ohieku - Resume.pdf" \
+    "file://$PWD/resume/resume.html"
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Isah Ohieku - Resume</title>
+<style>
+  @page { size: A4; margin: 16mm 17mm 16mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 9.6pt; line-height: 1.42; color: #1f2937; }
+  .sans { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; }
+  header { text-align: center; border-bottom: 2px solid #111827; padding-bottom: 10px; margin-bottom: 14px; }
+  h1 { font-size: 22pt; letter-spacing: 0.12em; margin: 0 0 4px; color: #111827; }
+  .contact { font-size: 8.6pt; color: #4b5563; }
+  .contact a { color: inherit; text-decoration: none; }
+  .cert-link { color: inherit; text-decoration: none; }
+  .meta .cert-link { text-decoration: underline; }
+  .contact span + span::before { content: "·"; margin: 0 7px; color: #9ca3af; }
+  h2 { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: 8.4pt; letter-spacing: 0.14em; text-transform: uppercase; color: #111827; border-bottom: 1px solid #d1d5db; padding-bottom: 3px; margin: 16px 0 8px; }
+  p { margin: 0; }
+  .role { margin-bottom: 11px; break-inside: avoid-page; }
+  .role-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .role-title { font-weight: 700; font-size: 10.4pt; color: #111827; }
+  .meta { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: 8.4pt; color: #4b5563; white-space: nowrap; }
+  .company { font-style: italic; }
+  .scope { margin: 3px 0 2px; color: #374151; }
+  ul { margin: 3px 0 0; padding-left: 15px; }
+  li { margin: 1.5px 0; }
+  .skills p { margin: 2px 0; }
+  .skills b, .certs b { color: #111827; }
+  .row { display: flex; justify-content: space-between; align-items: baseline; margin: 2px 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>ISAH OHIEKU</h1>
+  <div class="contact sans">
+    <span><a href="mailto:isahohieku@gmail.com">isahohieku@gmail.com</a></span><span>Abuja, Nigeria (WAT, UTC+1)</span>
+  </div>
+  <div class="contact sans">
+    <span><a href="https://linkedin.com/in/isah-ohieku">linkedin.com/in/isah-ohieku</a></span><span><a href="https://github.com/isahohieku">github.com/isahohieku</a></span><span><a href="https://isahohieku.com">isahohieku.com</a></span>
+  </div>
+</header>
+
+<h2>Professional summary</h2>
+<p>Software engineer with 8+ years building and improving web and mobile products across fintech, SaaS and other product-driven environments. I own architecture, migrations, performance work and user-facing features from development through production, debug across the stack and through third-party APIs, and improve engineering workflows with automation and AI-assisted development using tools such as Claude and Cursor. I work closely with product, design, QA and backend.</p>
+
+<h2>Professional experience</h2>
+
+<div class="role">
+  <div class="role-head"><span class="role-title">Frontend &amp; Mobile Software Engineer</span><span class="meta">May 2022 – Present</span></div>
+  <div class="role-head"><span class="company">Talk360</span><span class="meta">Amsterdam, Netherlands (Remote)</span></div>
+  <p class="scope">A global calling and top-up platform. I work across onboarding, the Shop360 marketplace, the webshop, the embedded web dialler and the payment platform, on web and Android/WebView, owning features end to end.</p>
+  <ul>
+    <li>Shipped the redesigned country-selection and segmentation release, which more than doubled daily sign-ups from about 500 to 1,100+; the flow now carries 2k+ a day.</li>
+    <li>Initiated a shared design system: a design-token package now used by four apps and a 23-component library used across 14+ screens in two products, with a CI lint rule blocking reintroduction of legacy components.</li>
+    <li>Proposed and built a shared commerce package and its integration contract; it backs both the rebuilt website and the existing shop, and the website launch shipped on schedule against it.</li>
+    <li>Proposed the multi-tenant architecture and native-SDK bootstrapping flow for the Embedded platform; the proposal was approved, built and is live in production.</li>
+    <li>Built self-service receipt automation in Marketplace v1.12.0 (PDF request, poll and preview over the native host bridge), projected to cut manual support receipt requests from ~65 to ~5 a month.</li>
+    <li>Owned the rate calculator end to end, migrating it from Vue to React with backward compatibility and building a Next.js validation app for the new marketing site.</li>
+    <li>Standardised and documented data-cy E2E tags as one source of truth for QA and Engineering, and added Jest/Cypress coverage for analytics events to stop silent tracking regressions.</li>
+    <li>Delivered full 8-locale support for user-facing flows, and led the onboarding app’s upgrade to React 19.</li>
+    <li>Led incident triage and resolution for customer-reported issues across the web app, APIs and integrations, and authored the runbooks, monitoring dashboards, alerting and support tooling behind it.</li>
+  </ul>
+</div>
+
+<div class="role">
+  <div class="role-head"><span class="role-title">Senior Frontend Developer</span><span class="meta">Nov 2020 – Jul 2022</span></div>
+  <div class="role-head"><span class="company">Aply Technologies Limited</span><span class="meta">Abuja, Nigeria</span></div>
+  <p class="scope">Frontend for ApplyPay and Apply Schools, a payments product and an education platform sharing one engineering team.</p>
+  <ul>
+    <li>Delivered over twice the initially planned feature set.</li>
+    <li>Built and automated support tooling (dashboards, diagnostics, alerting and health checks), accelerating client onboarding and cutting time-to-resolution by 40%.</li>
+    <li>Mentored a team of three engineers to improve CI/CD practices and code quality standards across all projects.</li>
+    <li>Standardised coding practices across projects.</li>
+    <li>Managed the AWS infrastructure both products ran on: deployments, horizontal scaling and security audits.</li>
+  </ul>
+</div>
+
+<div class="role">
+  <div class="role-head"><span class="role-title">Lead Frontend Engineer (Founding Team)</span><span class="meta">Feb 2019 – Feb 2021</span></div>
+  <div class="role-head"><span class="company">Hobeei</span><span class="meta">Abuja, Nigeria</span></div>
+  <ul>
+    <li>Architected the entire frontend of a greentech freecycle marketplace from inception, a scalable and maintainable structure.</li>
+    <li>Built real-time bidding, product tours, chat, social sharing and payment gateway integrations.</li>
+    <li>Over the same period, user engagement on the platform grew by over 50% and revenue by 35%.</li>
+    <li>Raised the Lighthouse performance score by 30% through PWA and SSR implementation.</li>
+    <li>Helped carry the company to the finals of the Earth Tech competition, and represented it at YC Startup School.</li>
+    <li>Held the experience consistent across browsers through cross-browser compatibility testing.</li>
+  </ul>
+</div>
+
+<div class="role">
+  <div class="role-head"><span class="role-title">Frontend Developer (Early-Stage Fintech)</span><span class="meta">Jan 2018 – Jan 2019</span></div>
+  <div class="role-head"><span class="company">SwipeNG</span><span class="meta">Lagos, Nigeria</span></div>
+  <ul>
+    <li>Architected the frontend from inception: account creation, virtual card management, an admin portal for interest rates and users, and third-party payment gateway integrations, with robust error handling and user support features.</li>
+    <li>The platform grew from zero to 16,000+ users in its first year, and later to 43,000+.</li>
+    <li>Led two product redesigns focused on usability, accessibility and performance.</li>
+  </ul>
+</div>
+
+<h2>Education</h2>
+<div class="row"><span><b>Ahmadu Bello University</b> · MBA, Business Administration Management</span><span class="meta">Jan 2019 – paused</span></div>
+<div class="row"><span><b>Ahmadu Bello University</b> · B.Eng., Electrical and Electronics Engineering</span><span class="meta">Jan 2011 – Dec 2016</span></div>
+
+<h2>Skills</h2>
+<div class="skills">
+  <p><b>Frontend:</b> Angular, React, Vue.js, Next.js, TypeScript, JavaScript, Micro-frontend, GSAP</p>
+  <p><b>Styling &amp; UI:</b> SCSS, Tailwind CSS, Angular Material, Material UI</p>
+  <p><b>Backend &amp; data:</b> Node.js, NestJS, Django, Python, GraphQL, RESTful APIs, PostgreSQL, MySQL, MongoDB, Redis, WebSocket / Socket.IO</p>
+  <p><b>Mobile:</b> Kotlin, Jetpack Compose</p>
+  <p><b>AI:</b> AI-assisted development (Claude, Cursor, Copilot, Antigravity), OpenAI API, LangChain, MCP</p>
+  <p><b>Testing &amp; quality:</b> Jest, Jasmine, Cypress, Lighthouse</p>
+  <p><b>Cloud &amp; DevOps:</b> AWS, AWS S3, Docker, CI/CD, GitHub Actions, CircleCI, Heroku, Webpack, Cloudinary</p>
+  <p><b>Practice:</b> Product architecture and scalable system design, API design and microservices, payment platform development and integration, web performance optimisation, accessibility (WCAG), Agile/Scrum, JIRA</p>
+</div>
+
+<h2>Certifications</h2>
+<div class="certs">
+  <div class="row"><b><a class="cert-link" href="https://www.coursera.org/account/accomplishments/specialization/certificate/PABG99TPWPAB">AI &amp; LLM Engineering Mastery – GenAI, RAG Complete Guide</a></b><span class="meta">Packt, via Coursera · Feb 2026 · <a class="cert-link" href="https://www.coursera.org/account/accomplishments/specialization/certificate/PABG99TPWPAB">verify</a></span></div>
+  <div class="row"><b><a class="cert-link" href="https://www.udemy.com/certificate/UC-09343453-239c-4612-8d61-b903cfbf5c10/">Android App Development with Kotlin</a></b><span class="meta">Udemy · 2025 · <a class="cert-link" href="https://www.udemy.com/certificate/UC-09343453-239c-4612-8d61-b903cfbf5c10/">verify</a></span></div>
+  <div class="row"><b><a class="cert-link" href="https://www.udemy.com/certificate/UC-19d2469b-d461-4d5e-9fe2-f88cdd5fc4d0/">Web Design Accessibility</a></b><span class="meta">Udemy · 2025 · <a class="cert-link" href="https://www.udemy.com/certificate/UC-19d2469b-d461-4d5e-9fe2-f88cdd5fc4d0/">verify</a></span></div>
+</div>
+</body>
+</html>

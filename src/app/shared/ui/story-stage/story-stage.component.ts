@@ -149,10 +149,9 @@ const MIN_WIDTH = 768;
 
 /**
  * Deliberately conservative, and the same intent the hero globe had.
- * PRODUCT.md makes mobile the primary case, and the site's own case study is
- * about cutting a 120s main-thread block on mid-range Android. Shipping a
- * heavy WebGL scene to that same device would argue against the engineer
- * the page describes.
+ * PRODUCT.md makes mobile the primary case, and the site argues for
+ * performance on mid-range Android. Shipping a heavy WebGL scene to that
+ * same device would argue against the engineer the page describes.
  *
  * The connection check used to demand an effectiveType of 4g. That figure is
  * Chrome's estimate from recent round trips, not a property of the network,

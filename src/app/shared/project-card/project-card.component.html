@@ -82,6 +82,8 @@
         [title]="project.title"
         [showWordmark]="false"
         [imgClass]="logoClasses"
+        [width]="project.logoSize?.width ?? null"
+        [height]="project.logoSize?.height ?? null"
         wordmarkClass="relative z-10 text-center text-xl font-bold tracking-tight text-white sm:text-2xl" />
     }
   </div>

@@ -69,6 +69,32 @@
       } catch (e) { /* keep the dark default */ }
     })();
   </script>
+
+  <!-- The hero portrait is the LCP element on /, but it lives in the lazy
+       landing chunk, so the browser would not discover it until that chunk
+       ran. Start the fetch from the document instead. Only on /, so other
+       routes do not pay for an image they never show. Keep the srcsets and
+       sizes in step with the two <picture>s in landing.component.html. -->
+  <script>
+    (function () {
+      if (location.pathname !== '/') return;
+      var hero = [
+        ['(min-width: 1024px)', 'assets/img/hero/isah-800.avif 800w, assets/img/hero/isah-960.avif 960w', '44vw'],
+        ['(max-width: 1023.98px)', 'assets/img/hero/isah-480.avif 480w, assets/img/hero/isah-800.avif 800w, assets/img/hero/isah-960.avif 960w', 'calc(100vw - 2.5rem)']
+      ];
+      hero.forEach(function (h) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.type = 'image/avif';
+        link.media = h[0];
+        link.setAttribute('imagesrcset', h[1]);
+        link.setAttribute('imagesizes', h[2]);
+        link.setAttribute('fetchpriority', 'high');
+        document.head.appendChild(link);
+      });
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>

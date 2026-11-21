@@ -98,6 +98,11 @@ export interface ProjectData {
   /** null when no logo asset is available; consumers fall back to a text wordmark. */
   logo: string | null;
   /**
+   * The logo file's intrinsic size, so the img reserves its box before it
+   * loads. CSS still sets the rendered height; this only supplies the ratio.
+   */
+  logoSize?: { width: number; height: number };
+  /**
    * For client work: one lead screen, as proof the product exists, plus only
    * the screens a case-study section points at. Cut to that on 2026-11-13; a
    * gallery of unattached screens argued for UI output, not the ownership the
@@ -149,6 +154,7 @@ export class ProjectService {
       siteOffline: true,
       bgColor: "#1f4d3a",
       logo: "assets/projects/logos/hobeei.png",
+      logoSize: { width: 640, height: 244 },
       images: [
         { id: 7038, imageUrl: "assets/projects/hobeei-freecycle-application/01.jpg", imageName: "Home page, from the giveaway hero through how Hobeei works", position: 1 },
         // The item page (03) would illustrate the bidding section, but it shows
@@ -204,6 +210,7 @@ export class ProjectService {
       portfolio_url: "https://applypay.ng/",
       bgColor: "#538fb7",
       logo: "/assets/img/applypay.svg",
+      logoSize: { width: 180, height: 49 },
       images: [
         { id: 7042, imageUrl: "assets/projects/apply-schools-and-applypay/01.jpg", imageName: "Apply home page, introducing Apply Schools, Apply Markets and Apply Pay", position: 1 },
         { id: 7043, imageUrl: "assets/projects/apply-schools-and-applypay/02.png", smallUrl: "assets/projects/apply-schools-and-applypay/02-800.png", imageName: "School admin: the list of classes, filterable by session and status", position: 2 }
@@ -240,6 +247,7 @@ export class ProjectService {
       description: "Mobile app for low-cost international calls, with contact management, call history and credit top-up.",
       bgColor: "#162240",
       logo: "assets/projects/logos/talk360.svg",
+      logoSize: { width: 84, height: 20 },
       images: [
         { id: 7056, imageUrl: "assets/projects/talk360-calling-app/04.png", imageName: "Home: who to call, the credit balance, and buying credit or checking rates", position: 4 },
       ],
@@ -284,6 +292,7 @@ export class ProjectService {
       portfolio_url: "https://kollo.ng/",
       bgColor: "#5310b7",
       logo: "assets/projects/logos/kollo.svg",
+      logoSize: { width: 33, height: 32 },
       images: [
         { id: 7068, imageUrl: "assets/projects/kollo/01.jpg", smallUrl: "assets/projects/kollo/01-800.jpg", imageName: "Home page hero, with the app's wallet and rotation-group balance", position: 1 },
         { id: 7069, imageUrl: "assets/projects/kollo/02.jpg", smallUrl: "assets/projects/kollo/02-800.jpg", imageName: "Waitlist page: the reCAPTCHA-protected sign-up form", position: 2 },
@@ -330,6 +339,7 @@ export class ProjectService {
       portfolio_url: "https://nexus360.ng/",
       bgColor: "#0a2540",
       logo: "assets/projects/logos/nexus360.png",
+      logoSize: { width: 256, height: 256 },
       images: [
         { id: 7060, imageUrl: "assets/projects/nexus360/01.jpg", smallUrl: "assets/projects/nexus360/01-800.jpg", imageName: "Home page hero, pairing the systems and sourcing sides of the business", position: 1 },
         { id: 7061, imageUrl: "assets/projects/nexus360/02.jpg", smallUrl: "assets/projects/nexus360/02-800.jpg", imageName: "Software development service page, opening on the problems it replaces", position: 2 },
@@ -373,6 +383,7 @@ export class ProjectService {
       archived: true,
       bgColor: "#49b7ac",
       logo: "assets/projects/logos/desrio.png",
+      logoSize: { width: 200, height: 200 },
       images: []
     },
     {
@@ -387,6 +398,7 @@ export class ProjectService {
       portfolio_url: "https://swipe.ng/",
       bgColor: "#8948fc",
       logo: "assets/projects/logos/swipeng.webp",
+      logoSize: { width: 240, height: 240 },
       images: [],
       // Restates the SwipeNG record in ExperienceService and nothing beyond
       // it. The user growth is the company's, so it sits in the context as
@@ -418,6 +430,7 @@ export class ProjectService {
       archived: true,
       bgColor: "#13abab",
       logo: "assets/projects/logos/sapphital.png",
+      logoSize: { width: 400, height: 400 },
       images: []
     },
     {

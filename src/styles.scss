@@ -773,7 +773,11 @@ app-header > header {
    has to be given back. Without this every page starts underneath it, and the
    landing scenes — measured in svh — would each be a header taller than the
    screen they are meant to fill. */
+/* Every route is lazy, so main is empty until its chunk arrives. Without a
+   floor the footer paints at the top of the viewport and is then shoved off
+   it, which was the page's entire CLS. */
 main {
+  min-height: 100svh;
   padding-top: var(--io-header-height);
 }
 

@@ -52,6 +52,13 @@ export class ScrollSceneDirective {
   /** Bare `appScrollScene` binds '', which means pin — the original behaviour. */
   @Input() appScrollScene: SceneMode | '' = 'pin';
 
+  /**
+   * Hands the same progress to script, for a consumer that draws outside the
+   * DOM (the story stage's globe). Called outside Angular on every scroll
+   * frame, so it must only store the number, not trigger a render.
+   */
+  @Input() sceneProgress: ((progress: number) => void) | null = null;
+
   private readonly element = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
   private readonly zone = inject(NgZone);
@@ -157,6 +164,7 @@ export class ScrollSceneDirective {
     }
 
     node.style.setProperty('--p', progress.toFixed(4));
+    this.sceneProgress?.(progress);
   }
 }
 

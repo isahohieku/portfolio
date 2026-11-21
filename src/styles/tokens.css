@@ -24,6 +24,14 @@
   --io-radius-2x-large: 4rem;
   --io-radius-full: 9999px;
 
+  /* Role radii. Pills are kept for controls, so containers sit well below
+     them: a card at the scale's top end read as a stretched pill and took
+     the distinction away from the buttons. Media nested inside a padded
+     frame takes the frame's radius minus the inset, so the curves run
+     parallel. */
+  --io-radius-card: 1rem;
+  --io-radius-media: 1.25rem;
+
   /* --- Space (4px base) -------------------------------------------------- */
   --io-space-050: 0.125rem;
   --io-space-100: 0.25rem;
@@ -68,6 +76,8 @@
      long entrance read as calm rather than slow — most of the distance is
      covered early, and the tail is what the eye reads as weight. */
   --io-ease-entrance: cubic-bezier(0.22, 1, 0.24, 1);
+  /* The site's one entrance comes out of this much blur. */
+  --io-blur-entrance: 10px;
 
   /* The screenshot viewer's room. Mode-independent on purpose: the captures
      are the subject, and a light scrim washes out the light-mode ones. */

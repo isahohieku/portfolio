@@ -2,13 +2,18 @@ import {
   Component,
   ChangeDetectionStrategy,
   ElementRef,
+  EventEmitter,
   ViewChild,
+  Input,
+  Output,
   afterNextRender,
+  effect,
   DestroyRef,
   inject,
   NgZone,
 } from '@angular/core';
 import { AudioService } from '../../services/audio.service';
+import { StoryService } from '../../services/story';
 import {
   AdditiveBlending,
   BufferGeometry,
@@ -27,12 +32,16 @@ import {
 } from 'three';
 
 /**
- * The hero globe.
+ * The landing page's globe.
  *
- * Only ever reached through a dynamic import from HeroBackdropComponent, so
+ * Only ever reached through a dynamic import from StoryStageComponent, so
  * three lands in its own lazy chunk and never touches the initial bundle. The
  * capability gate lives at the call site; by the time this class is
  * constructed the decision to render has already been made.
+ *
+ * As the story stage it takes no pointer: it sits behind the page, its arcs
+ * draw as the reach chapter is scrolled, and it stops rendering in chapters
+ * that do not show it.
  *
  * It is decorative and aria-hidden. The arcs are a motif for what Talk360
  * does — connect callers between continents — not a data visualisation, so
@@ -43,6 +52,7 @@ import {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<canvas #canvas aria-hidden="true"></canvas>`,
+  host: { '[class.is-stage]': '!interactive' },
   styles: [
     `
       :host {
@@ -70,18 +80,39 @@ import {
       canvas.is-dragging {
         cursor: grabbing;
       }
+
+      :host(.is-stage) canvas {
+        pointer-events: none;
+        cursor: auto;
+      }
     `,
   ],
 })
 export class GlobeComponent {
+  /** False on the story stage: no drag, no pointer, arcs driven by scroll. */
+  @Input() interactive = true;
+
+  /**
+   * The browser took the WebGL context away (sleep and wake, a GPU switch,
+   * too many live contexts across tabs). The canvas stays in the DOM but
+   * draws nothing again, so the owner should replace this instance rather
+   * than wait for a restore that may never come.
+   */
+  @Output() readonly contextLost = new EventEmitter<void>();
+
   @ViewChild('canvas') private canvasRef!: ElementRef<HTMLCanvasElement>;
 
   private readonly destroyRef = inject(DestroyRef);
   private readonly zone = inject(NgZone);
   private readonly audio = inject(AudioService);
+  private readonly story = inject(StoryService);
 
   private frame = 0;
   private visible = true;
+  /** Whether the current chapter shows the globe. Always true when interactive. */
+  private lit = true;
+  private resume?: () => void;
+  private dimTimer?: ReturnType<typeof setTimeout>;
 
   /** Auto-rotation, and the velocity a drag adds on top of it.
    *  The initial value turns the Europe-Africa corridor toward the camera,
@@ -95,6 +126,21 @@ export class GlobeComponent {
 
   constructor() {
     afterNextRender(() => this.zone.runOutsideAngular(() => this.init()));
+
+    effect(() => {
+      const lit = this.interactive || this.story.lit();
+      clearTimeout(this.dimTimer);
+      if (lit) {
+        this.lit = true;
+        this.resume?.();
+      } else {
+        // Keep turning through the stage's fade-out, then stop paying for it.
+        this.dimTimer = setTimeout(() => {
+          this.lit = false;
+          this.pause();
+        }, 1600);
+      }
+    });
   }
 
   private init(): void {
@@ -120,8 +166,17 @@ export class GlobeComponent {
     camera.lookAt(0, 0, 0);
 
     const world = new Group();
-    // Axial tilt, so it reads as a planet rather than a spinning ball.
-    world.rotation.z = 0.41;
+    if (this.interactive) {
+      // Axial tilt, so it reads as a planet rather than a spinning ball.
+      world.rotation.z = 0.41;
+    } else {
+      // The full tilt rolls Europe up toward the pole, which leaves the
+      // stage's arcs on the rim. A slight roll, with the northern hemisphere
+      // leaned toward the camera, brings the corridor to the face.
+      world.rotation.z = 0.12;
+      world.rotation.x = 0.3;
+      this.spin = -1.62;
+    }
     scene.add(world);
 
     const palette = this.readPalette();
@@ -173,14 +228,23 @@ export class GlobeComponent {
     };
     document.addEventListener('visibilitychange', onVisibility);
 
-    const detachDrag = this.attachDrag(canvas);
+    const onContextLost = () => {
+      this.pause();
+      this.zone.run(() => this.contextLost.emit());
+    };
+    canvas.addEventListener('webglcontextlost', onContextLost);
+
+    const detachDrag = this.interactive ? this.attachDrag(canvas) : () => undefined;
     const detachTheme = this.watchTheme(arcs, world, lattice);
 
-    this.play(renderer, scene, camera, world, arcs, lattice);
+    this.resume = () => this.play(renderer, scene, camera, world, arcs, lattice);
+    this.resume();
     requestAnimationFrame(() => canvas.classList.add('is-ready'));
 
     this.destroyRef.onDestroy(() => {
       this.pause();
+      clearTimeout(this.dimTimer);
+      this.resume = undefined;
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
@@ -196,6 +260,15 @@ export class GlobeComponent {
         any.material?.dispose();
       });
       renderer.dispose();
+      // dispose() frees resources but leaves the context alive until garbage
+      // collection, and browsers cap live contexts (around 16 in Chrome).
+      // Every visit to / builds a new globe, so a few round trips through the
+      // case studies used to push the oldest context out, and the live one
+      // could be the casualty. Release it now. The listener goes first,
+      // because forcing the loss fires webglcontextlost, and that would ask
+      // the stage for a replacement on the way out.
+      canvas.removeEventListener('webglcontextlost', onContextLost);
+      renderer.forceContextLoss();
     });
   }
 
@@ -259,27 +332,36 @@ export class GlobeComponent {
   }
 
   /**
-   * Great-circle-ish arcs with a lit point travelling along each. Endpoints
-   * are real coordinates between Europe and Africa because that is the
-   * corridor Talk360 serves, but they carry no labels and claim no traffic.
+   * Great-circle-ish arcs with a lit point travelling along each. Every arc
+   * leaves from Abuja, where he is based, and lands on a real city across
+   * Africa, Europe and the Gulf, spread so no two arcs share a path. The arcs draw outward from the hub
+   * in this order on the reach chapter. They carry no labels and claim no
+   * traffic.
    */
   private buildArcs(color: Color): {
     group: Group;
-    travellers: { points: Points; curve: QuadraticBezierCurve3; offset: number; speed: number }[];
+    travellers: {
+      points: Points;
+      line: Line;
+      curve: QuadraticBezierCurve3;
+      offset: number;
+      speed: number;
+    }[];
   } {
     const routes: [number, number, number, number][] = [
-      [52.37, 4.9, 6.52, 3.37], // Amsterdam - Lagos
-      [52.37, 4.9, -1.29, 36.82], // Amsterdam - Nairobi
-      [51.51, -0.13, 5.6, -0.19], // London - Accra
-      [48.86, 2.35, 14.69, -17.44], // Paris - Dakar
-      [41.9, 12.5, -26.2, 28.04], // Rome - Johannesburg
-      [52.37, 4.9, 30.04, 31.24], // Amsterdam - Cairo
-      [40.42, -3.7, 33.57, -7.59], // Madrid - Casablanca
+      [9.06, 7.49, 6.52, 3.37], // Abuja - Lagos
+      [9.06, 7.49, 5.6, -0.19], // Abuja - Accra
+      [9.06, 7.49, 52.37, 4.9], // Abuja - Amsterdam
+      [9.06, 7.49, 51.51, -0.13], // Abuja - London
+      [9.06, 7.49, 25.2, 55.27], // Abuja - Dubai: Paris shared London's path and read as one arc
+      [9.06, 7.49, -1.29, 36.82], // Abuja - Nairobi
+      [9.06, 7.49, -26.2, 28.04], // Abuja - Johannesburg
     ];
 
     const group = new Group();
     const travellers: {
       points: Points;
+      line: Line;
       curve: QuadraticBezierCurve3;
       offset: number;
       speed: number;
@@ -300,7 +382,8 @@ export class GlobeComponent {
 
       const samples = curve.getPoints(60);
       const geometry = new BufferGeometry().setFromPoints(samples);
-      group.add(new Line(geometry, lineMaterial));
+      const line = new Line(geometry, lineMaterial);
+      group.add(line);
 
       const traveller = new Points(
         new BufferGeometry().setAttribute('position', new Float32BufferAttribute([0, 0, 0], 3)),
@@ -317,6 +400,7 @@ export class GlobeComponent {
 
       travellers.push({
         points: traveller,
+        line,
         curve,
         offset: index / routes.length,
         speed: 0.05 + (index % 3) * 0.012,
@@ -381,7 +465,7 @@ export class GlobeComponent {
     arcs: ReturnType<GlobeComponent['buildArcs']>,
     lattice: ReturnType<GlobeComponent['buildLattice']>
   ): void {
-    if (this.frame || !this.visible || document.hidden) {
+    if (this.frame || !this.visible || !this.lit || document.hidden) {
       return;
     }
 
@@ -390,11 +474,32 @@ export class GlobeComponent {
       const delta = Math.min((now - last) / 1000, 0.05);
       last = now;
 
-      this.velocity *= 0.94;
-      this.spin += (this.dragging ? 0 : 0.055) * delta + this.velocity;
-      world.rotation.y = this.spin;
+      if (this.interactive) {
+        this.velocity *= 0.94;
+        this.spin += (this.dragging ? 0 : 0.055) * delta + this.velocity;
+        world.rotation.y = this.spin;
+      } else {
+        // The stage sways around the corridor instead of spinning past it,
+        // so whichever chapter the visitor reaches, the arcs face them.
+        world.rotation.y = this.spin + Math.sin(now * 0.00009) * 0.35;
+      }
 
-      for (const t of arcs.travellers) {
+      // Stage only: each route draws in turn across the reach chapter, and
+      // its traveller sets off once its line has landed.
+      const draw = this.interactive ? 1 : Math.min(this.story.reach * 1.5, 1);
+      const count = arcs.travellers.length;
+
+      for (let i = 0; i < count; i++) {
+        const t = arcs.travellers[i];
+        const startAt = (i / count) * 0.55;
+        const local = Math.min(Math.max((draw - startAt) / 0.45, 0), 1);
+        const samples = t.line.geometry.getAttribute('position').count;
+        t.line.geometry.setDrawRange(0, Math.ceil(samples * local));
+        t.points.visible = local >= 1;
+        if (!t.points.visible) {
+          continue;
+        }
+
         t.offset = (t.offset + t.speed * delta) % 1;
         const p = t.curve.getPoint(t.offset);
         const attr = t.points.geometry.getAttribute('position');

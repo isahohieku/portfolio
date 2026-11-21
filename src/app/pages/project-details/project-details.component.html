@@ -24,13 +24,13 @@
   <figure class="flex flex-col gap-3">
     <button
       type="button"
-      class="io-wipe group relative block aspect-[16/10] w-full overflow-hidden rounded-large p-3 text-left shadow-raised sm:p-5"
+      class="io-wipe group relative block aspect-[16/10] w-full overflow-hidden rounded-media p-3 text-left shadow-raised sm:p-5"
       [style.background-color]="project?.bgColor"
       [appReveal]="0"
       [attr.aria-label]="'Open full screen: ' + image.imageName"
       (click)="openViewer(image)">
       @if (!loaded.has(image.id)) {
-        <span class="io-shot-placeholder absolute inset-3 rounded-small sm:inset-5" aria-hidden="true"></span>
+        <span class="io-shot-placeholder absolute inset-3 rounded-2x-small sm:inset-5" aria-hidden="true"></span>
       }
       <!-- alt is empty because the button's label already names the screen. -->
       <img
@@ -45,7 +45,7 @@
         height="1000"
         (load)="loaded.add(image.id)"
         (error)="loaded.add(image.id)"
-        class="relative h-full w-full rounded-small object-contain transition-[transform,opacity] duration-slow ease-io-out group-hover:scale-[1.02]"
+        class="relative h-full w-full rounded-2x-small object-contain transition-[transform,opacity] duration-slow ease-io-out group-hover:scale-[1.02]"
         [class.opacity-0]="!loaded.has(image.id)" />
       <!-- Always visible, not revealed on hover: on a phone there is no hover,
            and the frame has to say it opens. -->
@@ -159,7 +159,7 @@
 
         @if (outcomesLead) {
           <div class="lg:col-span-7">
-            <div class="rounded-large border border-subtle bg-surface-minimal p-6 shadow-raised sm:p-8">
+            <div class="rounded-card border border-subtle bg-surface-minimal p-6 shadow-raised sm:p-8">
               <h2 class="io-label mb-4 text-subtle">Outcomes</h2>
               <ul class="flex list-none flex-col divide-y divide-subtle pl-0">
                 @for (outcome of study?.outcomes; track outcome) {

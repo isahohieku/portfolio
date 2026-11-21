@@ -37,13 +37,26 @@ export interface CaseStudy {
   stack?: string[];
 }
 
-/** Client engagements and open-source work are different claims, and the
- *  listing groups them rather than interleaving them. */
-export type ProjectKind = 'client' | 'open-source';
+/**
+ * Client engagements, open-source work and internal engineering-impact
+ * writeups are three different claims. `impact` covers initiatives with no
+ * shipped product of its own to screenshot — a design system, a shared
+ * package, an architecture proposal — so it is never listed on /works
+ * alongside delivered products; it only ever appears in the landing page's
+ * "Engineering beyond the codebase" teaser and its own case-study pages.
+ */
+export type ProjectKind = 'client' | 'open-source' | 'impact';
 
 export interface ProjectLink {
   label: string;
   href: string;
+}
+
+export interface PlateDiagram {
+  /** fan-out: one source feeding several apps · shared: one package between
+   *  two consumers · tenants: one core serving a ring of tenants. */
+  shape: 'fan-out' | 'shared' | 'tenants';
+  caption: string;
 }
 
 export interface ProjectData {
@@ -60,6 +73,12 @@ export interface ProjectData {
    * the page says the site is offline instead of linking to it.
    */
   siteOffline?: boolean;
+  /**
+   * Kept in the data but not published anywhere on the site. For a page held
+   * back for review rather than deleted, so it can be restored by removing
+   * the flag.
+   */
+  archived?: boolean;
   kind: ProjectKind;
   /**
    * When the work happened. For employer projects this is the tenure of the
@@ -78,6 +97,12 @@ export interface ProjectData {
   bgColor: string;
   /** null when no logo asset is available; consumers fall back to a text wordmark. */
   logo: string | null;
+  /**
+   * For client work: one lead screen, as proof the product exists, plus only
+   * the screens a case-study section points at. Cut to that on 2026-11-13; a
+   * gallery of unattached screens argued for UI output, not the ownership the
+   * case studies claim. The cut files moved to the git-ignored .private/.
+   */
   images: ProjectImage[];
   /** Extra destinations — a repository, a package page, a live demo. */
   links?: ProjectLink[];
@@ -87,6 +112,13 @@ export interface ProjectData {
    * empty plate is the honest result otherwise, not an invitation to invent.
    */
   plateFacts?: string[];
+  /**
+   * Impact entries only: the shape of the decision, drawn on the card's plate
+   * in place of a brand colour. There is no product to show, so the plate
+   * shows the structure the decision produced, and the caption states it in
+   * words. The numbers stay in the evidence band and the case study.
+   */
+  plateDiagram?: PlateDiagram;
   /** Present only where a real writeup exists. */
   caseStudy?: CaseStudy;
 }
@@ -108,21 +140,58 @@ export class ProjectService {
       id: 9613,
       slug: "hobeei-freecycle-application",
       title: "Hobeei Freecycle application",
-      position: 1,
+      position: 3,
       kind: "client",
       role: "Lead Frontend Engineer, founding team at Hobeei",
       period: "Feb 2019 - Feb 2021",
       description: "A Greentech donation platform that enables people to recycle their unwanted and preowned items. Built with modern web technologies to promote sustainability and community sharing.",
       portfolio_url: "https://www.hobeei.com/",
       siteOffline: true,
-      bgColor: "#2f7d5d",
-      logo: null,
+      bgColor: "#1f4d3a",
+      logo: "assets/projects/logos/hobeei.png",
       images: [
         { id: 7038, imageUrl: "assets/projects/hobeei-freecycle-application/01.jpg", imageName: "Home page, from the giveaway hero through how Hobeei works", position: 1 },
-        { id: 7039, imageUrl: "assets/projects/hobeei-freecycle-application/02.jpg", smallUrl: "assets/projects/hobeei-freecycle-application/02-800.jpg", imageName: "Listings feed: featured items by category, each with a countdown and its bid count", position: 2 },
-        { id: 7040, imageUrl: "assets/projects/hobeei-freecycle-application/03.png", smallUrl: "assets/projects/hobeei-freecycle-application/03-800.png", imageName: "Item page: bidding for a listing in Buzzes against a countdown", position: 3 },
-        { id: 7041, imageUrl: "assets/projects/hobeei-freecycle-application/04.png", smallUrl: "assets/projects/hobeei-freecycle-application/04-800.png", imageName: "Recharge page: bundles of Hopps, priced in Buzzes", position: 4 }
-      ]
+        // The item page (03) would illustrate the bidding section, but it shows
+        // real users' names, photos and usernames, so it is not published.
+      ],
+      // Read from the three repositories on 2026-11-14. Authorship counts are
+      // git's: hobeei-frontend 1,137 of 1,323 commits (Feb 2019 - Feb 2021),
+      // admin 133 of 145, server.ts 21 of 21. The API (hobeei-api, Node,
+      // TypeScript, MongoDB, RabbitMQ) is mostly other engineers' work — 24 of
+      // 467 commits are Isah's — so it is described as the backend team's.
+      caseStudy: {
+        context:
+          "Hobeei was a freecycle marketplace in Nigeria: people gave away items they no longer needed, and others bid for them with Buzzes, a virtual currency earned by uploading items, inviting friends or buying it outright. Hopps capped how many items one person could bid on at a time.",
+        contribution:
+          "I led the frontend from the first commit to the last, writing 1,137 of its 1,323 commits over two years, as part of the founding team. The backend team built the API; the customer app, the admin console and everything that ran in the browser were mine.",
+        contributionPoints: [
+          "Real-time bidding over Socket.IO, with each item page subscribed to its own channel so the highest bid and bidder update live as people out-buzz each other",
+          "Direct-message chat between users, and a support inbox for the team on the admin side",
+          "An admin console inside the same Angular app: users, inventory, categories, finance, credits, Hopps and packages, charities, and a metrics dashboard tracking sign-ups, users online, items uploaded and winners by day, week, month and year",
+          "Buying Buzzes through Paystack, and Hopps with Buzzes; image uploads through Cloudinary, push notifications through OneSignal",
+          "A progressive web app, with an app shell, service worker and offline state, then server-side rendering with Angular Universal",
+          "Product tours and social sharing to Facebook, Twitter and WhatsApp"
+        ],
+        sections: [
+          {
+            heading: "Bidding that has to feel live",
+            body: "An auction where the price only changes when you refresh is not an auction. Each item page joins its own Socket.IO channel, and every new bid pushes the full bid list down to everyone watching: the highest amount, who holds it, and how much more it takes to outbid them, all against a countdown."
+          },
+          {
+            heading: "One codebase for the customers and the people running it",
+            body: "The admin console lives in the same Angular app as the marketplace, as its own lazy-loaded module, so the customer bundle never carries it. Sharing one codebase meant one set of services and models for the team's tooling and the product it managed. Support conversations ran over the same socket layer as user chat, rather than through a separate helpdesk."
+          },
+          {
+            heading: "Built for Nigerian mobile data",
+            body: "Built for phones on patchy mobile connections, the app was split into lazy-loaded modules, so a visitor loaded only the part they were using. It then became a progressive web app, with an app shell that paints before the data arrives, a service worker caching the static assets, and an explicit no-network state instead of a blank screen. Server-side rendering came last, so listings arrived as HTML that crawlers and slow phones could read before any JavaScript ran."
+          }
+        ],
+        outcomes: [
+          "Performance and user experience improved by 30% through the PWA and SSR work",
+          "User engagement up over 50% and revenue up 35% after real-time bidding, product tours, chat, social sharing and payment integrations shipped"
+        ],
+        stack: ["Angular", "Angular Universal", "Angular Service Worker", "RxJS", "Socket.IO", "Paystack", "Cloudinary", "OneSignal", "Chart.js", "LogRocket"]
+      }
     },
     {
       id: 9614,
@@ -138,71 +207,81 @@ export class ProjectService {
       logo: "/assets/img/applypay.svg",
       images: [
         { id: 7042, imageUrl: "assets/projects/apply-schools-and-applypay/01.jpg", imageName: "Apply home page, introducing Apply Schools, Apply Markets and Apply Pay", position: 1 },
-        { id: 7043, imageUrl: "assets/projects/apply-schools-and-applypay/02.png", smallUrl: "assets/projects/apply-schools-and-applypay/02-800.png", imageName: "School admin: the list of classes, filterable by session and status", position: 2 },
-        { id: 7044, imageUrl: "assets/projects/apply-schools-and-applypay/03.png", smallUrl: "assets/projects/apply-schools-and-applypay/03-800.png", imageName: "Class detail: the teacher, the session dates and the class roster", position: 3 },
-        { id: 7045, imageUrl: "assets/projects/apply-schools-and-applypay/04.png", smallUrl: "assets/projects/apply-schools-and-applypay/04-800.png", imageName: "Adding a student, step one of three: basic student data", position: 4 },
-        { id: 7052, imageUrl: "assets/projects/apply-schools-and-applypay/05.png", smallUrl: "assets/projects/apply-schools-and-applypay/05-800.png", imageName: "Sign-in, by email or phone number", position: 5 },
-        { id: 7059, imageUrl: "assets/projects/apply-schools-and-applypay/06.png", smallUrl: "assets/projects/apply-schools-and-applypay/06-800.png", imageName: "Parent view: a guardian's children, with the way through to their invoices", position: 6 }
-      ]
-    },
-    {
-      id: 9616,
-      slug: "talk360-payment-platform",
-      title: "Talk360 Payment Platform",
-      position: 3,
-      kind: "client",
-      role: "Frontend & Mobile Software Engineer at Talk360",
-      period: "May 2022 - present",
-      description: "Comprehensive payment platform enabling international calling and mobile top-up services. Features secure payment processing, user management, and real-time transaction monitoring.",
-      portfolio_url: "https://talk360.com/",
-      bgColor: "#162240",
-      logo: "assets/projects/logos/talk360.svg",
-      images: [
-        { id: 7048, imageUrl: "assets/projects/talk360-payment-platform/02.png", smallUrl: "assets/projects/talk360-payment-platform/02-800.png", imageName: "Back-office session list, filtered by payment service provider, method, state and period", position: 1 },
-        { id: 7049, imageUrl: "assets/projects/talk360-payment-platform/03.png", smallUrl: "assets/projects/talk360-payment-platform/03-800.png", imageName: "Session detail showing the per-attempt timeline of provider references, statuses and contexts", position: 2 },
-        { id: 7050, imageUrl: "assets/projects/talk360-payment-platform/04.png", imageName: "Mobile checkout: choosing a payment method for a top-up", position: 3 },
-        { id: 7051, imageUrl: "assets/projects/talk360-payment-platform/05.png", imageName: "Mobile checkout: card entry, with the secured-checkout indicator", position: 4 },
-        { id: 7047, imageUrl: "assets/projects/talk360-payment-platform/01.png", smallUrl: "assets/projects/talk360-payment-platform/01-800.png", imageName: "Back-office sign-in, with a two-factor token", position: 5 }
+        { id: 7043, imageUrl: "assets/projects/apply-schools-and-applypay/02.png", smallUrl: "assets/projects/apply-schools-and-applypay/02-800.png", imageName: "School admin: the list of classes, filterable by session and status", position: 2 }
       ],
       caseStudy: {
         context:
-          "Talk360 sells international calling and mobile top-up to customers across Africa and Europe, which means taking money in a lot of countries that do not share a payment culture. The platform is two-sided: the checkout a customer completes on their phone, and the back-office the team uses to work out what happened when one of those payments does not land.",
+          "ApplyPay and Apply Schools shared one engineering team: a payments product and a school-administration platform, built from the same codebase and tooling. ApplyPay's work was mostly integration and payment infrastructure rather than its own screens, which is why the admin screen below is Apply Schools — the product with a public interface to show.",
         contribution:
-          "I work on the payment platform as part of a wider frontend and mobile remit at Talk360, alongside onboarding, the Shop360 marketplace, the webshop and the embedded web dialler.",
+          "I worked across both products, past feature delivery into the tooling and infrastructure around them.",
+        contributionPoints: [
+          "Delivered over twice the initially planned feature set, expanding platform functionality and user value",
+          "Built and automated support tooling — dashboards, diagnostics, alerting and health checks — that cut support time-to-resolution by 40%",
+          "Mentored a team of three engineers on CI/CD practices and code quality standards",
+          "Standardised coding practices across every project at the company",
+          "Managed AWS infrastructure: deployments, horizontal scaling, security audits and enterprise readiness"
+        ],
         sections: [
           {
-            heading: "Checkout, on a phone, in someone else\u2019s market",
-            body: "The customer flow is deliberately short (amount, method, details, confirm) because it runs on mid-range Android handsets over unreliable mobile data. Which methods appear depends on where the customer is: card, PayPal and Alipay sit alongside iDEAL in the Netherlands and USSD in Nigeria, and a search affordance covers the long tail rather than pretending the list is complete. The secured-checkout marker stays visible on every step, since this is the point where an unfamiliar brand has to earn a card number.",
-            image: 3
+            heading: "Running a school from the admin side",
+            body: "Classes, filterable by session and status; a class's teacher, dates and roster; adding a student in three steps; a parent's view through to their children's invoices. Built for the people running a school day to day, not just the students using it.",
+            image: 2
           },
           {
-            heading: "A back-office built for diagnosis, not reporting",
-            body: "A failed payment is a support ticket, so the internal tool is organised around answering \u201cwhy did this one fail?\u201d rather than counting volume. Sessions are filterable by provider, method type, state and period across thousands of records, and each session opens into the merchant and user behind it plus a timeline of every attempt: provider reference, status, and the context it came from, whether a stored-payment call, a redirect, or an asynchronous webhook. Payments fail in the gaps between those three, which is exactly why the timeline shows them separately.",
-            image: 2
+            heading: "The tooling behind both products",
+            body: "Past the product features: automated dashboards, diagnostics and alerting that cut support time-to-resolution, coding standards applied across every project rather than just this one, and the AWS infrastructure — deployments, horizontal scaling, security audits — both products ran on."
           }
         ],
-        stack: ["TypeScript", "React.js", "Vue.js", "Android / WebView", "Sentry", "Cypress"]
+        outcomes: [
+          "Shipped over twice the initially planned feature set",
+          "Support time-to-resolution cut by 40% through automated dashboards, diagnostics and alerting"
+        ],
+        stack: ["React.js", "Next.js", "Redux.js", "TypeScript", "AWS S3", "Docker", "CircleCI"]
       }
     },
     {
       id: 9617,
       slug: "talk360-calling-app",
       title: "Talk360 Calling app",
-      position: 4,
+      position: 1,
       kind: "client",
       role: "Frontend & Mobile Software Engineer at Talk360",
       period: "May 2022 - present",
-      description: "Mobile calling application providing affordable international calls with crystal clear voice quality. Features include contact management, call history, and credit top-up functionality.",
+      description: "Mobile app for low-cost international calls, with contact management, call history and credit top-up.",
       bgColor: "#162240",
       logo: "assets/projects/logos/talk360.svg",
       images: [
-        { id: 7053, imageUrl: "assets/projects/talk360-calling-app/01.png", imageName: "Onboarding: the first welcome screen", position: 1 },
-        { id: 7054, imageUrl: "assets/projects/talk360-calling-app/02.png", imageName: "Country picker for the phone number, with search", position: 2 },
-        { id: 7055, imageUrl: "assets/projects/talk360-calling-app/03.png", imageName: "Phone verification: the six-digit SMS code, with a resend timer", position: 3 },
         { id: 7056, imageUrl: "assets/projects/talk360-calling-app/04.png", imageName: "Home: who to call, the credit balance, and buying credit or checking rates", position: 4 },
-        { id: 7057, imageUrl: "assets/projects/talk360-calling-app/05.png", imageName: "Keypad, with the remaining credit and minutes", position: 5 },
-        { id: 7058, imageUrl: "assets/projects/talk360-calling-app/06.png", imageName: "Account menu: language, credit, rates, referrals and vouchers", position: 6 }
-      ]
+      ],
+      caseStudy: {
+        context:
+          "Talk360's calling app splits into two parts: a native Android shell, and the Web Dialer — the dialler, in-call and call-summary screens that run inside both the calling app and partner apps over WebView.",
+        contribution:
+          "I own both halves end to end: I rebuilt the Web Dialer, which began as a proof of concept, as a production multi-tenant React monorepo, and maintain the native Android app it runs inside, including the Kotlin Multiplatform logic shared between them.",
+        contributionPoints: [
+          "Rebuilt the Web Dialer from a proof of concept into a production Turborepo monorepo, split into packages, with CI/CD that only builds what changed",
+          "Built a tenant-based theming system and an SDK mode, shipped for a partner theme and now the groundwork for Embedded's multi-tenant direction",
+          "Added the native bridge methods — purchase triggers, status/navigation bar colour, theme and lifecycle events, Android back handling — that let the web screens and the native app talk to each other",
+          "Hardened calling reliability: phone-number validation, retrying call-summary fetches, a dedicated log entry per failed call, and a low-balance modal on the dialler",
+          "Redesigned the dialler shell, in-call screen, recent calls and call summary, and added call rating",
+          "Connected Lokalise to an automated translation-pull workflow and added end-to-end test coverage for the critical flows"
+        ],
+        sections: [
+          {
+            heading: "A monorepo, not a monolith",
+            body: "The Web Dialer started life as a proof of concept. I rebuilt it as a Turborepo monorepo: logic pulled out into packages, large useEffect blocks and hooks refactored into small reusable ones, and CI/CD that only rebuilds what actually changed. Central analytics event tracking moved into the core package rather than living in whichever app happened to fire it first."
+          },
+          {
+            heading: "Multi-tenant theming, the groundwork for Embedded",
+            body: "A tenant-based theming system, shipped first for a partner's own theme, and an SDK mode with its own back navigation, gave the Web Dialer the multi-tenant foundation the Embedded platform direction later built on."
+          },
+          {
+            heading: "Native Android: reliability and shared logic",
+            body: "On the native side: clearer call-failure messaging, a visible service fee on the buy-credit screen, account and profile fixes (date localisation, email verification, resend limits), and a handoff from the onboarding web app's account-setup callback. Country search and analytics event routing now run through shared Kotlin Multiplatform logic rather than being written twice."
+          }
+        ],
+        stack: ["React", "Turborepo", "JS Bridge", "Lokalise", "Cypress", "GitHub Actions", "Kotlin", "Kotlin Multiplatform", "Android", "Mixpanel"]
+      }
     },
     {
       id: 9621,
@@ -210,7 +289,7 @@ export class ProjectService {
       title: "Kollo",
       position: 5,
       kind: "client",
-      role: "Website, admin dashboard and admin API",
+      role: "Fullstack Engineer: website, admin dashboard and admin API",
       description: "A savings platform that brings thrift contributions online: rotating and target group savings alongside personal plans. I built the website and waitlist, the admin dashboard, and the admin side of the API.",
       portfolio_url: "https://kollo.ng/",
       bgColor: "#5310b7",
@@ -218,17 +297,12 @@ export class ProjectService {
       images: [
         { id: 7068, imageUrl: "assets/projects/kollo/01.jpg", smallUrl: "assets/projects/kollo/01-800.jpg", imageName: "Home page hero, with the app's wallet and rotation-group balance", position: 1 },
         { id: 7069, imageUrl: "assets/projects/kollo/02.jpg", smallUrl: "assets/projects/kollo/02-800.jpg", imageName: "Waitlist page: the reCAPTCHA-protected sign-up form", position: 2 },
-        { id: 7070, imageUrl: "assets/projects/kollo/03.jpg", smallUrl: "assets/projects/kollo/03-800.jpg", imageName: "The five savings products beside the app's group savings screen", position: 3 },
-        { id: 7071, imageUrl: "assets/projects/kollo/04.jpg", smallUrl: "assets/projects/kollo/04-800.jpg", imageName: "Fee comparison against other banks", position: 4 },
-        { id: 7072, imageUrl: "assets/projects/kollo/05.jpg", smallUrl: "assets/projects/kollo/05-800.jpg", imageName: "FAQ page, with structured concept and result panels", position: 5 },
-        { id: 7073, imageUrl: "assets/projects/kollo/06.jpg", smallUrl: "assets/projects/kollo/06-800.jpg", imageName: "Support contact form", position: 6 },
-        { id: 7074, imageUrl: "assets/projects/kollo/07.jpg", imageName: "Home page on a phone", position: 7 }
       ],
       caseStudy: {
         context:
           "Rotating group savings, where everyone pays in each month and one member takes the pot in turn, is an old habit that has always run on trust and a notebook. Kollo moves it online, alongside target savings for groups working towards a shared goal and fixed, automated and flexible plans for individuals.",
         contribution:
-          "I built everything that faces the public or the operations team. The core savings engine was written by the backend lead.",
+          "I worked on Kollo as a fullstack engineer, across the frontend and the API. I built everything that faces the public or the operations team. The core savings engine was written by the backend lead.",
         contributionPoints: [
           "The public website and its waitlist",
           "The internal admin dashboard",
@@ -268,11 +342,6 @@ export class ProjectService {
         { id: 7060, imageUrl: "assets/projects/nexus360/01.jpg", smallUrl: "assets/projects/nexus360/01-800.jpg", imageName: "Home page hero, pairing the systems and sourcing sides of the business", position: 1 },
         { id: 7061, imageUrl: "assets/projects/nexus360/02.jpg", smallUrl: "assets/projects/nexus360/02-800.jpg", imageName: "Software development service page, opening on the problems it replaces", position: 2 },
         { id: 7062, imageUrl: "assets/projects/nexus360/03.jpg", smallUrl: "assets/projects/nexus360/03-800.jpg", imageName: "Contact page: the enquiry form beside what happens after it is sent", position: 3 },
-        { id: 7063, imageUrl: "assets/projects/nexus360/04.jpg", imageName: "Home page on a phone", position: 4 },
-        { id: 7064, imageUrl: "assets/projects/nexus360/05.jpg", imageName: "Procurement service page on a phone", position: 5 },
-        { id: 7065, imageUrl: "assets/projects/nexus360/06.jpg", smallUrl: "assets/projects/nexus360/06-800.jpg", imageName: "Software development page: one weekly report, made by hand and through an integration", position: 6 },
-        { id: 7066, imageUrl: "assets/projects/nexus360/07.jpg", smallUrl: "assets/projects/nexus360/07-800.jpg", imageName: "Careers page, inviting CVs in place of a list of open roles", position: 7 },
-        { id: 7067, imageUrl: "assets/projects/nexus360/08.jpg", imageName: "Enquiry form on a phone, with optional fields marked", position: 8 }
       ],
       caseStudy: {
         context:
@@ -302,13 +371,13 @@ export class ProjectService {
       id: 9618,
       slug: "desrio",
       title: "Desrio",
-      position: 7,
+      position: 9,
       kind: "client",
       description: "Desrio helps teams collaborate, ideate and reduce distractions during work hours.",
       portfolio_url: "https://www.desrio.com/",
       siteOffline: true,
       bgColor: "#49b7ac",
-      logo: null,
+      logo: "assets/projects/logos/desrio.png",
       images: []
     },
     {
@@ -329,7 +398,7 @@ export class ProjectService {
       id: 9620,
       slug: "sapphital",
       title: "Sapphital",
-      position: 9,
+      position: 7,
       kind: "client",
       description: "An Edtech",
       portfolio_url: "https://sapphital.com/",
@@ -451,11 +520,228 @@ export class ProjectService {
         ],
         stack: ["Python", "FastAPI", "LangChain", "ChromaDB", "PostgreSQL", "Next.js", "React", "Docker"]
       }
+    },
+    {
+      id: 9704,
+      slug: "news-app",
+      title: "Central News",
+      position: 13,
+      kind: "open-source",
+      role: "Sole author",
+      description: "An Android news reader in Kotlin and Jetpack Compose: top headlines by category, search as you type, and saved stories that work offline, built on NewsAPI with MVVM and clean architecture.",
+      portfolio_url: "https://github.com/isahohieku/news-app",
+      bgColor: "#e20101",
+      logo: null,
+      images: [
+        { id: 7075, imageUrl: "assets/projects/news-app/01.png", imageName: "Home feed: the lead story, then a timed list of the rest, under pinned category tabs", position: 1 },
+        { id: 7076, imageUrl: "assets/projects/news-app/02.png", imageName: "Search results for “climate”, sortable by relevance or latest", position: 2 },
+        { id: 7077, imageUrl: "assets/projects/news-app/03.png", imageName: "Saved stories, read from the local database so they work offline", position: 3 },
+        { id: 7078, imageUrl: "assets/projects/news-app/04.png", imageName: "Home feed in the dark theme, following the system setting", position: 4 }
+      ],
+      plateFacts: ["news-app", "54 commits", "Kotlin", "Jetpack Compose"],
+      links: [
+        { label: "View on GitHub", href: "https://github.com/isahohieku/news-app" }
+      ],
+      caseStudy: {
+        context:
+          "A news app for a quick daily catch-up: it opens on the day’s top headlines, leads with the biggest story, and lets a reader browse by category, search, and keep stories for later. It runs on NewsAPI’s free plan, whose limits (a 100-result cap, about 100 requests a day, and headlines that only reliably come back for the US) shape much of how it behaves.",
+        contribution:
+          "Written end to end, across 54 commits: the Compose interface, the domain and data layers, and the unit tests.",
+        sections: [
+          {
+            heading: "A feed that leads with the story that matters",
+            body: "Home opens on a lead story and follows it with a timed list, paged as you scroll and refreshed by pulling down. Categories sit as tabs pinned under the top bar, each starting from its own top. The splash screen stays up until the first page has loaded, for at most two seconds, so the app never opens on an empty list. Many articles have no image, and the feed is designed to read well without one.",
+            image: 1
+          },
+          {
+            heading: "Search that keeps up with typing",
+            body: "Results update as you type, debounced at 400 ms and starting at two characters, sortable by relevance or latest, with the last five searches remembered. Home and Search share one pager that handles load-more, retry, refresh and duplicates across pages, and treats NewsAPI’s HTTP 426 at the result cap as the end of the list rather than an error.",
+            image: 2
+          },
+          {
+            heading: "Saved stories that work offline",
+            body: "Any article can be bookmarked from the feed or from search, with an Undo snackbar. Bookmarks live in a local Room database, so the Saved tab works without a connection. When a network call does fail, the app names why (no connection, a timeout, the rate limit, a server error) and offers a retry; a failed refresh keeps the current list and reports the problem in a snackbar instead.",
+            image: 3
+          },
+          {
+            heading: "Layers that point inwards",
+            body: "MVVM over clean-architecture layers: the domain holds models, repository interfaces and use cases with no Android imports, and both the UI and the data layer depend on it. Each screen exposes one StateFlow of UI state to a stateless composable, so every screen previews without a ViewModel. Unit tests cover the three ViewModels, the repository’s country fallback, error mapping and the DTO mapper, using hand-written fakes rather than a mocking library.",
+            image: 4
+          }
+        ],
+        stack: ["Kotlin", "Jetpack Compose", "Material 3", "Hilt", "Retrofit", "Room", "Coroutines & Flow", "Coil"]
+      }
+    },
+    {
+      id: 9705,
+      slug: "calendar-guardian",
+      title: "Calendar Guardian",
+      position: 14,
+      kind: "open-source",
+      role: "Sole author",
+      period: "Jul 2026 - Oct 2026",
+      description: "An AI agent that watches your calendar, flags clashes and overloaded days, and drafts the email to reschedule, pulling context from Jira and Slack over MCP. FastAPI and ARQ workers behind a real-time Next.js dashboard.",
+      portfolio_url: "https://github.com/isahohieku/calendar-guardian",
+      bgColor: "#4f46e5",
+      logo: null,
+      images: [],
+      plateFacts: ["calendar-guardian", "94 commits", "FastAPI", "Next.js"],
+      links: [
+        { label: "View on GitHub", href: "https://github.com/isahohieku/calendar-guardian" }
+      ],
+      caseStudy: {
+        context:
+          "A calendar shows you the clash; it does nothing about it. Calendar Guardian is an agent that does: it syncs Google and Microsoft calendars, finds the meetings that overlap or leave no room to breathe, and drafts the email that moves the less important one.",
+        contribution:
+          "Both halves, the Python backend and the Next.js dashboard, across 94 commits from July to October 2026.",
+        sections: [
+          {
+            heading: "Rules first, the model second",
+            body: "Conflicts are found in two tiers. The first is deterministic: overlapping meetings, missing buffers, travel time, and runs of back-to-back meetings with no real break. The second scores softer problems, such as meeting load and lost focus time. Only once a conflict exists does the LLM get involved, drafting a reschedule or cancellation email that can be regenerated or set aside. A conflict that is closed or already past is not raised again on the next sync."
+          },
+          {
+            heading: "Context from where the work actually lives",
+            body: "Model Context Protocol servers connect over Streamable HTTP, with Jira and Confluence through Atlassian, Slack, or any custom server, signed in with OAuth 2.1 (PKCE, dynamic client registration, resource binding, token refresh). Before drafting, the model picks which tools to call: at most four, each with a timeout, and every call and its answer is shown on the conflict page. Tools a server does not mark read-only start switched off."
+          },
+          {
+            heading: "An agent kept on a short lead",
+            body: "Autopilot sends resolutions on its own only for low-severity conflicts; critical ones always wait for a person. ARQ workers do the detection in the background and broadcast over Redis pub/sub to an authenticated WebSocket, so the dashboard updates without a refresh. OAuth tokens are encrypted at rest with AES-256-GCM, sign-in identity comes from the provider rather than the caller, and MCP servers on private networks are refused."
+          }
+        ],
+        stack: ["Python", "FastAPI", "PostgreSQL", "Redis", "ARQ", "OpenAI", "MCP", "Next.js", "Tailwind CSS", "Docker"]
+      }
+    },
+    {
+      id: 9801,
+      slug: "talk360-design-system",
+      title: "Unified design system across four Talk360 apps",
+      position: 15,
+      kind: "impact",
+      role: "Frontend & Mobile Software Engineer at Talk360",
+      period: "May 2022 - present",
+      description: "Separated shared frontend foundations out of one product into two independently distributed packages, then drove a screen-by-screen migration of the consuming apps onto them.",
+      bgColor: "#2742c9",
+      logo: null,
+      images: [],
+      // Talk360's packages are private, so they are described rather than
+      // named here: no package, service or channel names, and no internal
+      // rule specifics. Revised 2026-11-15 at Isah's request.
+      plateFacts: ["23 components", "14+ screens migrated", "4 apps on shared tokens", "Enforced in CI"],
+      plateDiagram: { shape: "fan-out", caption: "One design system, four apps" },
+      caseStudy: {
+        context:
+          "Talk360's web products had grown to four applications, each maintaining its own UI primitives and styling conventions. The cost wasn't only visual drift between native screens and embedded WebViews; it was the same buttons, inputs and pickers being rebuilt independently inside every app.",
+        contribution:
+          "I initiated and drove the separation of a shared design system into two independently distributed packages, then led the migration of consuming applications onto them.",
+        contributionPoints: [
+          "Split the system into a design-token package (tokens, a Tailwind preset, shared icons and country flags) and a component library extracted from one of the products, so foundations and implementations could version separately.",
+          "Drove a screen-by-screen migration across two products instead of requiring every application to cut over at once.",
+          "Added a lint rule, enforced in CI, that blocks reintroducing the legacy components the shared system replaced.",
+          "Set up release notifications for consuming teams, so they knew when a package changed."
+        ],
+        sections: [
+          {
+            heading: "Why two packages, not one",
+            body: "A shared component directory inside one application, or duplicated components across repositories, were the two paths already in use. Separating design foundations from their implementation meant a consuming app could adopt either package without depending on another product's internal structure — which is how all four apps came to share the tokens, while the component migration moved at its own pace."
+          },
+          {
+            heading: "Enforcing it in tooling, not documentation",
+            body: "The lint rule is what made the migration stick: it blocks a pull request from reintroducing a legacy component, rather than relying on an engineer remembering a convention from a doc. It is active and blocking in CI today."
+          }
+        ],
+        outcomes: [
+          "23 shared components, consumed across 14+ migrated screens in two products",
+          "Four applications on the shared design tokens",
+          "The rule enforcing the new components is active and blocking in CI"
+        ],
+        stack: ["React", "TypeScript", "Tailwind CSS", "ESLint", "npm Packages"]
+      }
+    },
+    {
+      id: 9802,
+      slug: "talk360-shared-commerce-foundation",
+      title: "A single source of truth for Talk360's commerce functionality",
+      position: 16,
+      kind: "impact",
+      role: "Frontend & Mobile Software Engineer at Talk360",
+      period: "May 2022 - present",
+      description: "Centralised Talk360's rate-calculation, currency and country-flag logic into one shared package, so the rebuilt website and the existing shop could ship against the same source of truth.",
+      bgColor: "#0d7058",
+      logo: null,
+      images: [],
+      plateFacts: ["One shared package", "2 apps consuming it", "Launched on schedule"],
+      plateDiagram: { shape: "shared", caption: "One package, the website and the shop" },
+      caseStudy: {
+        context:
+          "Talk360's website rebuild needed a new rate calculator on a fixed launch date, but the logic it needed — the rate finder, currency data, country flags — already existed, duplicated across different codebases with no single owner. That duplication had already let a wrong country flag reach users.",
+        contribution:
+          "I proposed and built a shared commerce package, rather than letting the website rebuild introduce another independent implementation, and defined the integration contract that let consuming apps use it without depending on its internals.",
+        contributionPoints: [
+          "Centralised the rate finder, the new rate calculator, currency data and country flags into one distributed package.",
+          "Kept the existing rate finder and the new calculator side by side in the same package rather than forcing an immediate replacement, so the existing shop and the new website could ship on separate schedules.",
+          "Documented the integration through an implementation plan and integration guide, with a defined contract for consuming apps to build against instead of the package's retrieval logic.",
+          "Shipped fixes — accent-insensitive search and English-language country-name search — once, to every consumer, instead of per application."
+        ],
+        sections: [
+          {
+            heading: "A contract, not shared internals",
+            body: "Rather than the website needing to understand how rate data was retrieved or processed, the package exposed a defined contract for consuming it. Changes to the internal implementation could then ship without coupling the website to them."
+          }
+        ],
+        outcomes: [
+          "One package now backs both the rebuilt website and the existing shop from a single source of truth",
+          "The website launch shipped on schedule against it"
+        ],
+        stack: ["TypeScript", "React", "Next.js", "npm Packages"]
+      }
+    },
+    {
+      id: 9803,
+      slug: "talk360-embedded-platform",
+      title: "Reframing Embedded as a multi-tenant distribution platform",
+      position: 17,
+      kind: "impact",
+      role: "Frontend & Mobile Software Engineer at Talk360",
+      period: "May 2022 - present",
+      description: "Proposed and architected the shift of Talk360's Embedded offering from a single web application into a multi-tenant platform. The proposal was approved and became the architecture of what was built.",
+      bgColor: "#6a2fc7",
+      logo: null,
+      images: [],
+      // Partner count, pipeline and the authentication mechanism are left out:
+      // Embedded is current commercial strategy, not a finished project.
+      plateFacts: ["Proposal approved", "Became the architecture", "Live in production"],
+      plateDiagram: { shape: "tenants", caption: "One platform, every tenant" },
+      caseStudy: {
+        context:
+          "As partner requirements for Talk360's Embedded offering diverged — branding, integration, user experience — supporting them inside one application risked burying partner-specific logic throughout the codebase as the number of integrations grew. The underlying problem was architectural: Embedded needed to be a platform, not a growing pile of partner-specific features.",
+        contribution:
+          "I proposed a multi-tenant architecture that separated shared distribution infrastructure from individual partner applications, and designed the flow that loads a partner's experience inside a native app. The proposal was approved and became the architecture of what was built.",
+        contributionPoints: [
+          "Designed independent, white-labelled partner deployments that share underlying integration infrastructure, instead of extending one monolithic app per partner.",
+          "Specified the native SDK flow: verify the partner, establish their context, then load that partner's web experience into a WebView, isolated from every other partner.",
+          "Addressed scalability, isolation, maintainability, security and extensibility as explicit architectural considerations rather than solving each per partner as it came up."
+        ],
+        sections: [
+          {
+            heading: "From feature requests to a platform direction",
+            body: "Treating each new partner as an isolated feature request optimises for the next integration; a platform-oriented architecture weighs the long-term cost of supporting many of them. That distinction is what the proposal changed, and it's the architecture the platform runs on today."
+          }
+        ],
+        outcomes: [
+          "The proposal was approved and became the architecture of Talk360's Embedded platform, now live in production"
+        ],
+        stack: ["Next.js", "Native SDKs", "WebView", "Multi-tenancy"]
+      }
     }
   ];
 
   constructor() {
-    this.projects.sort((a, b) => a.position - b.position);
+    // Archived entries are dropped here, before any lookup, so they vanish
+    // from every listing, the featured teaser, sibling links and the
+    // /works/:id route (which then renders not-found) at once.
+    this.projects = this.projects
+      .filter((project) => !project.archived)
+      .sort((a, b) => a.position - b.position);
   }
 
   getProjects(): ProjectData[] {
@@ -469,13 +755,15 @@ export class ProjectService {
    * opened on Hobeei — a company whose site is decommissioned, with no logo
    * asset, so the first artefact of "delivered work" a visitor saw was an
    * empty colour plate. It also omitted ngx-horizontal-scroll-menu, the only
-   * project on the site a stranger can verify without taking his word for it,
-   * and the source of the npm figure the evidence band leads with.
+   * project on the site a stranger can verify without taking his word for it.
+   *
+   * talk360-calling-app leads client work rather than talk360-payment-platform:
+   * the hero now opens on calling, not payment, and the teaser agrees with it.
    *
    * Positional fill keeps the row full if a slug is ever renamed.
    */
   private readonly featuredSlugs = [
-    'talk360-payment-platform',
+    'talk360-calling-app',
     'apply-schools-and-applypay',
     'ngx-horizontal-scroll-menu',
   ];

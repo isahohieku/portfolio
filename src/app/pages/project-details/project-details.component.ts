@@ -2,6 +2,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   ElementRef,
   ViewChild,
   inject,
@@ -45,6 +46,7 @@ export class ProjectDetailsComponent implements OnInit {
   private titleService = inject(Title);
   private smoothScroll = inject(SmoothScrollService);
   private canonical = inject(CanonicalService);
+  private cdr = inject(ChangeDetectorRef);
 
   @ViewChild('viewer') private viewer?: ElementRef<HTMLDialogElement>;
 
@@ -84,17 +86,29 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   get kindLabel(): string {
-    return this.project?.kind === 'open-source' ? 'Open source' : 'Client work';
+    if (this.project?.kind === 'open-source') return 'Open source';
+    if (this.project?.kind === 'impact') return 'Engineering impact';
+    return 'Client work';
   }
 
-  /** Previous/next stay inside one kind: the listing keeps client work and
-   *  open source apart, and stepping from one into the other blurred that. */
+  /** Previous/next stay inside one kind: the listing keeps client work, open
+   *  source and engineering-impact writeups apart, and stepping from one
+   *  into another blurred that. */
   get siblingNoun(): string {
-    return this.project?.kind === 'open-source' ? 'open-source project' : 'client project';
+    if (this.project?.kind === 'open-source') return 'open-source project';
+    if (this.project?.kind === 'impact') return 'impact case study';
+    return 'client project';
   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
+      // Previous/next reuse this component instance, so only this emission
+      // changes the page. AppComponent is OnPush and the click that marked it
+      // dirty has already been checked by the time the navigation (and its
+      // view transition) lands, so without this the old project stays on
+      // screen under the new URL.
+      this.cdr.markForCheck();
+
       // Accepts a slug or a numeric id, so /works/hobeei-freecycle-application
       // and /works/9613 both resolve.
       this.project = this.projectService.getProject(params.get('id'));

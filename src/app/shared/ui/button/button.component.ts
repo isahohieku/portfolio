@@ -23,7 +23,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
   imports: [RouterLink, NgTemplateOutlet],
   template: `
     @if (routerLink) {
-      <a [routerLink]="routerLink" [class]="classes" [attr.aria-label]="ariaLabel">
+      <a [routerLink]="routerLink" [fragment]="fragment" [class]="classes" [attr.aria-label]="ariaLabel">
         <ng-container *ngTemplateOutlet="content"></ng-container>
       </a>
     } @else if (href) {
@@ -65,6 +65,8 @@ export class ButtonComponent {
   @Input() variant: ButtonVariant = 'primary';
   @Input() size: ButtonSize = 'md';
   @Input() routerLink: string | unknown[] | null = null;
+  /** With routerLink: the in-page anchor, as the header's Contact link uses. */
+  @Input() fragment: string | undefined = undefined;
   @Input() href: string | null = null;
   /** Opens in a new tab with rel="noopener noreferrer". */
   @Input() external = false;

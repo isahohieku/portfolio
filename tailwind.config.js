@@ -74,7 +74,8 @@ module.exports = {
           'sans-serif',
         ],
       },
-      // Spaceship's radius scale — large by convention; buttons are pills.
+      // Spaceship's radius scale. Controls are pills; containers use the
+      // `card` and `media` roles, which stay well short of a pill.
       borderRadius: {
         '3x-small': 'var(--io-radius-3x-small)',
         '2x-small': 'var(--io-radius-2x-small)',
@@ -84,6 +85,8 @@ module.exports = {
         large: 'var(--io-radius-large)',
         'x-large': 'var(--io-radius-x-large)',
         '2x-large': 'var(--io-radius-2x-large)',
+        card: 'var(--io-radius-card)',
+        media: 'var(--io-radius-media)',
       },
       boxShadow: {
         bevel: 'var(--io-shadow-bevel)',

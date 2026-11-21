@@ -64,6 +64,8 @@ export class ExperienceService {
       duration: 'May 2022 - Present',
       overview:
         'A global calling and top-up platform. I work across onboarding, the Shop360 marketplace, the webshop, the embedded web dialler and the payment platform, on web and Android/WebView. Features are owned end to end: technical design, performance, internationalisation, analytics instrumentation, testing and release.',
+      scopeLine:
+        'Drove a shared design system, a commerce platform and the Embedded architecture across Talk360\'s web apps, alongside feature delivery and incident response.',
       accomplishments: [
         'Diagnosed and fixed a hydration bottleneck in onboarding, cutting a main-thread block of up to ~120s to under 100ms',
         'Shipped the redesigned country-selection and segmentation release that carried 1,100+ new sign-ups shortly after launch',
@@ -102,6 +104,8 @@ export class ExperienceService {
       duration: 'Nov 2020 - Jul 2022',
       overview:
         'Frontend for ApplyPay and Apply Schools: a payments product and an education platform sharing one engineering team. The work ran past feature delivery into the tooling around it: client onboarding automation, CI/CD, and the AWS infrastructure the products ran on.',
+      scopeLine:
+        'Mentored a team of three engineers and standardised CI/CD and coding practices across every project at the company.',
       accomplishments: [
         'Delivered over twice the initially planned feature set, expanding platform functionality and user value',
         'Built and automated support tooling (dashboards, diagnostics, alerting and health checks), accelerating client onboarding and cutting time-to-resolution by 40%',
@@ -135,6 +139,8 @@ export class ExperienceService {
       duration: 'Feb 2019 - Feb 2021',
       overview:
         'A greentech donation platform for recycling unwanted and preowned items, built from inception as part of the founding team. Beyond the frontend I represented the company externally, at YC Startup School and the Earth Tech competition.',
+      scopeLine:
+        'Architected the product’s frontend from inception as part of the founding team, the structure it scaled on through a 30% performance gain.',
       accomplishments: [
         'Architected the entire frontend from inception, a scalable and maintainable structure that improved performance by 30%',
         'Built real-time bidding, product tours, chat, social sharing and payment gateway integrations, boosting user engagement by over 50% and driving revenue growth by 35%',
@@ -163,6 +169,8 @@ export class ExperienceService {
       duration: 'Jan 2018 - Jan 2019',
       overview:
         'An early-stage fintech. I planned and architected the frontend from inception and led the frontend team through delivery, establishing the foundation the product scaled on.',
+      scopeLine:
+        'Architected the frontend from inception and led two product redesigns as the platform scaled from zero to 16,000+ users.',
       accomplishments: [
         'Architected the frontend from inception: account creation, virtual card management, an admin portal for interest rates and users, and third-party payment gateway integrations, with robust error handling and user support features',
         'Scaled the user base from zero to 16,000+ in the first year, with platform growth reaching 43,000+ users subsequently',

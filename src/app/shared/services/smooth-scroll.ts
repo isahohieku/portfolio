@@ -103,6 +103,11 @@ export class SmoothScrollService {
   /** Used by in-page jumps so the skip link and anchors stay in step. */
   scrollTo(target: string | HTMLElement | number, immediate = false): void {
     if (this.smoothing) {
+      // Lenis caches the scroll limit and only refreshes it on its own resize
+      // observer's schedule. Straight after a route change that limit is still
+      // the previous page's, so a jump into a longer page stopped short of its
+      // target; measuring first lands it.
+      this.lenis?.resize();
       this.lenis?.scrollTo(target, { immediate });
     }
   }

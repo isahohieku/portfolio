@@ -17,6 +17,13 @@ export interface ExperienceData {
   location?: string;
   duration: string;
   overview: string;
+  /**
+   * One line distilling what was owned, not just the title — read from the
+   * accomplishments below rather than written fresh, so it cannot say more
+   * than they do. Shown in the landing page's compact role list, where
+   * `overview` (written for /about's fuller context) would run too long.
+   */
+  scopeLine?: string;
   accomplishments: string[];
   technologies: Technology[];
 }

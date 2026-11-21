@@ -3,7 +3,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 export type CardTone = 'raised' | 'minimal' | 'brand' | 'bare';
 
 /**
- * The section-card shape the layout is built from: a large radius, a raised
+ * The section-card shape the layout is built from: the card radius, a raised
  * surface, and the inset-hairline elevation recipe. Padding is opt-out via
  * `padded` for cards whose content bleeds to the edge (an image or a tinted
  * block).
@@ -38,7 +38,7 @@ export class CardComponent {
 
   get classes(): string {
     return [
-      'rounded-x-large overflow-hidden',
+      'rounded-card overflow-hidden',
       CardComponent.tones[this.tone],
       this.padded ? 'p-6 sm:p-8' : '',
     ]

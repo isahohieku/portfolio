@@ -32,11 +32,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://isahohieku.com/works/talk360-payment-platform</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://isahohieku.com/works/talk360-calling-app</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -78,6 +73,31 @@
   </url>
   <url>
     <loc>https://isahohieku.com/works/advance-chatbot</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/news-app</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/calendar-guardian</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/talk360-design-system</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/talk360-shared-commerce-foundation</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://isahohieku.com/works/talk360-embedded-platform</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

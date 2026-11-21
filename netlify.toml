@@ -1,3 +1,13 @@
+# Declared here so the deploy does not depend on settings left in the Netlify
+# UI from the 2023 build: the application builder emits into browser/, and
+# Angular 20 does not run on the Node that site was created with.
+[build]
+  command = "npm run build"
+  publish = "dist/portfolio/browser"
+
+[build.environment]
+  NODE_VERSION = "22"
+
 # The app's real routes are served the SPA shell with a 200. Everything else
 # gets the same shell with a 404, so a mistyped URL renders the app's own
 # not-found page without telling a crawler it is a real page. Files that exist

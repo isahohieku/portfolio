@@ -48,3 +48,9 @@ Thumbs.db
 
 # Superpowers brainstorming sessions
 .superpowers/
+
+# Held back from the build and the repository: unpublished screenshots, the
+# archived case study. Never commit; see PRODUCT.md.
+/.private/
+
+.impeccable

@@ -42,7 +42,7 @@ export class ProjectCardComponent {
    */
   get rootClasses(): string {
     return [
-      'project-wrapper group flex h-full flex-col overflow-hidden rounded-x-large',
+      'project-wrapper group flex h-full flex-col overflow-hidden rounded-card',
       'border border-subtle bg-surface-minimal shadow-raised',
       'transition-colors duration-base ease-io hover:border-brand-moderate',
     ].join(' ');
@@ -56,7 +56,27 @@ export class ProjectCardComponent {
    */
   get plateClasses(): string {
     const height = this.lead ? 'h-56 sm:h-72' : 'h-44 sm:h-52';
-    return `io-wipe relative flex ${height} items-center justify-center overflow-hidden px-4 sm:px-6`;
+    const field = this.isImpact ? ' border-b border-subtle bg-surface-subtle' : '';
+    return `io-wipe relative flex ${height} items-center justify-center overflow-hidden px-4 sm:px-6${field}`;
+  }
+
+  /** Eight tenants on an ellipse around the core, for the tenants diagram. */
+  readonly tenantAngles = [0, 45, 90, 135, 180, 225, 270, 315];
+
+  tenantX(angle: number): number {
+    return Math.round((120 + 96 * Math.cos((angle * Math.PI) / 180)) * 10) / 10;
+  }
+
+  tenantY(angle: number): number {
+    return Math.round((48 + 36 * Math.sin((angle * Math.PI) / 180)) * 10) / 10;
+  }
+
+  /** From the core's edge to just short of the tenant node. */
+  tenantSpoke(angle: number): string {
+    const rad = (angle * Math.PI) / 180;
+    const at = (rx: number, ry: number) =>
+      `${Math.round((120 + rx * Math.cos(rad)) * 10) / 10} ${Math.round((48 + ry * Math.sin(rad)) * 10) / 10}`;
+    return `M${at(17, 14)} L${at(88, 30)}`;
   }
 
   get titleClasses(): string {
@@ -76,6 +96,10 @@ export class ProjectCardComponent {
   /** The lead card is wide enough to need a measure; the default one is not. */
   get descriptionClasses(): string {
     return this.lead ? 'io-body-sm max-w-prose text-muted' : 'io-body-sm text-muted';
+  }
+
+  get isImpact(): boolean {
+    return this.project.kind === 'impact';
   }
 
   /** Sourced facts for the colour plate, where no logo asset exists. */

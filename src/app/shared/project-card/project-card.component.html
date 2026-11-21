@@ -10,16 +10,20 @@
 <a
   [routerLink]="['/works', project.slug]"
   [class]="rootClasses">
-  <!-- Logo plate: the project's own colour, used as a field rather than a whole-card wash -->
+  <!-- Logo plate: the project's own colour, used as a field rather than a whole-card wash.
+       Impact entries have no brand to show, so they take the site's own
+       surface and draw the decision instead of borrowing a saturated colour. -->
   <div
     [class]="plateClasses"
-    [ngStyle]="{ backgroundColor: project.bgColor }"
+    [ngStyle]="{ backgroundColor: isImpact ? null : project.bgColor }"
     appReveal
     appScrollDrift>
-    <!-- The light over the colour drifts, so the plate is never quite still
-         while it is on screen. The mark itself holds: a drifting logo reads as
-         a misalignment rather than as depth. -->
-    <div class="io-drift absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent"></div>
+    @if (!isImpact) {
+      <!-- The light over the colour drifts, so the plate is never quite still
+           while it is on screen. The mark itself holds: a drifting logo reads as
+           a misalignment rather than as depth. -->
+      <div class="io-drift absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent"></div>
+    }
     <!-- The card states the title in its body, so a missing logo leaves the
          plate as a plain colour field rather than saying the name twice.
 
@@ -29,7 +33,43 @@
          so an empty plate was reading as a loading failure rather than as the
          honest absence it is. Facts are set per project, never derived: a
          project with nothing checkable still shows nothing. -->
-    @if (!project.logo && plateFacts.length) {
+    @if (isImpact && project.plateDiagram; as diagram) {
+      <!-- A hairline drawing in brand, the hero's own edge language. The
+           caption says in words what the drawing shows, so the drawing itself
+           is decorative and hidden from assistive technology. -->
+      <div class="relative z-10 flex h-full w-full flex-col justify-between gap-4 py-6">
+        <svg class="h-24 w-full text-brand-text sm:h-28" viewBox="0 0 240 96" fill="none"
+          stroke="currentColor" stroke-width="1.25" stroke-linecap="round"
+          preserveAspectRatio="xMinYMid meet" aria-hidden="true">
+          @switch (diagram.shape) {
+            @case ('fan-out') {
+              <rect x="8" y="34" width="44" height="28" rx="6" />
+              <path d="M52 48 C 120 48, 120 12, 188 12" />
+              <path d="M52 48 C 120 48, 120 36, 188 36" />
+              <path d="M52 48 C 120 48, 120 60, 188 60" />
+              <path d="M52 48 C 120 48, 120 84, 188 84" />
+              <circle cx="194" cy="12" r="6" /><circle cx="194" cy="36" r="6" />
+              <circle cx="194" cy="60" r="6" /><circle cx="194" cy="84" r="6" />
+            }
+            @case ('shared') {
+              <circle cx="22" cy="48" r="8" />
+              <circle cx="218" cy="48" r="8" />
+              <path d="M30 48 H 96" /><path d="M144 48 H 210" />
+              <rect x="96" y="30" width="48" height="36" rx="6" />
+              <path d="M108 42 H 132 M108 48 H 132 M108 54 H 124" opacity="0.6" />
+            }
+            @case ('tenants') {
+              <circle cx="120" cy="48" r="11" />
+              @for (angle of tenantAngles; track angle) {
+                <path [attr.d]="tenantSpoke(angle)" opacity="0.6" />
+                <circle [attr.cx]="tenantX(angle)" [attr.cy]="tenantY(angle)" r="4.5" />
+              }
+            }
+          }
+        </svg>
+        <span class="io-label text-muted">{{ diagram.caption }}</span>
+      </div>
+    } @else if (!project.logo && plateFacts.length) {
       <div class="relative z-10 flex flex-col items-center gap-2 text-center">
         <code class="font-mono text-xs leading-snug text-white sm:text-sm">{{ plateFacts[0] }}</code>
         @if (plateFacts.length > 1) {
